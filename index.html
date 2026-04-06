@@ -16,7 +16,7 @@
     z-index: 10; pointer-events: none;
   }
   
-  /* Lecteur Gims Optimisé */
+  /* Lecteur Gims Optimisé - Bien visible en haut à droite */
   #gims-box { 
     position: absolute; top: 10px; right: 10px; 
     z-index: 100; background: #ff0055; padding: 5px; 
@@ -30,7 +30,7 @@
 <div id="ui">💰 <span id="val">0</span></div>
 
 <div id="gims-box">
-  <iframe width="150" height="85" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1" frameborder="0"></iframe>
+  <iframe width="150" height="85" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
 <canvas id="game"></canvas>
@@ -103,7 +103,7 @@ function update() {
       var o = obs[i];
       o.x -= speed;
       
-      // Collision Ultra-Précise
+      // Collision Princesse
       if (100 < o.x + 60 && 100 + 70 > o.x && py < o.y + 60 && py + 70 > o.y) {
         if (o.type === 'coin') {
           score += 50;
@@ -131,17 +131,17 @@ function update() {
 }
 
 function draw() {
-  // Fond Dégradé
+  // Fond 
   ctx.fillStyle = (mode === 'ghost' ? "#000" : "#050a1e");
   ctx.fillRect(0, 0, w, h);
   
-  // Sol Néon Brillant
+  // Sol Néon (HSL marche sur les versions 2014 mises à jour)
   ctx.fillStyle = "hsl(" + (frame % 360) + ", 100%, 50%)";
   ctx.fillRect(0, h - 65, w, 10);
   ctx.fillStyle = "#000";
   ctx.fillRect(0, h - 55, w, 55);
   
-  // Obstacles (Emojis)
+  // Obstacles
   ctx.font = "70px Arial";
   for (var j = 0; j < obs.length; j++) {
     ctx.fillText(obs[j].em, obs[j].x, obs[j].y + 50);
@@ -172,8 +172,9 @@ function draw() {
 }
 
 function handle(e) {
-  if (e && e.target.tagName === 'IFRAME') return;
-  if (e && e.preventDefault) e.preventDefault();
+  // Sécurité pour ne pas sauter quand on clique sur Gims
+  if (e && e.target && (e.target.tagName === 'IFRAME' || e.target.id === 'gims-box')) return;
+  if (e && e.preventDefault && !isOver) e.preventDefault();
   
   if (isOver) {
     restart();

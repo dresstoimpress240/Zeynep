@@ -3,48 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ZEYNEP RUN SAVED</title>
+<title>ZEYNEP GIMS EDITION</title>
 <style>
-  * { 
-    -webkit-touch-callout: none; 
-    -webkit-user-select: none; 
-    user-select: none; 
-    touch-action: none; 
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  html, body { 
-    position: fixed; 
-    margin: 0; 
-    padding: 0;
-    width: 100%; 
-    height: 100%; 
-    background: #000; 
-    overflow: hidden; 
-  }
+  * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; outline: none; box-sizing: border-box; }
+  html, body { position: fixed; margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
 
-  canvas { 
-    display: block; 
-    width: 100%; /* Force la largeur */
-    height: 100%; /* Force la hauteur */
-    object-fit: cover; /* S'adapte à l'écran */
-  }
-  
-  /* LECTEUR MUSIQUE VISIBLE (Pour Gims) */
+  /* LE LECTEUR GIMS REPARÉ */
   #music-player { 
-    position: absolute; top: 10px; right: 10px; 
-    z-index: 999; background: rgba(255, 0, 85, 0.9); 
-    padding: 10px; border-radius: 15px; border: 2px solid #fff;
-    display: flex; flex-direction: column; align-items: center;
+    position: absolute; top: 15px; right: 15px; 
+    z-index: 1000; background: #ff0055; 
+    padding: 10px; border-radius: 15px; border: 3px solid white;
+    text-align: center; box-shadow: 0 0 20px rgba(255,0,85,0.6);
   }
-  #music-player p { color: white; margin: 0 0 5px 0; font-size: 14px; font-weight: bold; }
-
-  #score-ui { 
-    position: absolute; top: 30px; left: 20px; color: #fff; 
-    font-size: 60px; font-weight: 900; pointer-events: none; 
-    text-shadow: 0 0 15px #ff0055; z-index: 10;
-  }
+  #music-player p { color: white; margin: 0 0 8px 0; font-size: 14px; font-weight: bold; font-family: sans-serif; }
+  
+  /* Le bouton pour forcer le son sur iPad */
+  #score-ui { position: absolute; top: 30px; left: 20px; color: #fff; font-size: 55px; font-weight: 900; pointer-events: none; text-shadow: 0 0 15px #ff0055; z-index: 10; }
 </style>
 </head>
 <body>
@@ -52,8 +27,8 @@
 <div id="score-ui">💰 <span id="val">0</span></div>
 
 <div id="music-player">
-  <p>MONTE LE SON ↓</p>
-  <iframe width="180" height="101" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <p>CLIQUE PLAY POUR GIMS ↓</p>
+  <iframe width="200" height="113" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?controls=1&modestbranding=1&rel=0&autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
 <canvas id="game"></canvas>
@@ -63,40 +38,34 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const valScore = document.getElementById('val');
 
-// --- RÉPARATION DU PLEIN ÉCRAN IPAD ---
-let logicalWidth, logicalHeight;
-function fixPleinEcran() {
-    logicalWidth = window.innerWidth;
-    logicalHeight = window.innerHeight;
-    canvas.width = logicalWidth;
-    canvas.height = logicalHeight;
+let w, h;
+function resize() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
 }
-window.addEventListener('resize', fixPleinEcran);
-fixPleinEcran(); // Lance tout de suite
+window.addEventListener('resize', resize);
+resize();
 
 let g = {
-  score: 0, speed: 9, isOver: false, frame: 0,
-  p: { x: 90, y: 0, w: 80, h: 80, dy: 0, jumps: 0, mode: 'normal', timer: 0 },
+  score: 0, speed: 10, isOver: false, frame: 0,
+  p: { x: 100, y: 0, w: 85, h: 85, dy: 0, jumps: 0, mode: 'normal', timer: 0 },
   obs: []
 };
 
-function revanche() {
+function reset() {
   g.score = 0; g.speed = 10; g.isOver = false; g.frame = 0;
-  g.p.y = logicalHeight - 200; g.p.dy = 0; g.p.mode = 'normal'; g.p.timer = 0;
+  g.p.y = h - 250; g.p.dy = 0; g.p.mode = 'normal'; g.p.timer = 0;
   g.obs = []; valScore.innerText = "0";
 }
 
 function spawn() {
-  let x = logicalWidth + 150;
-  let type = Math.random();
-  
-  if (type < 0.40) { 
-    g.obs.push({ x, y: logicalHeight - 160, w: 70, h: 90, type: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
-  } else if (type < 0.85) { 
-    g.obs.push({ x, y: 150 + Math.random() * (logicalHeight - 450), w: 60, h: 60, type: 'gift', em: "🎁" });
-  } else { 
-    g.obs.push({ x, y: logicalHeight - 250, w: 50, h: 50, type: 'coin', em: "🟡" });
-  }
+  let x = w + 150;
+  let r = Math.random();
+  if (r < 0.4) g.obs.push({ x, y: h - 165, w: 75, h: 95, t: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
+  else if (r < 0.8) g.obs.push({ x, y: 150 + Math.random()*(h-450), w: 70, h: 70, t: 'gift', em: "🎁" });
+  else g.obs.push({ x, y: h - 300, w: 55, h: 55, t: 'coin', em: "🟡" });
 }
 
 function update() {
@@ -104,21 +73,17 @@ function update() {
     g.frame++;
     g.speed += 0.005;
     if (g.p.timer > 0) g.p.timer--; else g.p.mode = 'normal';
-    g.p.dy += (g.p.mode === 'dragon') ? 0.38 : 1.1;
+    g.p.dy += (g.p.mode === 'dragon') ? 0.4 : 1.2;
     g.p.y += g.p.dy;
-    
-    let floor = logicalHeight - 145;
-    if (g.p.y > floor) { g.p.y = floor; g.p.dy = 0; g.p.jumps = 0; }
-    
+    if (g.p.y > h - 150) { g.p.y = h - 150; g.p.dy = 0; g.p.jumps = 0; }
     if (g.frame % 35 === 0) spawn();
-
     g.obs.forEach((o, i) => {
       o.x -= g.speed;
       if (g.p.x < o.x + o.w - 15 && g.p.x + g.p.w > o.x + 15 && g.p.y < o.y + o.h - 15 && g.p.y + g.p.h > o.y + 15) {
-        if (o.type === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i, 1); }
-        else if (o.type === 'gift') { g.p.mode = ['giant','dragon','ghost'][Math.floor(Math.random()*3)]; g.p.timer = 400; g.obs.splice(i, 1); }
-        else if (g.p.mode === 'giant') { g.score += 150; g.obs.splice(i, 1); }
-        else if (g.p.mode !== 'ghost') { g.isOver = true; }
+        if (o.t === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i,1); }
+        else if (o.t === 'gift') { g.p.mode = ['giant','dragon','ghost'][Math.floor(Math.random()*3)]; g.p.timer = 400; g.obs.splice(i,1); }
+        else if (g.p.mode === 'giant') { g.score += 200; g.obs.splice(i,1); }
+        else if (g.p.mode !== 'ghost') g.isOver = true;
       }
       if (o.x < -200) g.obs.splice(i, 1);
     });
@@ -129,55 +94,37 @@ function update() {
 
 function draw() {
   ctx.fillStyle = g.p.mode === 'ghost' ? '#000' : '#050a1e';
-  ctx.fillRect(0, 0, logicalWidth, logicalHeight);
-  
-  // Sol Neon
-  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 65%)`; ctx.fillRect(0, logicalHeight - 65, logicalWidth, 10);
-  ctx.fillStyle = "#000"; ctx.fillRect(0, logicalHeight - 55, logicalWidth, 55);
-
-  g.obs.forEach(o => { ctx.font = "80px Arial"; ctx.fillText(o.em, o.x, o.y + 65); });
-
-  let emoji = "👸";
-  if (g.p.mode === 'dragon') emoji = "🐲";
-  if (g.p.mode === 'ghost') { emoji = "👻"; ctx.globalAlpha = 0.5; }
-  
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 60%)`;
+  ctx.fillRect(0, h - 70, w, 15);
+  ctx.fillStyle = "#000"; ctx.fillRect(0, h - 55, w, 55);
+  g.obs.forEach(o => { ctx.font = "80px Arial"; ctx.fillText(o.em, o.x, o.y + 70); });
+  let e = g.p.mode === 'giant' ? "👸" : (g.p.mode === 'dragon' ? "🐲" : (g.p.mode === 'ghost' ? "👻" : "👸"));
+  if (g.p.mode === 'ghost') ctx.globalAlpha = 0.5;
   ctx.font = (g.p.mode === 'giant' ? "180px" : "110px") + " Arial";
-  ctx.fillText(emoji, g.p.x, g.p.y + (g.p.mode === 'giant' ? 120 : 85));
+  ctx.fillText(e, g.p.x, g.p.y + (g.p.mode === 'giant' ? 130 : 90));
   ctx.globalAlpha = 1;
-
   if (g.isOver) {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.95)";
-    ctx.fillRect(0, 0, logicalWidth, logicalHeight);
-    
-    // Titre K.O. REPARE (au centre)
+    ctx.fillStyle = "rgba(0,0,0,0.9)"; ctx.fillRect(0,0,w,h);
     ctx.fillStyle = "#ff0055"; ctx.textAlign = "center";
-    ctx.font = "bold 90px sans-serif"; ctx.fillText("K.O. !", logicalWidth/2, logicalHeight/2 - 70);
-    
-    // Score
-    ctx.fillStyle = "#fff"; ctx.font = "50px sans-serif"; ctx.fillText("SCORE : " + g.score, logicalWidth/2, logicalHeight/2 + 10);
-    
-    // --- BOUTON REVANCHE ÉNORME CI-DESSOUS ---
-    ctx.fillStyle = "#ff0055"; ctx.fillRect(logicalWidth/2 - 250, logicalHeight/2 + 80, 500, 130);
-    ctx.fillStyle = "#fff"; ctx.font = "bold 60px sans-serif"; ctx.fillText("REVANCHE", logicalWidth/2, logicalHeight/2 + 165);
+    ctx.font = "bold 90px sans-serif"; ctx.fillText("K.O. !", w/2, h/2 - 70);
+    ctx.fillStyle = "#fff"; ctx.font = "60px sans-serif"; ctx.fillText("REVANCHE", w/2, h/2 + 130);
     ctx.textAlign = "left";
   }
 }
 
-function input(e) {
+function touch(e) {
   if (e.target.closest('#music-player')) return;
   if (e.cancelable) e.preventDefault();
-  
-  if (g.isOver) {
-    revanche();
-  } else {
+  if (g.isOver) reset();
+  else {
     if (g.p.mode === 'dragon') g.p.dy = -13;
     else if (g.p.jumps < 2) { g.p.dy = -25; g.p.jumps++; }
   }
 }
-
-canvas.addEventListener('touchstart', input, {passive: false});
-canvas.addEventListener('mousedown', input);
-revanche(); update();
+canvas.addEventListener('touchstart', touch, {passive: false});
+canvas.addEventListener('mousedown', touch);
+reset(); update();
 </script>
 </body>
 </html>

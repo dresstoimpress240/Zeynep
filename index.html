@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION STAR - EDITION LIMITÉE</title>
+<title>ZEYNEP FASHION MISSIONS - EMPIRE</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
-  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
 
   #top-info { background: #fff0f9; padding: 10px; border-radius: 20px; border: 2px solid #ffb6e6; margin-bottom: 10px; }
-  .stats { display: flex; justify-content: space-around; font-weight: bold; color: #d63384; font-size: 18px; margin-bottom: 5px; }
-  #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; }
+  .stats { display: flex; justify-content: space-around; font-weight: bold; color: #d63384; font-size: 18px; }
+  #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; margin-top:5px;}
   #lvl-progress { background: linear-gradient(to right, #ff0080, #ff8fd1); width: 0%; height: 100%; transition: 0.5s; }
+
+  /* ZONE MISSIONS */
+  #mission-box { background: #fff5ba; border: 2px dashed #ff0080; border-radius: 15px; padding: 10px; margin-bottom: 10px; display: none; }
+  #timer { font-size: 26px; font-weight: bold; color: #ff0080; }
 
   #podium {
     position: relative; height: 320px; background: radial-gradient(circle, #ffffff, #fff0f9);
@@ -28,6 +32,8 @@
   #h-leg-l { width: 15px; height: 95px; top: 140px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
   #h-leg-r { width: 15px; height: 95px; top: 140px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
 
+  /* VETEMENTS & PETS */
+  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 55px; z-index: 15; }
   .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
   #v-hair { top: -10px; font-size: 85px; z-index: 10; }
   #v-top  { top: 52px; font-size: 98px; z-index: 8; }
@@ -37,25 +43,25 @@
 
   .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 5px 5px; text-transform: uppercase; }
   .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 5px; -webkit-overflow-scrolling: touch; }
-  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 4px 0 #ffd6f0; }
+  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
   .lock::after { content: "🔒"; position: absolute; font-size: 18px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
 
-  .vote-btn { width: 100%; padding: 20px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; box-shadow: 0 6px 0 #b5065e; cursor: pointer; }
-
-  #fx { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; font-size: 35px; animation: bounce 1s infinite; }
-  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+  .vote-btn { width: 100%; padding: 20px; background: #ff0080; color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; box-shadow: 0 6px 0 #b5065e; }
+  #fx { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; font-size: 35px; }
 </style>
 </head>
 <body>
 
 <div id="game-box">
   <div id="top-info">
-    <div class="stats">
-      <span>✨ Niv. <span id="lvl">1</span></span>
-      <span>💰 <span id="coins">0</span></span>
-    </div>
+    <div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
     <div id="lvl-bar"><div id="lvl-progress"></div></div>
-    <div style="color: #ff0080; font-size: 14px; margin-top: 8px; font-weight: bold;">Thème : <span id="t-text">...</span></div>
+    <div style="color:#ff0080; font-size:14px; margin-top:8px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
+  </div>
+
+  <div id="mission-box">
+    <div id="m-title" style="font-weight:bold; color:#d63384;">MISSION !</div>
+    <div id="timer">00</div>
   </div>
 
   <div id="podium">
@@ -64,28 +70,41 @@
     <div class="h-arm" id="h-arm-l"></div><div class="h-arm" id="h-arm-r"></div>
     <div class="body-part" id="h-leg-l"></div><div class="body-part" id="h-leg-r"></div>
     <div class="cloth" id="v-hair"></div><div class="cloth" id="v-top"></div><div class="cloth" id="v-bot"></div><div class="cloth" id="v-shoe"></div><div class="cloth" id="v-acc"></div>
+    <div id="v-pet"></div>
   </div>
 
-  <div class="title">Coiffures 🎀</div>
+  <div class="title">Cheveux & Robes 💇‍♀️👗</div>
   <div class="row">
     <button class="btn" onclick="set('hair','')">❌</button>
-    <button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button>
+    <button class="btn" onclick="set('hair','💇')">💇</button>
+    <button class="btn" onclick="set('hair','👱')">👱</button>
+    <button class="btn" onclick="set('hair','👧')">👧</button>
+    <button class="btn" onclick="set('top','👚')">👚</button>
+    <button class="btn" onclick="set('top','👕')">👕</button>
+    <button class="btn" onclick="set('top','👘')">👘</button>
     <button class="btn lock" id="L1" onclick="buy('hair','👸','L1', 50)">👸</button>
-  </div>
-
-  <div class="title">Hauts & Robes 👚</div>
-  <div class="row">
-    <button class="btn" onclick="set('top','')">❌</button>
-    <button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','👘')">👘</button>
     <button class="btn lock" id="L2" onclick="buy('top','👗','L2', 100)">👗</button>
   </div>
 
-  <div class="title">Bas & Luxe 👠</div>
+  <div class="title">Bas & Luxe 👠💍</div>
   <div class="row">
     <button class="btn" onclick="set('bot','')">❌</button>
-    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button>
+    <button class="btn" onclick="set('bot','👖')">👖</button>
+    <button class="btn" onclick="set('shoe','👠')">👠</button>
+    <button class="btn" onclick="set('shoe','👟')">👟</button>
     <button class="btn lock" id="L3" onclick="buy('bot','👰','L3', 200)">👰</button>
     <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
+  </div>
+
+  <div class="title">Compagnons Magiques 🐾</div>
+  <div class="row">
+    <button class="btn" onclick="setPet('')">❌</button>
+    <button class="btn" onclick="setPet('🐱')">🐱</button>
+    <button class="btn" onclick="setPet('🐶')">🐶</button>
+    <button class="btn" onclick="setPet('🐰')">🐰</button>
+    <button class="btn lock" id="P1" onclick="buyPet('🦄','P1', 150)">🦄</button>
+    <button class="btn lock" id="P2" onclick="buyPet('🐲','P2', 300)">🐲</button>
+    <button class="btn lock" id="P3" onclick="buyPet('👾','P3', 500)">👾</button>
   </div>
 
   <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
@@ -93,57 +112,70 @@
 
 <script>
   var coins = 0; var items = []; var exp = 0; var level = 1;
+  var timerVal = 0; var isMission = false; var currentMissionType = "";
   var themes = [
     "Princesse Rose 🎀", "Star du Rock 🎸", "Sirène Magique 🌊", "Bal Royal 👑", "Sport Chic 👟", "Fée des Bois 🧚", "Mariage de Rêve 💍", "Vacances à Paris 👜", "Look d'Hiver ❄️", "Disco Party 💃",
-    "Safari Africain 🦁", "Espace Galaxie 🚀", "Licorne Arc-en-ciel 🦄", "Chef de Cuisine 🍳", "Super Héroïne ⚡", "Ange du Ciel ☁️", "Halloween 🎃", "Noël Magique 🎄", "Patineuse Artistique ⛸️", "Tennis Star 🎾",
-    "Plage Hawaïenne 🌺", "Château Hanté 👻", "Journaliste Mode 🎤", "Manga Style 🌸", "Exploratrice 🌵", "Artiste Peintre 🎨", "Soirée Pyjama 🧸", "Bal Masqué 🎭", "Cléopâtre Égypte 🐍", "Cow-boy 🤠",
-    "Glace & Bonbons 🍭", "Cyber Futur 🤖", "Petit Cat 🐱", "Jungle Sauvage 🌿", "Danseuse Étoile 🩰", "Pirate des Mers 🏴‍☠️", "Papillon Rose 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️"
+    "Safari 🦁", "Galaxie 🚀", "Licorne 🦄", "Chef 🍳", "Héroïne ⚡", "Ange ☁️", "Halloween 🎃", "Noël 🎄", "Patineuse ⛸️", "Tennis 🎾",
+    "Plage 🌺", "Château 👻", "Journaliste 🎤", "Manga 🌸", "Exploratrice 🌵", "Artiste 🎨", "Pyjama 🧸", "Bal Masqué 🎭", "Égypte 🐍", "Cow-boy 🤠",
+    "Bonbons 🍭", "Futur 🤖", "Chat 🐱", "Jungle 🌿", "Danseuse 🩰", "Pirate 🏴‍☠️", "Papillon 🦋", "Chanteuse 🎙️", "Déesse 🏛️", "Été ☀️",
+    "Glace ❄️", "Gothique 🖤", "Street 👟", "Vampire 🧛‍♀️", "Ninja 🥷", "Rose 🍭", "Perdue 🐚", "Poupée 🧸", "Nuit 🌙", "Promo 💃",
+    "Pop 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌"
   ];
 
   function set(part, icon) { document.getElementById('v-' + part).innerHTML = icon; }
+  function setPet(icon) { document.getElementById('v-pet').innerHTML = icon; }
+  function updateStats() { document.getElementById('coins').innerText = coins; document.getElementById('lvl').innerText = level; document.getElementById('lvl-progress').style.width = exp + "%"; }
 
   function buy(part, icon, id, price) {
     if (items.indexOf(id) !== -1) { set(part, icon); } 
-    else if (coins >= price) {
-      coins -= price; items.push(id);
-      document.getElementById('coins').innerText = coins;
-      document.getElementById(id).classList.remove('lock');
-      set(part, icon);
-    } else { alert("Gagne encore " + (price - coins) + " pièces ! 💰"); }
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); set(part, icon); }
+  }
+
+  function buyPet(icon, id, price) {
+    if (items.indexOf(id) !== -1) { setPet(icon); } 
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); setPet(icon); }
+  }
+
+  function startMission(type, seconds) {
+    isMission = true; currentMissionType = type; timerVal = seconds;
+    document.getElementById('mission-box').style.display = "block";
+    document.getElementById('m-title').innerText = (type == "FLASH") ? "DÉFI 10s ! ⚡" : (type == "STYL") ? "DÉFI 30s ! ✨" : "GRANDE MISSION ! 👑";
+    var countdown = setInterval(function() {
+      timerVal--; document.getElementById('timer').innerText = timerVal;
+      if (timerVal <= 0 || !isMission) { clearInterval(countdown); if (isMission) { alert("Temps écoulé ! 😢"); endMission(false); } }
+    }, 1000);
+  }
+
+  function endMission(success) {
+    isMission = false; document.getElementById('mission-box').style.display = "none";
+    if (success) {
+      var gain = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 350;
+      coins += gain; alert("RÉUSSI ! + " + gain + " pièces ! 💰"); updateStats();
+    }
   }
 
   function voter() {
-    // Score sur 50 (Minimum 25)
     var score = Math.floor(Math.random() * 26) + 25; 
-    
-    var gain = 0;
-    if (score === 50) {
-      gain = 50; // Note parfaite = 50 pièces
-    } else {
-      // Note entre 25 et 49 = gain entre 25 et 35 pièces
-      gain = Math.floor(Math.random() * 11) + 25; 
-    }
-    
-    coins += gain; exp += 25;
-    
-    if(exp >= 100) { level++; exp = 0; alert("BRAVO ZEYNEP ! Niveau " + level + " ! 🎉"); }
-    
-    document.getElementById('coins').innerText = coins;
-    document.getElementById('lvl').innerText = level;
-    document.getElementById('lvl-progress').style.width = exp + "%";
-    
+    var gain = (score === 50) ? 50 : Math.floor(Math.random() * 11) + 25; 
+    if (isMission) { endMission(true); } else { coins += gain; }
+    exp += 25; if(exp >= 100) { level++; exp = 0; alert("Niveau " + level + " ! 🎉"); }
+    updateStats();
     document.getElementById('fx').style.display = "block";
-    
-    var msg = (score === 50) ? "SCORE PARFAIT ! 🌟 DIAMANT !" : (score >= 40) ? "MAGNIFIQUE ! ✨" : "TRÈS JOLI ! 👍";
-    alert("NOTE DU JURY : " + score + "/50\n" + msg + "\n+ " + gain + " pièces ! 💰");
-
+    alert("NOTE : " + score + "/50\n+ " + (isMission ? "Prime Mission" : gain + " pièces !"));
     setTimeout(function() {
       document.getElementById('fx').style.display = "none";
       document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
       set('hair',''); set('top',''); set('bot',''); set('shoe',''); set('acc','');
     }, 1200);
   }
+
+  setInterval(function() { if(!isMission) startMission("FLASH", 10); }, 900000);
+  setInterval(function() { if(!isMission) startMission("STYL", 30); }, 1050000);
+  setInterval(function() { if(!isMission) startMission("GRANDE", 60); }, 1200000);
+  setInterval(function() { if(!isMission) { coins += 15; updateStats(); } }, 300000);
+
   document.getElementById('t-text').innerText = themes[0];
+  updateStats();
 </script>
 
 </body>

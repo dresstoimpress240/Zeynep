@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ZEYNEP GIMS EDITION</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZEYNEP RUN 2014</title>
 <style>
-  * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; outline: none; box-sizing: border-box; }
-  html, body { position: fixed; margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
-  canvas { display: block; width: 100%; height: 100%; }
-
-  /* LE LECTEUR GIMS REPARÉ */
-  #music-player { 
-    position: absolute; top: 15px; right: 15px; 
-    z-index: 1000; background: #ff0055; 
-    padding: 10px; border-radius: 15px; border: 3px solid white;
-    text-align: center; box-shadow: 0 0 20px rgba(255,0,85,0.6);
-  }
-  #music-player p { color: white; margin: 0 0 8px 0; font-size: 14px; font-weight: bold; font-family: sans-serif; }
+  body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
+  canvas { display: block; background: #050a1e; width: 100%; height: 100%; }
   
-  /* Le bouton pour forcer le son sur iPad */
-  #score-ui { position: absolute; top: 30px; left: 20px; color: #fff; font-size: 55px; font-weight: 900; pointer-events: none; text-shadow: 0 0 15px #ff0055; z-index: 10; }
+  #music-player { 
+    position: absolute; top: 5px; right: 5px; 
+    z-index: 100; background: #ff0055; 
+    padding: 5px; border: 2px solid #fff; border-radius: 10px;
+  }
+  #score-ui { 
+    position: absolute; top: 20px; left: 20px; color: #fff; 
+    font-size: 40px; font-weight: bold; z-index: 10;
+  }
 </style>
 </head>
 <body>
@@ -27,104 +24,130 @@
 <div id="score-ui">💰 <span id="val">0</span></div>
 
 <div id="music-player">
-  <p>CLIQUE PLAY POUR GIMS ↓</p>
-  <iframe width="200" height="113" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?controls=1&modestbranding=1&rel=0&autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+  <iframe width="140" height="80" src="https://www.youtube.com/embed/ERk4Lx-mOqQ" frameborder="0"></iframe>
 </div>
 
 <canvas id="game"></canvas>
 
 <script>
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-const valScore = document.getElementById('val');
+// CODE COMPATIBLE ANDROID 4.4 (ES5)
+var canvas = document.getElementById('game');
+var ctx = canvas.getContext('2d');
+var valScore = document.getElementById('val');
 
-let w, h;
-function resize() {
-    w = window.innerWidth;
-    h = window.innerHeight;
-    canvas.width = w;
-    canvas.height = h;
-}
-window.addEventListener('resize', resize);
-resize();
+var w = window.innerWidth;
+var h = window.innerHeight;
+canvas.width = w;
+canvas.height = h;
 
-let g = {
-  score: 0, speed: 10, isOver: false, frame: 0,
-  p: { x: 100, y: 0, w: 85, h: 85, dy: 0, jumps: 0, mode: 'normal', timer: 0 },
-  obs: []
-};
-
-function reset() {
-  g.score = 0; g.speed = 10; g.isOver = false; g.frame = 0;
-  g.p.y = h - 250; g.p.dy = 0; g.p.mode = 'normal'; g.p.timer = 0;
-  g.obs = []; valScore.innerText = "0";
-}
+var score = 0;
+var speed = 7;
+var isOver = false;
+var frame = 0;
+var py = h - 200;
+var pdy = 0;
+var jumps = 0;
+var obs = [];
 
 function spawn() {
-  let x = w + 150;
-  let r = Math.random();
-  if (r < 0.4) g.obs.push({ x, y: h - 165, w: 75, h: 95, t: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
-  else if (r < 0.8) g.obs.push({ x, y: 150 + Math.random()*(h-450), w: 70, h: 70, t: 'gift', em: "🎁" });
-  else g.obs.push({ x, y: h - 300, w: 55, h: 55, t: 'coin', em: "🟡" });
+  var x = w + 100;
+  var r = Math.random();
+  var type = 'coin';
+  var em = "🟡";
+  
+  if (r < 0.4) { type = 'danger'; em = "🌵"; }
+  else if (r < 0.7) { type = 'gift'; em = "🎁"; }
+  
+  obs.push({ x: x, y: h - 140, type: type, em: em });
 }
 
 function update() {
-  if (!g.isOver) {
-    g.frame++;
-    g.speed += 0.005;
-    if (g.p.timer > 0) g.p.timer--; else g.p.mode = 'normal';
-    g.p.dy += (g.p.mode === 'dragon') ? 0.4 : 1.2;
-    g.p.y += g.p.dy;
-    if (g.p.y > h - 150) { g.p.y = h - 150; g.p.dy = 0; g.p.jumps = 0; }
-    if (g.frame % 35 === 0) spawn();
-    g.obs.forEach((o, i) => {
-      o.x -= g.speed;
-      if (g.p.x < o.x + o.w - 15 && g.p.x + g.p.w > o.x + 15 && g.p.y < o.y + o.h - 15 && g.p.y + g.p.h > o.y + 15) {
-        if (o.t === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i,1); }
-        else if (o.t === 'gift') { g.p.mode = ['giant','dragon','ghost'][Math.floor(Math.random()*3)]; g.p.timer = 400; g.obs.splice(i,1); }
-        else if (g.p.mode === 'giant') { g.score += 200; g.obs.splice(i,1); }
-        else if (g.p.mode !== 'ghost') g.isOver = true;
+  if (!isOver) {
+    frame++;
+    speed += 0.002;
+    pdy += 1.2;
+    py += pdy;
+    
+    if (py > h - 140) {
+      py = h - 140;
+      pdy = 0;
+      jumps = 0;
+    }
+    
+    if (frame % 50 === 0) spawn();
+    
+    for (var i = 0; i < obs.length; i++) {
+      var o = obs[i];
+      o.x -= speed;
+      
+      // Collision simple
+      if (80 < o.x + 50 && 80 + 60 > o.x && py < o.y + 50 && py + 60 > o.y) {
+        if (o.type === 'coin') {
+          score += 50;
+          valScore.innerHTML = score;
+          obs.splice(i, 1);
+        } else if (o.type === 'danger') {
+          isOver = true;
+        } else {
+          score += 100;
+          obs.splice(i, 1);
+        }
       }
-      if (o.x < -200) g.obs.splice(i, 1);
-    });
+      if (o.x < -100) obs.splice(i, 1);
+    }
   }
   draw();
-  requestAnimationFrame(update);
+  setTimeout(update, 20); // Utilisation de setTimeout pour les vieux Android
 }
 
 function draw() {
-  ctx.fillStyle = g.p.mode === 'ghost' ? '#000' : '#050a1e';
+  ctx.fillStyle = "#050a1e";
   ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 60%)`;
-  ctx.fillRect(0, h - 70, w, 15);
-  ctx.fillStyle = "#000"; ctx.fillRect(0, h - 55, w, 55);
-  g.obs.forEach(o => { ctx.font = "80px Arial"; ctx.fillText(o.em, o.x, o.y + 70); });
-  let e = g.p.mode === 'giant' ? "👸" : (g.p.mode === 'dragon' ? "🐲" : (g.p.mode === 'ghost' ? "👻" : "👸"));
-  if (g.p.mode === 'ghost') ctx.globalAlpha = 0.5;
-  ctx.font = (g.p.mode === 'giant' ? "180px" : "110px") + " Arial";
-  ctx.fillText(e, g.p.x, g.p.y + (g.p.mode === 'giant' ? 130 : 90));
-  ctx.globalAlpha = 1;
-  if (g.isOver) {
-    ctx.fillStyle = "rgba(0,0,0,0.9)"; ctx.fillRect(0,0,w,h);
-    ctx.fillStyle = "#ff0055"; ctx.textAlign = "center";
-    ctx.font = "bold 90px sans-serif"; ctx.fillText("K.O. !", w/2, h/2 - 70);
-    ctx.fillStyle = "#fff"; ctx.font = "60px sans-serif"; ctx.fillText("REVANCHE", w/2, h/2 + 130);
-    ctx.textAlign = "left";
+  
+  // Sol
+  ctx.fillStyle = "#ff0055";
+  ctx.fillRect(0, h - 60, w, 60);
+  
+  // Obstacles
+  ctx.font = "50px Arial";
+  for (var j = 0; j < obs.length; j++) {
+    ctx.fillText(obs[j].em, obs[j].x, obs[j].y + 40);
+  }
+  
+  // Princesse
+  ctx.font = "70px Arial";
+  ctx.fillText("👸", 80, py + 50);
+  
+  if (isOver) {
+    ctx.fillStyle = "rgba(0,0,0,0.8)";
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#fff";
+    ctx.font = "40px Arial";
+    ctx.fillText("REVANCHE", w/2 - 100, h/2);
   }
 }
 
-function touch(e) {
-  if (e.target.closest('#music-player')) return;
-  if (e.cancelable) e.preventDefault();
-  if (g.isOver) reset();
-  else {
-    if (g.p.mode === 'dragon') g.p.dy = -13;
-    else if (g.p.jumps < 2) { g.p.dy = -25; g.p.jumps++; }
+function action() {
+  if (isOver) {
+    score = 0; speed = 7; isOver = false; py = h - 200; obs = [];
+    valScore.innerHTML = "0";
+  } else {
+    if (jumps < 2) {
+      pdy = -20;
+      jumps++;
+    }
   }
 }
-canvas.addEventListener('touchstart', touch, {passive: false});
-canvas.addEventListener('mousedown', touch);
-reset(); update();
+
+canvas.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  action();
+});
+canvas.addEventListener('mousedown', action);
+
+update();
+
+D'accord, je garde ça en mémoire. Mais pour le moment, je ne peux me souvenir que de ce dont vous avons discuté dans ce chat. Une fois que vous démarrerez un nouveau chat, cette information sera oubliée.
 </script>
 </body>
 </html>

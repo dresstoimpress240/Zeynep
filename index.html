@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION EMPIRE - 80 THEMES</title>
+<title>ZEYNEP FASHION EMPIRE - 60+ EMOJIS</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
   #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
@@ -13,26 +13,27 @@
   #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; margin-top:5px;}
   #lvl-progress { background: linear-gradient(to right, #ff0080, #ff8fd1); width: 0%; height: 100%; transition: 0.5s; }
 
-  #btn-start-challenge { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; width: 100%; box-shadow: 0 4px 0 #b5065e; font-size: 16px; }
+  /* ZONE CHALLENGE VIP */
   #challenge-area { background: #fff5ba; border: 3px dashed #ff0080; border-radius: 15px; padding: 10px; margin: 10px 0; display: none; }
   #timer { font-size: 30px; font-weight: bold; color: #ff0080; }
+  #btn-start-challenge { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; width: 100%; box-shadow: 0 4px 0 #b5065e; font-size: 16px; }
 
   #podium {
     position: relative; height: 320px; background: radial-gradient(circle, #ffffff, #fff0f9);
-    border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden; display: flex; justify-content: center;
+    border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden;
+    display: flex; justify-content: center;
   }
 
-  /* Correction du corps pour tablette */
   .body-part { position: absolute; background: #ffe0bd; border: 1px solid #f3cbb1; left: 50%; transform: translateX(-50%); }
   #h-head { width: 45px; height: 45px; border-radius: 50%; top: 25px; z-index: 2; }
   #h-torso { width: 40px; height: 75px; top: 68px; border-radius: 8px; z-index: 2; }
   .h-arm { position: absolute; width: 10px; height: 60px; background: #ffe0bd; border: 1px solid #f3cbb1; top: 70px; border-radius: 5px; z-index: 1; }
-  #h-arm-l { left: 50%; margin-left: -28px; transform: rotate(5deg); }
-  #h-arm-r { left: 50%; margin-left: 18px; transform: rotate(-5deg); }
-  #h-leg-l { width: 15px; height: 95px; top: 140px; margin-left: -10px; border-radius: 0 0 5px 5px; z-index: 2; }
-  #h-leg-r { width: 15px; height: 95px; top: 140px; margin-left: 10px; border-radius: 0 0 5px 5px; z-index: 2; }
+  #h-arm-l { left: 50%; margin-left: -32px; transform: rotate(8deg); }
+  #h-arm-r { left: 50%; margin-left: 22px; transform: rotate(-8deg); }
+  #h-leg-l { width: 15px; height: 95px; top: 140px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
+  #h-leg-r { width: 15px; height: 95px; top: 140px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
 
-  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 50px; z-index: 15; }
+  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 55px; z-index: 15; transition: 0.3s; }
   .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
   #v-hair { top: -10px; font-size: 85px; z-index: 10; }
   #v-top  { top: 52px; font-size: 98px; z-index: 8; }
@@ -40,12 +41,10 @@
   #v-shoe { top: 220px; font-size: 60px; z-index: 11; }
   #v-acc  { top: 35px; left: 45px; font-size: 45px; z-index: 12; }
 
-  .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 15px 0 5px 5px; text-transform: uppercase; }
+  .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 5px 5px; text-transform: uppercase; }
   .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 5px; -webkit-overflow-scrolling: touch; }
-  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
-  
-  .lock::after { content: "🔒"; position: absolute; font-size: 16px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
-  .price { position: absolute; bottom: 2px; font-size: 10px; color: #ff0080; font-weight: bold; }
+  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; outline: none; }
+  .lock::after { content: "🔒"; position: absolute; font-size: 18px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
 
   .vote-btn { width: 100%; padding: 20px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; cursor: pointer; box-shadow: 0 6px 0 #b5065e; }
 </style>
@@ -75,20 +74,63 @@
     <div id="v-pet"></div>
   </div>
 
-  <div class="title">Coiffures & Visages 💇‍♀️</div>
-  <div class="row" id="hair-row"></div>
+  <div class="title">Coiffures & Visages 👱‍♀️</div>
+  <div class="row">
+    <button class="btn" onclick="set('hair','')">❌</button>
+    <button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button>
+    <button class="btn" onclick="set('hair','👩')">👩</button><button class="btn" onclick="set('hair','🧒')">🧒</button><button class="btn" onclick="set('hair','👵')">👵</button>
+    <button class="btn" onclick="set('hair','🧑‍🦰')">🧑‍🦰</button><button class="btn" onclick="set('hair','🧑‍🦱')">🧑‍🦱</button>
+    <button class="btn lock" id="L1" onclick="buy('hair','👸','L1', 50)">👸</button>
+    <button class="btn lock" id="L5" onclick="buy('hair','👰','L5', 150)">👰</button>
+    <button class="btn lock" id="L6" onclick="buy('hair','🤶','L6', 80)">🤶</button>
+  </div>
 
-  <div class="title">Hauts & Tenues 👗</div>
-  <div class="row" id="top-row"></div>
+  <div class="title">Hauts & Tenues 👗👚</div>
+  <div class="row">
+    <button class="btn" onclick="set('top','')">❌</button>
+    <button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','👘')">👘</button>
+    <button class="btn" onclick="set('top','🥻')">🥻</button><button class="btn" onclick="set('top','🧥')">🧥</button><button class="btn" onclick="set('top','👔')">👔</button>
+    <button class="btn" onclick="set('top','🎽')">🎽</button><button class="btn" onclick="set('top','🥋')">🥋</button><button class="btn" onclick="set('top','🧤')">🧤</button>
+    <button class="btn lock" id="L2" onclick="buy('top','👗','L2', 100)">👗</button>
+    <button class="btn lock" id="L7" onclick="buy('top','👙','L7', 60)">👙</button>
+    <button class="btn lock" id="L8" onclick="buy('top','🩰','L8', 120)">🩰</button>
+    <button class="btn lock" id="L12" onclick="buy('top','👮‍♀️','L12', 200)">👮‍♀️</button>
+    <button class="btn lock" id="L13" onclick="buy('top','🦸‍♀️','L13', 250)">🦸‍♀️</button>
+  </div>
 
-  <div class="title">Bas & Chaussures 👠</div>
-  <div class="row" id="bot-row"></div>
+  <div class="title">Bas & Chaussures 👖👠</div>
+  <div class="row">
+    <button class="btn" onclick="set('bot','')">❌</button>
+    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('bot','🩳')">🩳</button><button class="btn" onclick="set('bot','🩲')">🩲</button>
+    <button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button><button class="btn" onclick="set('shoe','👢')">👢</button>
+    <button class="btn" onclick="set('shoe','👞')">👞</button><button class="btn" onclick="set('shoe','🥿')">🥿</button><button class="btn" onclick="set('shoe','👡')">👡</button>
+    <button class="btn lock" id="L3" onclick="buy('bot','👰','L3', 200)">👰</button>
+    <button class="btn lock" id="L14" onclick="buy('shoe','⛸️','L14', 180)">⛸️</button>
+  </div>
 
-  <div class="title">Accessoires de Luxe 💎</div>
-  <div class="row" id="acc-row"></div>
+  <div class="title">Accessoires 👑💎</div>
+  <div class="row">
+    <button class="btn" onclick="set('acc','')">❌</button>
+    <button class="btn" onclick="set('acc','💍')">💍</button><button class="btn" onclick="set('acc','👒')">👒</button><button class="btn" onclick="set('acc','👓')">👓</button>
+    <button class="btn" onclick="set('acc','🕶️')">🕶️</button><button class="btn" onclick="set('acc','🧣')">🧣</button><button class="btn" onclick="set('acc','👜')">👜</button>
+    <button class="btn" onclick="set('acc','👛')">👛</button><button class="btn" onclick="set('acc','🎒')">🎒</button><button class="btn" onclick="set('acc','🌂')">🌂</button>
+    <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
+    <button class="btn lock" id="L10" onclick="buy('acc','💎','L10', 300)">💎</button>
+    <button class="btn lock" id="L11" onclick="buy('acc','✨','L11', 50)">✨</button>
+  </div>
 
-  <div class="title">Compagnons Magiques 🐾</div>
-  <div class="row" id="pet-row"></div>
+  <div class="title">Compagnons Magiques 🐾🦄</div>
+  <div class="row">
+    <button class="btn" onclick="setPet('')">❌</button>
+    <button class="btn" onclick="setPet('🐱')">🐱</button><button class="btn" onclick="setPet('🐶')">🐶</button><button class="btn" onclick="setPet('🐰')">🐰</button>
+    <button class="btn" onclick="setPet('🐹')">🐹</button><button class="btn" onclick="setPet('🦊')">🦊</button><button class="btn" onclick="setPet('🐼')">🐼</button>
+    <button class="btn" onclick="setPet('🐻')">🐻</button><button class="btn" onclick="setPet('🐨')">🐨</button><button class="btn" onclick="setPet('🦁')">🦁</button>
+    <button class="btn lock" id="P1" onclick="buyPet('🦄','P1', 150)">🦄</button>
+    <button class="btn lock" id="P2" onclick="buyPet('🐲','P2', 300)">🐲</button>
+    <button class="btn lock" id="P3" onclick="buyPet('👾','P3', 500)">👾</button>
+    <button class="btn lock" id="P4" onclick="buyPet('🎈','P4', 100)">🎈</button>
+    <button class="btn lock" id="P5" onclick="buyPet('🪦','P5', 200)">🪦</button>
+  </div>
 
   <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
 </div>
@@ -104,45 +146,21 @@
     "Bonbons 🍭", "Futur 🤖", "Chat 🐱", "Jungle 🌿", "Danseuse 🩰", "Pirate 🏴‍☠️", "Papillon 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️",
     "Glace ❄️", "Gothique 🖤", "Street Style 👟", "Vampire 🧛‍♀️", "Ninja 🥷", "Rose 🍭", "Perdue 🐚", "Poupée 🧸", "Nuit 🌙", "Promo 💃",
     "Pop Culture 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌",
-    // 20 Nouveaux thèmes
-    "Super Marché 🛒", "Cuisine Master 🥘", "Anniversaire 🎂", "Ballet Classique 🩰", "Espace Profond 👨‍🚀", "Jardin Secret 🌷", "Bébé Style 🍼", "Safari Photo 📸", "Sous la Pluie ☔", "Étudiante 📚",
-    "Fête Foraine 🎡", "Glace & Sucre 🍦", "Ninja de l'Ombre 🌑", "Hawaï 🏝️", "Manoir Hanté 🏚️", "Sport d'Hiver ⛷️", "Reine de Cœur ❤️", "Luxe Diamant 💎", "Steampunk ⚙️", "Peinture Vive 🖌️"
+    "Super Marché 🛒", "Cuisine Master 🥘", "Anniversaire 🎂", "Ballet Classique 🩰", "Espace Profond 👨‍🚀", "Jardin Secret 🌷", "Bébé Style 🍼", "Safari Photo 📸", "Sous la Pluie ☔", "Étudiante 📚"
   ];
-
-  const inventory = {
-    hair: ["💇","👱","👧","👩","🧒","👵","🧑‍🦰","🧑‍🦱","👸","👰","🤶","🧕","👳","💇‍♀️"],
-    top: ["👚","👕","👘","🥻","🧥","👔","🎽","🥋","👗","👙","🩰","👮‍♀️","🦸‍♀️","👰‍♀️","👘","🧥"],
-    bot: ["👖","🩳","🩲","裙","🩱","👗","👰","🥋"],
-    shoe: ["👠","👟","👢","👞","🥿","👡","⛸️","🛼","🩰","🎿"],
-    acc: ["💍","👑","💎","✨","👒","👓","🕶️"," scarf","🧣","👜","👛","🎒","🌂","🎓","🧢","💄"],
-    pet: ["🐱","🐶","🐰","🐹","🦊","🐼","🐻","🐨","🦁","🦄","🐲","👾","🎈","🪦","🐯","🐸","🐧","🦖","🐉"]
-  };
 
   function set(part, icon) { document.getElementById('v-' + part).innerHTML = icon; }
   function setPet(icon) { document.getElementById('v-pet').innerHTML = icon; }
   function updateStats() { document.getElementById('coins').innerText = coins; document.getElementById('lvl').innerText = level; document.getElementById('lvl-progress').style.width = exp + "%"; }
 
-  function createButtons(category, targetId, part) {
-    const row = document.getElementById(targetId);
-    row.innerHTML = `<button class="btn" onclick="set('${part}','')">❌</button>`;
-    inventory[category].forEach((emoji, index) => {
-      let price = index < 3 ? 0 : (index * 40) + 10;
-      let id = category + index;
-      let button = document.createElement('button');
-      button.className = "btn" + (price > 0 ? " lock" : "");
-      button.id = id;
-      button.innerHTML = emoji + (price > 0 ? `<span class="price">${price}</span>` : "");
-      button.onclick = () => {
-        if (items.includes(id) || price === 0) { 
-            if(part === 'pet') setPet(emoji); else set(part, emoji);
-        } else if (coins >= price) {
-            coins -= price; items.push(id); updateStats();
-            button.classList.remove('lock');
-            if(part === 'pet') setPet(emoji); else set(part, emoji);
-        }
-      };
-      row.appendChild(button);
-    });
+  function buy(part, icon, id, price) {
+    if (items.indexOf(id) !== -1) { set(part, icon); } 
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); set(part, icon); }
+  }
+
+  function buyPet(icon, id, price) {
+    if (items.indexOf(id) !== -1) { setPet(icon); } 
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); setPet(icon); }
   }
 
   function lancerChallenge() {
@@ -188,13 +206,6 @@
       set('hair',''); set('top',''); set('bot',''); set('shoe',''); set('acc','');
     }, 1000);
   }
-
-  // Initialisation
-  createButtons('hair', 'hair-row', 'hair');
-  createButtons('top', 'top-row', 'top');
-  createButtons('bot', 'bot-row', 'bot');
-  createButtons('acc', 'acc-row', 'acc');
-  createButtons('pet', 'pet-row', 'pet');
 
   document.getElementById('t-text').innerText = themes[0];
   updateStats();

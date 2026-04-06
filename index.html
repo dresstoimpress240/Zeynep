@@ -3,50 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION EMPIRE - 60+ EMOJIS</title>
+<title>ZEYNEP FASHION WORLD - MEGA STORE</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
-  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
+  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 500px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
   #top-info { background: #fff0f9; padding: 10px; border-radius: 20px; border: 2px solid #ffb6e6; margin-bottom: 10px; }
   .stats { display: flex; justify-content: space-around; font-weight: bold; color: #d63384; font-size: 18px; }
   #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; margin-top:5px;}
   #lvl-progress { background: linear-gradient(to right, #ff0080, #ff8fd1); width: 0%; height: 100%; transition: 0.5s; }
 
-  /* ZONE CHALLENGE VIP */
+  #btn-start-challenge { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; width: 100%; box-shadow: 0 4px 0 #b5065e; font-size: 16px; }
   #challenge-area { background: #fff5ba; border: 3px dashed #ff0080; border-radius: 15px; padding: 10px; margin: 10px 0; display: none; }
   #timer { font-size: 30px; font-weight: bold; color: #ff0080; }
-  #btn-start-challenge { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; width: 100%; box-shadow: 0 4px 0 #b5065e; font-size: 16px; }
 
   #podium {
-    position: relative; height: 320px; background: radial-gradient(circle, #ffffff, #fff0f9);
-    border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden;
-    display: flex; justify-content: center;
+    position: relative; height: 350px; background: radial-gradient(circle, #ffffff, #fff0f9);
+    border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden; display: flex; justify-content: center;
   }
 
   .body-part { position: absolute; background: #ffe0bd; border: 1px solid #f3cbb1; left: 50%; transform: translateX(-50%); }
-  #h-head { width: 45px; height: 45px; border-radius: 50%; top: 25px; z-index: 2; }
-  #h-torso { width: 40px; height: 75px; top: 68px; border-radius: 8px; z-index: 2; }
-  .h-arm { position: absolute; width: 10px; height: 60px; background: #ffe0bd; border: 1px solid #f3cbb1; top: 70px; border-radius: 5px; z-index: 1; }
+  #h-head { width: 45px; height: 45px; border-radius: 50%; top: 35px; z-index: 2; }
+  #h-torso { width: 40px; height: 75px; top: 78px; border-radius: 8px; z-index: 2; }
+  .h-arm { position: absolute; width: 10px; height: 60px; background: #ffe0bd; border: 1px solid #f3cbb1; top: 80px; border-radius: 5px; z-index: 1; }
   #h-arm-l { left: 50%; margin-left: -32px; transform: rotate(8deg); }
   #h-arm-r { left: 50%; margin-left: 22px; transform: rotate(-8deg); }
-  #h-leg-l { width: 15px; height: 95px; top: 140px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
-  #h-leg-r { width: 15px; height: 95px; top: 140px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
+  #h-leg-l { width: 15px; height: 95px; top: 150px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
+  #h-leg-r { width: 15px; height: 95px; top: 150px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
 
-  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 55px; z-index: 15; transition: 0.3s; }
+  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 60px; z-index: 15; }
   .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
-  #v-hair { top: -10px; font-size: 85px; z-index: 10; }
-  #v-top  { top: 52px; font-size: 98px; z-index: 8; }
-  #v-bot  { top: 115px; font-size: 108px; z-index: 7; }
-  #v-shoe { top: 220px; font-size: 60px; z-index: 11; }
-  #v-acc  { top: 35px; left: 45px; font-size: 45px; z-index: 12; }
+  #v-hair { top: -10px; font-size: 90px; z-index: 10; }
+  #v-top  { top: 60px; font-size: 105px; z-index: 8; }
+  #v-bot  { top: 125px; font-size: 115px; z-index: 7; }
+  #v-shoe { top: 235px; font-size: 65px; z-index: 11; }
+  #v-acc  { top: 40px; left: 45px; font-size: 50px; z-index: 12; }
 
-  .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 5px 5px; text-transform: uppercase; }
-  .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 5px; -webkit-overflow-scrolling: touch; }
-  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; outline: none; }
-  .lock::after { content: "🔒"; position: absolute; font-size: 18px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
+  .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 15px 0 5px 5px; text-transform: uppercase; border-left: 4px solid #ff0080; padding-left: 5px; }
+  .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 10px; -webkit-overflow-scrolling: touch; gap: 10px; }
+  
+  .btn { min-width: 75px; height: 75px; font-size: 42px; background: white; border: 3px solid #ffb6e6; border-radius: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: 0.2s; }
+  .btn:active { transform: scale(0.9); }
+  .lock::after { content: "🔒"; position: absolute; font-size: 16px; background: rgba(255,255,255,0.8); width: 100%; height: 100%; display: flex; flex-direction: column; align-items:center; justify-content:center; border-radius: 15px; color: #d63384; font-weight: bold; }
+  .price-tag { position: absolute; bottom: -5px; background: #ff0080; color: white; font-size: 10px; padding: 2px 5px; border-radius: 10px; z-index: 5; }
 
-  .vote-btn { width: 100%; padding: 20px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; cursor: pointer; box-shadow: 0 6px 0 #b5065e; }
+  .vote-btn { width: 100%; padding: 22px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 25px; font-size: 26px; font-weight: bold; margin-top: 15px; cursor: pointer; box-shadow: 0 6px 0 #b5065e; }
 </style>
 </head>
 <body>
@@ -55,10 +56,10 @@
   <div id="top-info">
     <div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
     <div id="lvl-bar"><div id="lvl-progress"></div></div>
-    <div style="color:#ff0080; font-size:14px; margin-top:8px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
+    <div style="color:#ff0080; font-size:15px; margin-top:8px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
   </div>
 
-  <button id="btn-start-challenge" onclick="lancerChallenge()">✨ NOUVEAU CHALLENGE VIP ✨</button>
+  <button id="btn-start-challenge" onclick="lancerChallenge()">✨ DÉFI PIÈCES VIP ✨</button>
 
   <div id="challenge-area">
     <div id="m-title" style="font-weight:bold; color:#d63384;">MISSION !</div>
@@ -74,97 +75,86 @@
     <div id="v-pet"></div>
   </div>
 
-  <div class="title">Coiffures & Visages 👱‍♀️</div>
-  <div class="row">
-    <button class="btn" onclick="set('hair','')">❌</button>
-    <button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button>
-    <button class="btn" onclick="set('hair','👩')">👩</button><button class="btn" onclick="set('hair','🧒')">🧒</button><button class="btn" onclick="set('hair','👵')">👵</button>
-    <button class="btn" onclick="set('hair','🧑‍🦰')">🧑‍🦰</button><button class="btn" onclick="set('hair','🧑‍🦱')">🧑‍🦱</button>
-    <button class="btn lock" id="L1" onclick="buy('hair','👸','L1', 50)">👸</button>
-    <button class="btn lock" id="L5" onclick="buy('hair','👰','L5', 150)">👰</button>
-    <button class="btn lock" id="L6" onclick="buy('hair','🤶','L6', 80)">🤶</button>
-  </div>
+  <div class="title">Coiffures de Star 💇‍♀️</div>
+  <div class="row" id="row-hair"></div>
 
-  <div class="title">Hauts & Tenues 👗👚</div>
-  <div class="row">
-    <button class="btn" onclick="set('top','')">❌</button>
-    <button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','👘')">👘</button>
-    <button class="btn" onclick="set('top','🥻')">🥻</button><button class="btn" onclick="set('top','🧥')">🧥</button><button class="btn" onclick="set('top','👔')">👔</button>
-    <button class="btn" onclick="set('top','🎽')">🎽</button><button class="btn" onclick="set('top','🥋')">🥋</button><button class="btn" onclick="set('top','🧤')">🧤</button>
-    <button class="btn lock" id="L2" onclick="buy('top','👗','L2', 100)">👗</button>
-    <button class="btn lock" id="L7" onclick="buy('top','👙','L7', 60)">👙</button>
-    <button class="btn lock" id="L8" onclick="buy('top','🩰','L8', 120)">🩰</button>
-    <button class="btn lock" id="L12" onclick="buy('top','👮‍♀️','L12', 200)">👮‍♀️</button>
-    <button class="btn lock" id="L13" onclick="buy('top','🦸‍♀️','L13', 250)">🦸‍♀️</button>
-  </div>
+  <div class="title">Hauts & Robes 👗</div>
+  <div class="row" id="row-top"></div>
 
-  <div class="title">Bas & Chaussures 👖👠</div>
-  <div class="row">
-    <button class="btn" onclick="set('bot','')">❌</button>
-    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('bot','🩳')">🩳</button><button class="btn" onclick="set('bot','🩲')">🩲</button>
-    <button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button><button class="btn" onclick="set('shoe','👢')">👢</button>
-    <button class="btn" onclick="set('shoe','👞')">👞</button><button class="btn" onclick="set('shoe','🥿')">🥿</button><button class="btn" onclick="set('shoe','👡')">👡</button>
-    <button class="btn lock" id="L3" onclick="buy('bot','👰','L3', 200)">👰</button>
-    <button class="btn lock" id="L14" onclick="buy('shoe','⛸️','L14', 180)">⛸️</button>
-  </div>
+  <div class="title">Pantalons & Jupes 👖</div>
+  <div class="row" id="row-bot"></div>
 
-  <div class="title">Accessoires 👑💎</div>
-  <div class="row">
-    <button class="btn" onclick="set('acc','')">❌</button>
-    <button class="btn" onclick="set('acc','💍')">💍</button><button class="btn" onclick="set('acc','👒')">👒</button><button class="btn" onclick="set('acc','👓')">👓</button>
-    <button class="btn" onclick="set('acc','🕶️')">🕶️</button><button class="btn" onclick="set('acc','🧣')">🧣</button><button class="btn" onclick="set('acc','👜')">👜</button>
-    <button class="btn" onclick="set('acc','👛')">👛</button><button class="btn" onclick="set('acc','🎒')">🎒</button><button class="btn" onclick="set('acc','🌂')">🌂</button>
-    <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
-    <button class="btn lock" id="L10" onclick="buy('acc','💎','L10', 300)">💎</button>
-    <button class="btn lock" id="L11" onclick="buy('acc','✨','L11', 50)">✨</button>
-  </div>
+  <div class="title">Chaussures & Bottes 👠</div>
+  <div class="row" id="row-shoe"></div>
 
-  <div class="title">Compagnons Magiques 🐾🦄</div>
-  <div class="row">
-    <button class="btn" onclick="setPet('')">❌</button>
-    <button class="btn" onclick="setPet('🐱')">🐱</button><button class="btn" onclick="setPet('🐶')">🐶</button><button class="btn" onclick="setPet('🐰')">🐰</button>
-    <button class="btn" onclick="setPet('🐹')">🐹</button><button class="btn" onclick="setPet('🦊')">🦊</button><button class="btn" onclick="setPet('🐼')">🐼</button>
-    <button class="btn" onclick="setPet('🐻')">🐻</button><button class="btn" onclick="setPet('🐨')">🐨</button><button class="btn" onclick="setPet('🦁')">🦁</button>
-    <button class="btn lock" id="P1" onclick="buyPet('🦄','P1', 150)">🦄</button>
-    <button class="btn lock" id="P2" onclick="buyPet('🐲','P2', 300)">🐲</button>
-    <button class="btn lock" id="P3" onclick="buyPet('👾','P3', 500)">👾</button>
-    <button class="btn lock" id="P4" onclick="buyPet('🎈','P4', 100)">🎈</button>
-    <button class="btn lock" id="P5" onclick="buyPet('🪦','P5', 200)">🪦</button>
-  </div>
+  <div class="title">Accessoires de Luxe 💍</div>
+  <div class="row" id="row-acc"></div>
+
+  <div class="title">Animaux & Pets Exotiques 🦄</div>
+  <div class="row" id="row-pet"></div>
 
   <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
 </div>
 
 <script>
-  var coins = 0; var items = []; var exp = 0; var level = 1;
-  var timerVal = 0; var isMission = false; var currentMissionType = "";
-  
+  var coins = 0; var items = []; var level = 1; var exp = 0;
+  var isMission = false; var currentMissionType = ""; var timerVal = 0;
+
   var themes = [
     "Princesse Rose 🎀", "Star du Rock 🎸", "Sirène Magique 🌊", "Bal Royal 👑", "Sport Chic 👟", "Fée des Bois 🧚", "Mariage de Rêve 💍", "Vacances à Paris 👜", "Look d'Hiver ❄️", "Disco Party 💃",
     "Safari 🦁", "Galaxie 🚀", "Licorne 🦄", "Chef 🍳", "Héroïne ⚡", "Ange ☁️", "Halloween 🎃", "Noël 🎄", "Patineuse ⛸️", "Tennis 🎾",
     "Plage 🌺", "Château 👻", "Journaliste Mode 🎤", "Manga Style 🌸", "Exploratrice 🌵", "Artiste Peintre 🎨", "Soirée Pyjama 🧸", "Bal Masqué 🎭", "Égypte 🐍", "Cow-boy 🤠",
     "Bonbons 🍭", "Futur 🤖", "Chat 🐱", "Jungle 🌿", "Danseuse 🩰", "Pirate 🏴‍☠️", "Papillon 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️",
     "Glace ❄️", "Gothique 🖤", "Street Style 👟", "Vampire 🧛‍♀️", "Ninja 🥷", "Rose 🍭", "Perdue 🐚", "Poupée 🧸", "Nuit 🌙", "Promo 💃",
-    "Pop Culture 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌"
+    "Pop Culture 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌",
+    // 20 NOUVEAUX THÈMES
+    "Diamant Étincelant 💎", "Bonhomme de Neige ⛄", "Cyberpunk 🦾", "Forêt Enchantée 🌳", "Super-Vilain 🦹", "Ballet Classique 🩰", "Escrime 🤺", "Vacances à la Ferme 👩‍🌾", "Sous l'Océan 🐠", "Peintre Célèbre 🖌️",
+    "Arc-en-ciel 🌈", "Cinéma Hollywood 🎬", "Safari Photo 📷", "Années 80 📼", "Reine de Glace ❄️", "Soirée Gala 🥂", "Équitation 🐎", "Astronaute 👨‍🚀", "Samouraï 🗡️", "Gâteau Géant 🍰"
   ];
+
+  const shop = {
+    hair: ["💇","👱","👧","👩","🧒","👵","🧑‍🦰","🧑‍🦱","👸","👰","🤶","🧕","👳","👲","💇‍♂️"],
+    top: ["👚","👕","👘","🥻","🧥","👔","🎽","🥋","👗","👙","🩰","👮‍♀️","🦸‍♀️","👰‍♀️","👩‍🚀","🧛‍♀️","🧜‍♀️","🧥","👕"],
+    bot: ["👖","🩳","🩲","👗","👰","👘","🥋","🦵"],
+    shoe: ["👠","👟","👢","👞","🥿","👡","⛸️","🛼","🩰","🎿","👞"],
+    acc: ["💍","👑","💎","✨","👒","👓","🕶️","🧣","👜","👛","🎒","🌂","👒","🧤","👒","🎓","🧢","💄","🌂"],
+    pet: ["🐱","🐶","🐰","🐹","🦊","🐼","🐻","🐨","🦁","🦄","🐲","👾","🎈","🪦","🐯","🐸","🐷","🦒","🐱‍👤","🐧","🦖","🐉"]
+  };
+
+  function initShop() {
+    Object.keys(shop).forEach(cat => {
+      let row = document.getElementById('row-'+cat);
+      row.innerHTML = `<button class="btn" onclick="set('${cat}','')">❌</button>`;
+      shop[cat].forEach((emoji, i) => {
+        let price = (i < 3) ? 0 : (i * 45); // Les 3 premiers gratuits, puis de plus en plus cher
+        let id = cat + i;
+        let btn = document.createElement('button');
+        btn.className = "btn " + (price > 0 ? "lock" : "");
+        btn.id = id;
+        btn.innerHTML = emoji + (price > 0 ? `<span class="price-tag">${price}</span>` : "");
+        btn.onclick = () => (cat === 'pet') ? buyPet(emoji, id, price) : buy(cat, emoji, id, price);
+        row.appendChild(btn);
+      });
+    });
+  }
 
   function set(part, icon) { document.getElementById('v-' + part).innerHTML = icon; }
   function setPet(icon) { document.getElementById('v-pet').innerHTML = icon; }
   function updateStats() { document.getElementById('coins').innerText = coins; document.getElementById('lvl').innerText = level; document.getElementById('lvl-progress').style.width = exp + "%"; }
 
   function buy(part, icon, id, price) {
-    if (items.indexOf(id) !== -1) { set(part, icon); } 
+    if (items.includes(id) || price === 0) { set(part, icon); } 
     else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); set(part, icon); }
   }
 
   function buyPet(icon, id, price) {
-    if (items.indexOf(id) !== -1) { setPet(icon); } 
+    if (items.includes(id) || price === 0) { setPet(icon); } 
     else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); setPet(icon); }
   }
 
   function lancerChallenge() {
     if(isMission) return;
-    var r = Math.random();
+    let r = Math.random();
     if(r < 0.33) startMission("FLASH", 10, 200);
     else if(r < 0.66) startMission("STYL", 30, 90);
     else startMission("GRANDE", 60, 350);
@@ -178,9 +168,9 @@
     document.getElementById('m-reward').innerText = "Gain : " + reward + " 💰";
     document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
 
-    var cd = setInterval(function() {
+    let cd = setInterval(() => {
       timerVal--; document.getElementById('timer').innerText = timerVal;
-      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Dommage ! C'est fini ! 😢"); endMission(false); } }
+      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Temps écoulé !"); endMission(false); } }
     }, 1000);
   }
 
@@ -188,24 +178,25 @@
     isMission = false; document.getElementById('challenge-area').style.display = "none";
     document.getElementById('btn-start-challenge').style.display = "block";
     if (success) {
-      var r = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 350;
-      coins += r; alert("BRAVO ZEYNEP ! + " + r + " pièces ! 💰"); updateStats();
+      let r = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 350;
+      coins += r; alert("BRAVO ! + " + r + " pièces !"); updateStats();
     }
   }
 
   function voter() {
-    var score = Math.floor(Math.random() * 26) + 25;
-    var gain = (score === 50) ? 50 : Math.floor(Math.random() * 11) + 25;
+    let score = Math.floor(Math.random() * 26) + 25;
+    let gain = Math.floor(Math.random() * 15) + 20;
     if (isMission) endMission(true); else coins += gain;
-    exp += 25; if(exp >= 100) { level++; exp = 0; alert("Niveau " + level + " ! 🎉"); }
+    exp += 20; if(exp >= 100) { level++; exp = 0; alert("Niveau " + level + " ! 🎉"); }
     updateStats();
     alert("NOTE DU JURY : " + score + "/50");
-    setTimeout(function() {
+    setTimeout(() => {
       document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
       set('hair',''); set('top',''); set('bot',''); set('shoe',''); set('acc','');
     }, 1000);
   }
 
+  initShop();
   document.getElementById('t-text').innerText = themes[0];
   updateStats();
 </script>

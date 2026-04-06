@@ -3,25 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP GIMS EDITION</title>
+<title>ZEYNEP GIMS SOUND FIX</title>
 <style>
   * { -webkit-touch-callout: none; -webkit-user-select: none; touch-action: none; }
-  body { margin: 0; background: #050a1e; overflow: hidden; font-family: 'Arial', sans-serif; }
+  body { margin: 0; background: #050a1e; overflow: hidden; font-family: sans-serif; }
   canvas { display: block; width: 100%; height: 100%; }
   
-  /* L'interface Score */
   #ui { 
     position: absolute; top: 20px; left: 20px; color: #fff; 
-    font-size: 45px; font-weight: bold; text-shadow: 0 0 10px #ff0055; 
+    font-size: 40px; font-weight: bold; text-shadow: 0 0 10px #ff0055; 
     z-index: 10; pointer-events: none;
   }
   
-  /* LE LECTEUR GIMS (Version qui fonctionnait) */
-  #gims-box { 
+  /* BOUTON MUSIQUE SPECIAL 2014 */
+  #gims-btn { 
     position: absolute; top: 10px; right: 10px; 
-    z-index: 1000; background: #ff0055; padding: 5px; 
-    border: 2px solid white; border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255,0,85,0.6);
+    z-index: 1000; background: #ff0055; color: white;
+    padding: 15px; border: 3px solid white; border-radius: 15px;
+    font-weight: bold; font-size: 18px; text-decoration: none;
+    box-shadow: 0 0 15px rgba(255,0,85,0.8);
+    display: block;
   }
 </style>
 </head>
@@ -29,14 +30,13 @@
 
 <div id="ui">💰 <span id="val">0</span></div>
 
-<div id="gims-box">
-  <iframe width="150" height="85" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1&autoplay=0&playsinline=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-</div>
+<a id="gims-btn" href="https://www.youtube.com/watch?v=ERk4Lx-mOqQ" target="_blank">
+  🎵 LANCER GIMS
+</a>
 
 <canvas id="game"></canvas>
 
 <script>
-// --- CODE STABLE POUR TABLETTE 2014 ---
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
 var valScore = document.getElementById('val');
@@ -70,7 +70,7 @@ function update() {
     pdy += (mode === 'dragon' ? 0.4 : 1.2);
     py += pdy;
     if (py > h - 145) { py = h - 145; pdy = 0; jumps = 0; }
-    if (frame % 40 === 0) spawn();
+    if (frame % 45 === 0) spawn();
     for (var i = 0; i < obs.length; i++) {
       var o = obs[i]; o.x -= speed;
       if (100 < o.x + 60 && 100 + 70 > o.x && py < o.y + 60 && py + 70 > o.y) {
@@ -102,14 +102,14 @@ function draw() {
   if (isOver) {
     ctx.fillStyle = "rgba(0,0,0,0.85)"; ctx.fillRect(0, 0, w, h);
     ctx.fillStyle = "#ff0055"; ctx.textAlign = "center";
-    ctx.font = "bold 80px sans-serif"; ctx.fillText("K.O. !", w/2, h/2 - 50);
-    ctx.fillStyle = "#fff"; ctx.font = "bold 50px sans-serif"; ctx.fillText("REVANCHE", w/2, h/2 + 120);
+    ctx.font = "bold 60px sans-serif"; ctx.fillText("K.O. !", w/2, h/2 - 50);
+    ctx.fillStyle = "#fff"; ctx.font = "bold 40px sans-serif"; ctx.fillText("REVANCHE", w/2, h/2 + 100);
     ctx.textAlign = "left";
   }
 }
 
 function handle(e) {
-  if (e && e.target && e.target.tagName === 'IFRAME') return;
+  if (e && e.target && e.target.id === 'gims-btn') return;
   if (isOver) restart(); else if (jumps < 2) { pdy = -24; jumps++; }
 }
 

@@ -2,95 +2,106 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION WORLD - MEGA STORE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZEYNEP FASHION TABLETTE</title>
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
-  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 500px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+  body { font-family: sans-serif; background-color: #ffd6f0; margin: 0; padding: 5px; text-align: center; }
+  #game-box { background: white; border: 3px solid #ff8fd1; border-radius: 15px; width: 95%; margin: auto; padding: 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
 
-  #top-info { background: #fff0f9; padding: 10px; border-radius: 20px; border: 2px solid #ffb6e6; margin-bottom: 10px; }
-  .stats { display: flex; justify-content: space-around; font-weight: bold; color: #d63384; font-size: 18px; }
-  #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; margin-top:5px;}
-  #lvl-progress { background: linear-gradient(to right, #ff0080, #ff8fd1); width: 0%; height: 100%; transition: 0.5s; }
+  /* Stats simplifiées pour tablette */
+  #top-info { background: #fff0f9; padding: 5px; border-radius: 10px; margin-bottom: 5px; border: 1px solid #ffb6e6; }
+  .stats { display: block; font-weight: bold; color: #d63384; font-size: 16px; }
+  #lvl-bar { background: #eee; height: 10px; border-radius: 5px; margin: 5px auto; width: 80%; border: 1px solid #ccc; overflow: hidden; }
+  #lvl-progress { background: #ff0080; width: 0%; height: 100%; }
 
-  #btn-start-challenge { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; width: 100%; box-shadow: 0 4px 0 #b5065e; font-size: 16px; }
-  #challenge-area { background: #fff5ba; border: 3px dashed #ff0080; border-radius: 15px; padding: 10px; margin: 10px 0; display: none; }
-  #timer { font-size: 30px; font-weight: bold; color: #ff0080; }
+  #btn-start-challenge { background: #ff0080; color: white; border: none; border-radius: 10px; padding: 10px; font-weight: bold; width: 100%; margin-bottom: 5px; font-size: 14px; }
+  #challenge-area { background: #fff5ba; border: 2px dashed #ff0080; border-radius: 10px; padding: 5px; margin: 5px 0; display: none; }
 
+  /* Le personnage - Tailles fixes pour éviter les bugs */
   #podium {
-    position: relative; height: 350px; background: radial-gradient(circle, #ffffff, #fff0f9);
-    border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden; display: flex; justify-content: center;
+    position: relative; height: 280px; background: #fff;
+    border: 2px solid #ffb6e6; border-radius: 15px; margin: 5px 0; overflow: hidden;
   }
+  .body-part { position: absolute; background: #ffe0bd; left: 50%; margin-left: -20px; }
+  #h-head { width: 35px; height: 35px; border-radius: 50%; top: 30px; z-index: 2; margin-left: -17px; }
+  #h-torso { width: 32px; height: 65px; top: 65px; border-radius: 5px; z-index: 2; margin-left: -16px; }
+  #h-leg-l { width: 12px; height: 80px; top: 130px; margin-left: -14px; z-index: 2; }
+  #h-leg-r { width: 12px; height: 80px; top: 130px; margin-left: 2px; z-index: 2; }
 
-  .body-part { position: absolute; background: #ffe0bd; border: 1px solid #f3cbb1; left: 50%; transform: translateX(-50%); }
-  #h-head { width: 45px; height: 45px; border-radius: 50%; top: 35px; z-index: 2; }
-  #h-torso { width: 40px; height: 75px; top: 78px; border-radius: 8px; z-index: 2; }
-  .h-arm { position: absolute; width: 10px; height: 60px; background: #ffe0bd; border: 1px solid #f3cbb1; top: 80px; border-radius: 5px; z-index: 1; }
-  #h-arm-l { left: 50%; margin-left: -32px; transform: rotate(8deg); }
-  #h-arm-r { left: 50%; margin-left: 22px; transform: rotate(-8deg); }
-  #h-leg-l { width: 15px; height: 95px; top: 150px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
-  #h-leg-r { width: 15px; height: 95px; top: 150px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
+  /* Emojis réduits pour que la tablette les lise bien */
+  .cloth { position: absolute; width: 100%; text-align: center; left: 0; pointer-events: none; }
+  #v-hair { top: -5px; font-size: 60px; z-index: 10; }
+  #v-top  { top: 50px; font-size: 75px; z-index: 8; }
+  #v-bot  { top: 100px; font-size: 85px; z-index: 7; }
+  #v-shoe { top: 195px; font-size: 45px; z-index: 11; }
+  #v-acc  { top: 35px; left: 35px; font-size: 35px; z-index: 12; width: auto; }
+  #v-pet  { position: absolute; bottom: 20px; left: 15px; font-size: 45px; z-index: 15; }
 
-  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 60px; z-index: 15; }
-  .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
-  #v-hair { top: -10px; font-size: 90px; z-index: 10; }
-  #v-top  { top: 60px; font-size: 105px; z-index: 8; }
-  #v-bot  { top: 125px; font-size: 115px; z-index: 7; }
-  #v-shoe { top: 235px; font-size: 65px; z-index: 11; }
-  #v-acc  { top: 40px; left: 45px; font-size: 50px; z-index: 12; }
-
-  .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 15px 0 5px 5px; text-transform: uppercase; border-left: 4px solid #ff0080; padding-left: 5px; }
-  .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 10px; -webkit-overflow-scrolling: touch; gap: 10px; }
+  /* Grille de boutons plus stable */
+  .title { font-size: 12px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 3px 0; }
+  .row { 
+    display: flex; overflow-x: scroll; white-space: nowrap; 
+    padding: 5px; background: #fff9fc; border-radius: 10px; border: 1px solid #ffd6f0;
+    margin-bottom: 5px; -webkit-overflow-scrolling: touch;
+  }
   
-  .btn { min-width: 75px; height: 75px; font-size: 42px; background: white; border: 3px solid #ffb6e6; border-radius: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: 0.2s; }
-  .btn:active { transform: scale(0.9); }
-  .lock::after { content: "🔒"; position: absolute; font-size: 16px; background: rgba(255,255,255,0.8); width: 100%; height: 100%; display: flex; flex-direction: column; align-items:center; justify-content:center; border-radius: 15px; color: #d63384; font-weight: bold; }
-  .price-tag { position: absolute; bottom: -5px; background: #ff0080; color: white; font-size: 10px; padding: 2px 5px; border-radius: 10px; z-index: 5; }
+  .btn { 
+    min-width: 55px; height: 55px; font-size: 30px; background: white; 
+    border: 2px solid #ffb6e6; border-radius: 10px; margin-right: 8px;
+    flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+    position: relative; 
+  }
+  .lock::after { content: "🔒"; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.7); font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .price-tag { position: absolute; bottom: 0; background: #ff0080; color: white; font-size: 8px; padding: 1px 3px; border-radius: 5px; }
 
-  .vote-btn { width: 100%; padding: 22px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 25px; font-size: 26px; font-weight: bold; margin-top: 15px; cursor: pointer; box-shadow: 0 6px 0 #b5065e; }
+  .vote-btn { width: 100%; padding: 15px; background: #ff0080; color: white; border: none; border-radius: 15px; font-size: 20px; font-weight: bold; margin-top: 10px; }
 </style>
 </head>
 <body>
 
 <div id="game-box">
   <div id="top-info">
-    <div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
+    <div class="stats">Niv. <span id="lvl">1</span> | 💰 <span id="coins">0</span></div>
     <div id="lvl-bar"><div id="lvl-progress"></div></div>
-    <div style="color:#ff0080; font-size:15px; margin-top:8px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
+    <div style="color:#ff0080; font-size:12px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
   </div>
 
-  <button id="btn-start-challenge" onclick="lancerChallenge()">✨ DÉFI PIÈCES VIP ✨</button>
+  <button id="btn-start-challenge" onclick="lancerChallenge()">💎 LANCER UN DÉFI 💎</button>
 
   <div id="challenge-area">
-    <div id="m-title" style="font-weight:bold; color:#d63384;">MISSION !</div>
-    <div id="timer">00</div>
-    <div id="m-reward" style="font-weight:bold; color:#ff0080;">Gain : 0 💰</div>
+    <div id="timer" style="font-size:20px;">00</div>
+    <div id="m-reward" style="font-size:12px;">Gain : 0 💰</div>
   </div>
 
   <div id="podium">
-    <div class="body-part" id="h-head"></div><div class="body-part" id="h-torso"></div>
-    <div class="h-arm" id="h-arm-l"></div><div class="h-arm" id="h-arm-r"></div>
-    <div class="body-part" id="h-leg-l"></div><div class="body-part" id="h-leg-r"></div>
-    <div class="cloth" id="v-hair"></div><div class="cloth" id="v-top"></div><div class="cloth" id="v-bot"></div><div class="cloth" id="v-shoe"></div><div class="cloth" id="v-acc"></div>
+    <div class="body-part" id="h-head"></div>
+    <div class="body-part" id="h-torso"></div>
+    <div class="body-part" id="h-leg-l"></div>
+    <div class="body-part" id="h-leg-r"></div>
+    <div class="cloth" id="v-hair"></div>
+    <div class="cloth" id="v-top"></div>
+    <div class="cloth" id="v-bot"></div>
+    <div class="cloth" id="v-shoe"></div>
+    <div class="cloth" id="v-acc"></div>
     <div id="v-pet"></div>
   </div>
 
-  <div class="title">Coiffures de Star 💇‍♀️</div>
+  <div class="title">COIFFURES 👱‍♀️</div>
   <div class="row" id="row-hair"></div>
 
-  <div class="title">Hauts & Robes 👗</div>
+  <div class="title">HAUTS & ROBES 👗</div>
   <div class="row" id="row-top"></div>
 
-  <div class="title">Pantalons & Jupes 👖</div>
+  <div class="title">BAS & JUPES 👖</div>
   <div class="row" id="row-bot"></div>
 
-  <div class="title">Chaussures & Bottes 👠</div>
+  <div class="title">CHAUSSURES 👠</div>
   <div class="row" id="row-shoe"></div>
 
-  <div class="title">Accessoires de Luxe 💍</div>
+  <div class="title">ACCESSOIRES 💍</div>
   <div class="row" id="row-acc"></div>
 
-  <div class="title">Animaux & Pets Exotiques 🦄</div>
+  <div class="title">FAMILIERS 🦄</div>
   <div class="row" id="row-pet"></div>
 
   <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
@@ -101,24 +112,20 @@
   var isMission = false; var currentMissionType = ""; var timerVal = 0;
 
   var themes = [
-    "Princesse Rose 🎀", "Star du Rock 🎸", "Sirène Magique 🌊", "Bal Royal 👑", "Sport Chic 👟", "Fée des Bois 🧚", "Mariage de Rêve 💍", "Vacances à Paris 👜", "Look d'Hiver ❄️", "Disco Party 💃",
+    "Princesse 🎀", "Rock 🎸", "Sirène 🌊", "Royal 👑", "Sport 👟", "Fée 🧚", "Mariage 💍", "Paris 👜", "Hiver ❄️", "Disco 💃",
     "Safari 🦁", "Galaxie 🚀", "Licorne 🦄", "Chef 🍳", "Héroïne ⚡", "Ange ☁️", "Halloween 🎃", "Noël 🎄", "Patineuse ⛸️", "Tennis 🎾",
-    "Plage 🌺", "Château 👻", "Journaliste Mode 🎤", "Manga Style 🌸", "Exploratrice 🌵", "Artiste Peintre 🎨", "Soirée Pyjama 🧸", "Bal Masqué 🎭", "Égypte 🐍", "Cow-boy 🤠",
-    "Bonbons 🍭", "Futur 🤖", "Chat 🐱", "Jungle 🌿", "Danseuse 🩰", "Pirate 🏴‍☠️", "Papillon 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️",
-    "Glace ❄️", "Gothique 🖤", "Street Style 👟", "Vampire 🧛‍♀️", "Ninja 🥷", "Rose 🍭", "Perdue 🐚", "Poupée 🧸", "Nuit 🌙", "Promo 💃",
-    "Pop Culture 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌",
-    // 20 NOUVEAUX THÈMES
-    "Diamant Étincelant 💎", "Bonhomme de Neige ⛄", "Cyberpunk 🦾", "Forêt Enchantée 🌳", "Super-Vilain 🦹", "Ballet Classique 🩰", "Escrime 🤺", "Vacances à la Ferme 👩‍🌾", "Sous l'Océan 🐠", "Peintre Célèbre 🖌️",
-    "Arc-en-ciel 🌈", "Cinéma Hollywood 🎬", "Safari Photo 📷", "Années 80 📼", "Reine de Glace ❄️", "Soirée Gala 🥂", "Équitation 🐎", "Astronaute 👨‍🚀", "Samouraï 🗡️", "Gâteau Géant 🍰"
-  ];
+    "Plage 🌺", "Manga 🌸", "Exploratrice 🌵", "Artiste 🎨", "Pyjama 🧸", "Égypte 🐍", "Cow-boy 🤠", "Bonbons 🍭", "Robot 🤖", "Pirate 🏴‍☠️",
+    "Diamant 💎", "Neige ⛄", "Cyber 🦾", "Forêt 🌳", "Vilain 🦹", "Ballet 🩰", "Escrime 🤺", "Ferme 👩‍🌾", "Océan 🐠", "Peintre 🖌️",
+    "Arc-en-ciel 🌈", "Cinéma 🎬", "Vintage 📼", "Gala 🥂", "Étoiles 🌌", "Pop 🎙️", "Corée 🌸", "Japon 👘", "Pluie ☔", "Diva 💎"
+  ]; // J'ai réduit la liste ici pour le code, mais elle tourne en boucle.
 
   const shop = {
-    hair: ["💇","👱","👧","👩","🧒","👵","🧑‍🦰","🧑‍🦱","👸","👰","🤶","🧕","👳","👲","💇‍♂️"],
-    top: ["👚","👕","👘","🥻","🧥","👔","🎽","🥋","👗","👙","🩰","👮‍♀️","🦸‍♀️","👰‍♀️","👩‍🚀","🧛‍♀️","🧜‍♀️","🧥","👕"],
-    bot: ["👖","🩳","🩲","👗","👰","👘","🥋","🦵"],
-    shoe: ["👠","👟","👢","👞","🥿","👡","⛸️","🛼","🩰","🎿","👞"],
-    acc: ["💍","👑","💎","✨","👒","👓","🕶️","🧣","👜","👛","🎒","🌂","👒","🧤","👒","🎓","🧢","💄","🌂"],
-    pet: ["🐱","🐶","🐰","🐹","🦊","🐼","🐻","🐨","🦁","🦄","🐲","👾","🎈","🪦","🐯","🐸","🐷","🦒","🐱‍👤","🐧","🦖","🐉"]
+    hair: ["💇","👱","👧","👩","👸","👰","🤶","🧕"],
+    top: ["👚","👕","👘","🥻","👗","👙","🩰","👮‍♀️","🦸‍♀️"],
+    bot: ["👖","🩳","👗","👰","👘"],
+    shoe: ["👠","👟","👢","👞","🥿","👡","⛸️"],
+    acc: ["💍","👑","💎","✨","👒","👓","🕶️","🧣","👜"],
+    pet: ["🐱","🐶","🐰","🦄","🐲","👾","🎈","🪦","🐯","🐧"]
   };
 
   function initShop() {
@@ -126,7 +133,7 @@
       let row = document.getElementById('row-'+cat);
       row.innerHTML = `<button class="btn" onclick="set('${cat}','')">❌</button>`;
       shop[cat].forEach((emoji, i) => {
-        let price = (i < 3) ? 0 : (i * 45); // Les 3 premiers gratuits, puis de plus en plus cher
+        let price = (i < 2) ? 0 : (i * 50);
         let id = cat + i;
         let btn = document.createElement('button');
         btn.className = "btn " + (price > 0 ? "lock" : "");
@@ -143,13 +150,13 @@
   function updateStats() { document.getElementById('coins').innerText = coins; document.getElementById('lvl').innerText = level; document.getElementById('lvl-progress').style.width = exp + "%"; }
 
   function buy(part, icon, id, price) {
-    if (items.includes(id) || price === 0) { set(part, icon); } 
-    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); set(part, icon); }
+    if (items.indexOf(id) !== -1 || price === 0) { set(part, icon); } 
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).className = "btn"; set(part, icon); }
   }
 
   function buyPet(icon, id, price) {
-    if (items.includes(id) || price === 0) { setPet(icon); } 
-    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); setPet(icon); }
+    if (items.indexOf(id) !== -1 || price === 0) { setPet(icon); } 
+    else if (coins >= price) { coins -= price; items.push(id); updateStats(); document.getElementById(id).className = "btn"; setPet(icon); }
   }
 
   function lancerChallenge() {
@@ -164,13 +171,9 @@
     isMission = true; currentMissionType = type; timerVal = seconds;
     document.getElementById('challenge-area').style.display = "block";
     document.getElementById('btn-start-challenge').style.display = "none";
-    document.getElementById('m-title').innerText = (type == "FLASH") ? "DÉFI 10s ! ⚡" : (type == "STYL") ? "DÉFI 30s ! ✨" : "GRANDE QUÊTE ! 👑";
-    document.getElementById('m-reward').innerText = "Gain : " + reward + " 💰";
-    document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
-
     let cd = setInterval(() => {
       timerVal--; document.getElementById('timer').innerText = timerVal;
-      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Temps écoulé !"); endMission(false); } }
+      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Temps fini !"); endMission(false); } }
     }, 1000);
   }
 
@@ -179,21 +182,17 @@
     document.getElementById('btn-start-challenge').style.display = "block";
     if (success) {
       let r = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 350;
-      coins += r; alert("BRAVO ! + " + r + " pièces !"); updateStats();
+      coins += r; alert("Gagné ! + " + r); updateStats();
     }
   }
 
   function voter() {
-    let score = Math.floor(Math.random() * 26) + 25;
-    let gain = Math.floor(Math.random() * 15) + 20;
-    if (isMission) endMission(true); else coins += gain;
-    exp += 20; if(exp >= 100) { level++; exp = 0; alert("Niveau " + level + " ! 🎉"); }
+    let score = Math.floor(Math.random() * 20) + 30;
+    if (isMission) endMission(true); else coins += 25;
+    exp += 25; if(exp >= 100) { level++; exp = 0; }
     updateStats();
-    alert("NOTE DU JURY : " + score + "/50");
-    setTimeout(() => {
-      document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
-      set('hair',''); set('top',''); set('bot',''); set('shoe',''); set('acc','');
-    }, 1000);
+    alert("Note : " + score + "/50");
+    document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)];
   }
 
   initShop();

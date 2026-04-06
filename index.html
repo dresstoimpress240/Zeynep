@@ -3,170 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION EMPIRE V2.6</title>
+<title>ZEYNEP GIMS UNSTOPPABLE</title>
 <style>
-  body { font-family: 'Helvetica Neue', sans-serif; background-color: #ffdeef; margin: 0; padding: 10px; text-align: center; color: #444; }
-  #game-box { background: #fff; border: 6px solid #ff8fd1; border-radius: 30px; max-width: 500px; margin: auto; padding: 15px; box-shadow: 0 15px 30px rgba(255,100,180,0.3); }
-  #top-info { background: linear-gradient(#fff0f9, #ffe4f2); padding: 15px; border-radius: 25px; border: 2px solid #ffb6e6; margin-bottom: 15px; }
-  .stats { display: flex; justify-content: space-around; font-weight: 900; color: #ff0080; font-size: 20px; }
-  #lvl-bar { background: #ffd1eb; height: 16px; border-radius: 10px; overflow: hidden; border: 2px solid #ff8fd1; margin-top:10px;}
-  #lvl-progress { background: linear-gradient(to right, #ff0080, #ffb0d9); width: 0%; height: 100%; transition: 0.6s; }
-  .btn-container { display: flex; justify-content: space-around; margin-bottom: 15px; gap: 10px; }
-  .btn-main { flex: 1; height: 50px; color: white; border: 3px solid #fff; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 4px 0 #b5065e; }
-  #btn-vip { background: linear-gradient(#ff0080, #ff6eb4); }
-  #btn-roue { background: linear-gradient(#ffcc00, #ff9900); box-shadow: 0 4px 0 #a37a00; }
-  #podium { position: relative; height: 350px; background: radial-gradient(circle, #ffffff, #fff0f9); border: 4px solid #ffd6ed; border-radius: 25px; margin-bottom: 15px; overflow: hidden; display: flex; justify-content: center; }
-  .body-part { position: absolute; background: #ffe0bd; border: 1px solid #f3cbb1; left: 50%; transform: translateX(-50%); }
-  #h-head { width: 50px; height: 50px; border-radius: 50%; top: 30px; z-index: 2; }
-  #h-torso { width: 45px; height: 80px; top: 78px; border-radius: 10px; z-index: 2; }
-  .h-arm { position: absolute; width: 12px; height: 65px; background: #ffe0bd; border: 1px solid #f3cbb1; top: 80px; border-radius: 6px; z-index: 1; }
-  #h-arm-l { left: 50%; margin-left: -35px; transform: rotate(10deg); }
-  #h-arm-r { left: 50%; margin-left: 23px; transform: rotate(-10deg); }
-  #h-leg-l { width: 18px; height: 100px; top: 155px; margin-left: -13px; border-radius: 0 0 6px 6px; z-index: 2; }
-  #h-leg-r { width: 18px; height: 100px; top: 155px; margin-left: 13px; border-radius: 0 0 6px 6px; z-index: 2; }
-  .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
-  #v-hair { top: -10px; font-size: 95px; z-index: 10; }
-  #v-top { top: 60px; font-size: 110px; z-index: 8; }
-  #v-bot { top: 120px; font-size: 120px; z-index: 7; } 
-  #v-shoe { top: 240px; font-size: 70px; z-index: 11; }
-  #v-acc { top: 40px; left: 50px; font-size: 55px; z-index: 12; }
-  .title { font-size: 14px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 8px 5px; background: #fff; padding: 2px 10px; border-radius: 10px; display: inline-block; border: 1px solid #ffb6e6;}
-  .row { display: flex; overflow-x: auto; padding: 12px 5px; background: #fffcfd; border-radius: 20px; border: 2px dashed #ffd6f0; margin-bottom: 10px; }
-  .btn-item { min-width: 75px; height: 75px; font-size: 45px; margin-right: 15px; background: white; border: 3px solid #ffcce8; border-radius: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 4px 0 #ffd6f0; }
-  .lock::after { content: "🔒"; position: absolute; font-size: 22px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 17px; }
-  #btn-defiler { background: linear-gradient(#ff0080, #ff4bad); color: white; width: 100%; height: 70px; border-radius: 25px; border: 4px solid #fff; font-size: 24px; font-weight: 900; box-shadow: 0 6px 0 #b5065e; margin-top: 10px; }
+  body { margin: 0; background: #000; overflow: hidden; touch-action: none; font-family: sans-serif; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  
+  /* Zone Musique qui ne bouge JAMAIS */
+  #music-container { 
+    position: absolute; top: 10px; right: 10px; 
+    z-index: 999; background: #ff0055; 
+    padding: 5px; border-radius: 12px; border: 2px solid white;
+  }
+  
+  #score-ui { position: absolute; top: 20px; left: 20px; color: #fff; font-size: 40px; pointer-events: none; text-shadow: 0 0 10px #ff0055; z-index: 10; font-weight: 900; }
 </style>
 </head>
 <body>
-<div id="game-box">
-  <div id="top-info">
-    <div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
-    <div id="lvl-bar"><div id="lvl-progress"></div></div>
-    <div style="color:#ff0080; font-size:16px; font-weight:bold; margin-top:8px;">🎯 Thème : <span id="t-text">...</span></div>
-  </div>
-  <div class="btn-container">
-    <button id="btn-vip" class="btn-main" onclick="lancerQuete()">✨ QUÊTE VIP</button>
-    <button id="btn-roue" class="btn-main" onclick="roue()">🎡 ROUE (1000💰)</button>
-  </div>
-  <div id="podium">
-    <div class="body-part" id="h-head"></div><div class="body-part" id="h-torso"></div>
-    <div class="h-arm" id="h-arm-l"></div><div class="h-arm" id="h-arm-r"></div>
-    <div class="body-part" id="h-leg-l"></div><div class="body-part" id="h-leg-r"></div>
-    <div class="cloth" id="v-hair"></div><div class="cloth" id="v-top"></div>
-    <div class="cloth" id="v-bot"></div>
-    <div class="cloth" id="v-shoe"></div>
-    <div class="cloth" id="v-acc"></div>
-  </div>
-  
-  <div class="title">✨💖 COIFFURES 🎀🌈</div>
-  <div class="row">
-    <button class="btn-item" onclick="set('hair','')">❌</button>
-    <button class="btn-item" onclick="set('hair','💇')">💇</button>
-    <button class="btn-item" onclick="set('hair','👱')">👱</button>
-    <button class="btn-item" onclick="set('hair','👧')">👧</button>
-    <button class="btn-item" onclick="set('hair','👸')">👸</button>
-    <button class="btn-item" onclick="set('hair','👩‍🦱')">👩‍🦱</button>
-    <button class="btn-item lock" id="L5" onclick="buy('hair','👰','L5',80)">👰</button>
-    <button class="btn-item lock" id="L20" onclick="buy('hair','🧚‍♀️','L20',300)">🧚‍♀️</button>
-    <button class="btn-item lock" id="L30" onclick="buy('hair','🧜‍♀️','L30',400)">🧜‍♀️</button>
-  </div>
 
-  <div class="title">👕💖 HAUTS & T-SHIRTS 👚🌸</div>
-  <div class="row">
-    <button class="btn-item" onclick="set('top','')">❌</button>
-    <button class="btn-item" onclick="set('top','👚')">👚</button>
-    <button class="btn-item" onclick="set('top','👕')">👕</button>
-    <button class="btn-item" onclick="set('top','🎽')">🎽</button>
-    <button class="btn-item" onclick="set('top','🧥')">🧥</button> <button class="btn-item" onclick="set('top','👔')">👔</button> <button class="btn-item lock" id="L7" onclick="buy('top','bikini','L7',50)">👙</button>
-    <button class="btn-item lock" id="L21" onclick="buy('top','💃','L21',200)">💃</button>
-    <button class="btn-item lock" id="L45" onclick="buy('top','👘','L45',300)">👘</button>
-  </div>
+<div id="score-ui">💰 <span id="val">0</span></div>
 
-  <div class="title">👖💖 PANTALONS & JUPES 👗🛍️</div>
-  <div class="row">
-    <button class="btn-item" onclick="set('bot','')">❌</button>
-    <button class="btn-item" onclick="set('bot','🩳')">🩳</button>
-    <button class="btn-item" onclick="set('bot','👗')">👗</button>
-    <button class="btn-item" onclick="set('bot','👖')">👖</button> <button class="btn-item" onclick="set('bot','👘')">👘</button> <button class="btn-item lock" id="P1" onclick="buy('bot','🩱','P1',40)">🩱</button> <button class="btn-item lock" id="P2" onclick="buy('bot','👰','P2',120)">👰</button>
-    <button class="btn-item lock" id="P3" onclick="buy('bot','🧜‍♀️','P3',300)">🧜‍♀️</button>
-  </div>
-
-  <div class="title">👠💖 CHAUSSURES 👟🦋</div>
-  <div class="row">
-    <button class="btn-item" onclick="set('shoe','')">❌</button>
-    <button class="btn-item" onclick="set('shoe','👟')">👟</button>
-    <button class="btn-item" onclick="set('shoe','👠')">👠</button>
-    <button class="btn-item" onclick="set('shoe','👡')">👡</button> <button class="btn-item lock" id="L22" onclick="buy('shoe','🛼','L22',150)">🛼</button>
-    <button class="btn-item lock" id="L46" onclick="buy('shoe','👢','L46',100)">👢</button>
-  </div>
-
-  <div class="title">💎💖 ACCESSOIRES 👑💄</div>
-  <div class="row">
-    <button class="btn-item" onclick="set('acc','')">❌</button>
-    <button class="btn-item" onclick="set('acc','💍')">💍</button>
-    <button class="btn-item" onclick="set('acc','👑')">👑</button>
-    <button class="btn-item" onclick="set('acc','👒')">👒</button>
-    <button class="btn-item" onclick="set('acc','👓')">👓</button> <button class="btn-item lock" id="L10" onclick="buy('acc','💎','L10',150)">💎</button>
-    <button class="btn-item lock" id="L23" onclick="buy('acc','👜','L23',80)">👜</button>
-    <button class="btn-item lock" id="L44" onclick="buy('acc','🎈','L44',100)">🎈</button>
-    <button class="btn-item lock" id="L58" onclick="buy('acc','🌈','L58',500)">🌈</button>
-  </div>
-
-  <button id="btn-defiler" onclick="voter()">DÉFILER ! ✨</button>
+<div id="music-container">
+  <iframe width="160" height="90" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
+<canvas id="game"></canvas>
+
 <script>
-  var coins=0, items=[], exp=0, lvl=1, qActive=false, qBonus=0, timerVal=0, interval;
-  var th=["Princesse 🎀","Rock 🎸","Sirène 🌊","Bal 👑","Sport 👟","Fée 🧚","Mariage 💍","Paris 👜","Hiver ❄️","Disco 💃","Safari 🦁","Galaxie 🚀","Licorne 🦄","Chef 🍳","Héroïne ⚡","Ange ☁️","Halloween 🎃","Noël 🎄","Patineuse ⛸️","Tennis 🎾","Plage 🌺","Château 👻","Journaliste 🎤","Manga 🌸","Exploratrice 🌵","Artiste 🎨","Pyjama 🧸","Masqué 🎭","Égypte 🐍","Cow-boy 🤠","Bonbons 🍭","Futur 🤖","Chat 🐱","Jungle 🌿","Danseuse 🩰","Pirate 🏴‍C","Papillon 🦋","Pop 🎙️","Grecque 🏛️","Été ☀️","Glace ❄️","Gothique 🖤","Street 👟","Vampire 🧛‍♀️","Ninja 🥷","Rose 🍭","Perdue 🐚","Poupée 🧸","Nuit 🌙","Promo 💃","Pop Culture 🎙️","Corée 🌸","Vintage 🌈","Punk 🖤","Coeur ❤️","Japon 👘","Pluie ☔","Safari 🦄","Diva 💎","Étoiles 🌌"];
-  
-  function set(p,i){
-    if(p === 'top' && i === 'bikini'){
-        document.getElementById('v-top').style.fontSize = '90px';
-        document.getElementById('v-top').style.top = '65px';
-        document.getElementById('v-top').innerHTML = '👙';
-    } else if (p === 'top') {
-        document.getElementById('v-top').style.fontSize = '110px';
-        document.getElementById('v-top').style.top = '60px';
-        document.getElementById('v-top').innerHTML = i;
-    } else {
-        document.getElementById('v-'+p).innerHTML=i;
-    }
-  }
-  function up(){document.getElementById('coins').innerText=coins;document.getElementById('lvl').innerText=lvl;document.getElementById('lvl-progress').style.width=exp+"%";}
-  function buy(p,i,id,pr){if(items.includes(id)){set(p,i);}else if(coins>=pr){coins-=pr;unlock(id);set(p,i);}}
-  function unlock(id){if(!items.includes(id)){items.push(id);let el=document.getElementById(id);if(el)el.classList.remove('lock');up();}}
-  
-  function lancerQuete(){
-    if(qActive) return;
-    qActive = true; let r = Math.random();
-    if(r < 0.15) { qBonus = 500; timerVal = 60; alert("💎 GRANDE QUÊTE\n60s pour 500💰 !"); }
-    else if(r < 0.5) { qBonus = 350; timerVal = 10; alert("⚡ QUÊTE RAPIDE\n10s pour 350💰 !"); }
-    else { qBonus = 90; timerVal = 30; alert("👗 QUÊTE STANDARD\n30s pour 90💰 !"); }
-    interval = setInterval(()=>{
-      timerVal--; document.getElementById('btn-vip').innerText = "⏳ " + timerVal + "s";
-      if(timerVal <= 0){ clearInterval(interval); qActive = false; document.getElementById('btn-vip').innerText = "✨ QUÊTE VIP"; alert("TEMPS ÉCOULÉ !"); }
-    }, 1000);
-  }
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const valScore = document.getElementById('val');
 
-  function roue(){
-    if(coins < 1000){alert("Il te faut 1000💰 !");return;} coins -= 1000; up();
-    if(Math.random() < 0.3) { coins += 1000; up(); alert("JACKPOT ! 💰"); }
-    else { 
-      var lks = Array.from(document.querySelectorAll('.lock')); if(lks.length < 2){ coins += 1000; up(); return; }
-      var r1 = lks.splice(Math.floor(Math.random()*lks.length),1)[0], r2 = lks[Math.floor(Math.random()*lks.length)];
-      unlock(r1.id); unlock(r2.id); alert("CADEAU : "+r1.innerText+" et "+r2.innerText);
-    }
-  }
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-  function voter(){
-    let note = (Math.random() * (50 - 38) + 38).toFixed(1);
-    let gain = 30;
-    if(qActive){ clearInterval(interval); gain = qBonus; qActive = false; document.getElementById('btn-vip').innerText = "✨ QUÊTE VIP"; }
-    coins += gain; exp += 25; if(exp >= 100){ lvl++; exp = 0; } up();
-    alert("⭐ NOTE DU JURY ⭐\n\nNote : " + note + " / 50\n\nMagnifique Zeynep !");
-    setTimeout(()=>{ document.getElementById('t-text').innerText = th[Math.floor(Math.random()*th.length)]; set('hair','');set('top','');set('bot','');set('shoe','');set('acc',''); }, 800);
+let g = {
+  score: 0, speed: 9, isOver: false, frame: 0,
+  p: { x: 80, y: 0, w: 70, h: 70, dy: 0, jumps: 0, mode: 'normal', timer: 0 },
+  obs: []
+};
+
+// --- FONCTION REVANCHE OPTIMISÉE ---
+function revanche() {
+  g.score = 0;
+  g.speed = 9;
+  g.isOver = false;
+  g.frame = 0;
+  g.p.y = canvas.height - 200;
+  g.p.dy = 0;
+  g.p.mode = 'normal';
+  g.p.timer = 0;
+  g.obs = [];
+  valScore.innerText = "0";
+  console.log("Revanche lancée !");
+}
+
+function spawn() {
+  let r = Math.random();
+  let x = canvas.width + 120;
+  // Mix : Cadeaux (40%), Cactus/Monstres (40%), Pièces (20%)
+  if (r < 0.4) { 
+    g.obs.push({ x, y: canvas.height - 300 - Math.random()*150, w: 60, h: 60, t: 'gift', em: "🎁" });
+  } else if (r < 0.8) { 
+    g.obs.push({ x, y: canvas.height - 140, w: 60, h: 80, t: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
+  } else { 
+    g.obs.push({ x, y: 200 + Math.random() * (canvas.height - 400), w: 50, h: 50, t: 'coin', em: "🟡" });
   }
-  document.getElementById('t-text').innerText = th[0]; up();
+}
+
+function update() {
+  if (!g.isOver) {
+    g.frame++;
+    g.speed += 0.004;
+    if (g.p.timer > 0) g.p.timer--; else g.p.mode = 'normal';
+    
+    g.p.dy += (g.p.mode === 'dragon') ? 0.35 : 1.0;
+    g.p.y += g.p.dy;
+    
+    if (g.p.y > canvas.height - 130) { g.p.y = canvas.height - 130; g.p.dy = 0; g.p.jumps = 0; }
+    
+    if (g.frame % 40 === 0) spawn();
+    
+    g.obs.forEach((o, i) => {
+      o.x -= g.speed;
+      if (g.p.x < o.x + o.w - 10 && g.p.x + g.p.w > o.x + 10 && g.p.y < o.y + o.h - 10 && g.p.y + g.p.h > o.y + 10) {
+        if (o.t === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i, 1); }
+        else if (o.t === 'gift') { 
+            const m = ['giant','dragon','ghost'];
+            g.p.mode = m[Math.floor(Math.random()*3)];
+            g.p.timer = 350; 
+            g.obs.splice(i, 1); 
+        }
+        else if (g.p.mode === 'giant') { g.score += 100; g.obs.splice(i, 1); }
+        else if (g.p.mode !== 'ghost') { g.isOver = true; }
+      }
+      if (o.x < -200) g.obs.splice(i, 1);
+    });
+  }
+  draw();
+  requestAnimationFrame(update);
+}
+
+function draw() {
+  ctx.fillStyle = "#0f172a";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Sol Néon
+  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 50%)`;
+  ctx.fillRect(0, canvas.height - 65, canvas.width, 10);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, canvas.height - 55, canvas.width, 55);
+
+  g.obs.forEach(o => {
+    ctx.font = "60px Arial";
+    ctx.fillText(o.em, o.x, o.y + 55);
+  });
+
+  let s = g.p.mode === 'giant' ? "👸" : (g.p.mode === 'dragon' ? "🐲" : (g.p.mode === 'ghost' ? "👻" : "👗"));
+  if (g.p.mode === 'ghost') ctx.globalAlpha = 0.5;
+  ctx.font = (g.p.mode === 'giant' ? "150px" : "80px") + " Arial";
+  ctx.fillText(s, g.p.x, g.p.y + (g.p.mode === 'giant' ? 110 : 70));
+  ctx.globalAlpha = 1;
+
+  if (g.isOver) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ff0055";
+    ctx.textAlign = "center";
+    ctx.font = "bold 70px sans-serif";
+    ctx.fillText("FINI !", canvas.width/2, canvas.height/2 - 50);
+    
+    // BOUTON REVANCHE
+    ctx.fillStyle = "#ff0055";
+    ctx.fillRect(canvas.width/2 - 200, canvas.height/2 + 60, 400, 100);
+    ctx.fillStyle = "white";
+    ctx.font = "bold 40px sans-serif";
+    ctx.fillText("REVANCHE", canvas.width/2, canvas.height/2 + 125);
+    ctx.textAlign = "left";
+  }
+}
+
+function interact(e) {
+  // Si on touche la zone musique, on laisse faire
+  if (e.target.closest('#music-container')) return;
+  
+  if (e) e.preventDefault();
+  if (g.isOver) {
+    revanche();
+  } else {
+    if (g.p.mode === 'dragon') g.p.dy = -11;
+    else if (g.p.jumps < 2) { g.p.dy = -20; g.p.jumps++; }
+  }
+}
+
+canvas.addEventListener('touchstart', interact, {passive: false});
+canvas.addEventListener('mousedown', interact);
+
+revanche();
+update();
 </script>
 </body>
 </html>

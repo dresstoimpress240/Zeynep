@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION EMPIRE</title>
+<title>ZEYNEP FASHION EMPIRE - 60+ EMOJIS</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
   #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
@@ -33,7 +33,7 @@
   #h-leg-l { width: 15px; height: 95px; top: 140px; margin-left: -12px; border-radius: 0 0 5px 5px; z-index: 2; }
   #h-leg-r { width: 15px; height: 95px; top: 140px; margin-left: 12px; border-radius: 0 0 5px 5px; z-index: 2; }
 
-  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 55px; z-index: 15; }
+  #v-pet { position: absolute; bottom: 30px; left: 30px; font-size: 55px; z-index: 15; transition: 0.3s; }
   .cloth { position: absolute; width: 100%; text-align: center; pointer-events: none; left: 0; }
   #v-hair { top: -10px; font-size: 85px; z-index: 10; }
   #v-top  { top: 52px; font-size: 98px; z-index: 8; }
@@ -43,7 +43,7 @@
 
   .title { font-size: 13px; font-weight: bold; color: #ff0080; text-align: left; margin: 10px 0 5px 5px; text-transform: uppercase; }
   .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 5px; -webkit-overflow-scrolling: touch; }
-  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+  .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; outline: none; }
   .lock::after { content: "🔒"; position: absolute; font-size: 18px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
 
   .vote-btn { width: 100%; padding: 20px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; cursor: pointer; box-shadow: 0 6px 0 #b5065e; }
@@ -74,35 +74,62 @@
     <div id="v-pet"></div>
   </div>
 
-  <div class="title">Coiffures 🎀</div>
+  <div class="title">Coiffures & Visages 👱‍♀️</div>
   <div class="row">
     <button class="btn" onclick="set('hair','')">❌</button>
     <button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button>
+    <button class="btn" onclick="set('hair','👩')">👩</button><button class="btn" onclick="set('hair','🧒')">🧒</button><button class="btn" onclick="set('hair','👵')">👵</button>
+    <button class="btn" onclick="set('hair','🧑‍🦰')">🧑‍🦰</button><button class="btn" onclick="set('hair','🧑‍🦱')">🧑‍🦱</button>
     <button class="btn lock" id="L1" onclick="buy('hair','👸','L1', 50)">👸</button>
+    <button class="btn lock" id="L5" onclick="buy('hair','👰','L5', 150)">👰</button>
+    <button class="btn lock" id="L6" onclick="buy('hair','🤶','L6', 80)">🤶</button>
   </div>
 
-  <div class="title">Hauts & Robes 👚👗</div>
+  <div class="title">Hauts & Tenues 👗👚</div>
   <div class="row">
     <button class="btn" onclick="set('top','')">❌</button>
     <button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','👘')">👘</button>
+    <button class="btn" onclick="set('top','🥻')">🥻</button><button class="btn" onclick="set('top','🧥')">🧥</button><button class="btn" onclick="set('top','👔')">👔</button>
+    <button class="btn" onclick="set('top','🎽')">🎽</button><button class="btn" onclick="set('top','🥋')">🥋</button><button class="btn" onclick="set('top','🧤')">🧤</button>
     <button class="btn lock" id="L2" onclick="buy('top','👗','L2', 100)">👗</button>
+    <button class="btn lock" id="L7" onclick="buy('top','👙','L7', 60)">👙</button>
+    <button class="btn lock" id="L8" onclick="buy('top','🩰','L8', 120)">🩰</button>
+    <button class="btn lock" id="L12" onclick="buy('top','👮‍♀️','L12', 200)">👮‍♀️</button>
+    <button class="btn lock" id="L13" onclick="buy('top','🦸‍♀️','L13', 250)">🦸‍♀️</button>
   </div>
 
-  <div class="title">Bas & Luxe 👠💍</div>
+  <div class="title">Bas & Chaussures 👖👠</div>
   <div class="row">
     <button class="btn" onclick="set('bot','')">❌</button>
-    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button>
+    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('bot','🩳')">🩳</button><button class="btn" onclick="set('bot','🩲')">🩲</button>
+    <button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button><button class="btn" onclick="set('shoe','👢')">👢</button>
+    <button class="btn" onclick="set('shoe','👞')">👞</button><button class="btn" onclick="set('shoe','🥿')">🥿</button><button class="btn" onclick="set('shoe','👡')">👡</button>
     <button class="btn lock" id="L3" onclick="buy('bot','👰','L3', 200)">👰</button>
-    <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
+    <button class="btn lock" id="L14" onclick="buy('shoe','⛸️','L14', 180)">⛸️</button>
   </div>
 
-  <div class="title">Compagnons Magiques 🐾</div>
+  <div class="title">Accessoires 👑💎</div>
+  <div class="row">
+    <button class="btn" onclick="set('acc','')">❌</button>
+    <button class="btn" onclick="set('acc','💍')">💍</button><button class="btn" onclick="set('acc','👒')">👒</button><button class="btn" onclick="set('acc','👓')">👓</button>
+    <button class="btn" onclick="set('acc','🕶️')">🕶️</button><button class="btn" onclick="set('acc','🧣')">🧣</button><button class="btn" onclick="set('acc','👜')">👜</button>
+    <button class="btn" onclick="set('acc','👛')">👛</button><button class="btn" onclick="set('acc','🎒')">🎒</button><button class="btn" onclick="set('acc','🌂')">🌂</button>
+    <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
+    <button class="btn lock" id="L10" onclick="buy('acc','💎','L10', 300)">💎</button>
+    <button class="btn lock" id="L11" onclick="buy('acc','✨','L11', 50)">✨</button>
+  </div>
+
+  <div class="title">Compagnons Magiques 🐾🦄</div>
   <div class="row">
     <button class="btn" onclick="setPet('')">❌</button>
     <button class="btn" onclick="setPet('🐱')">🐱</button><button class="btn" onclick="setPet('🐶')">🐶</button><button class="btn" onclick="setPet('🐰')">🐰</button>
+    <button class="btn" onclick="setPet('🐹')">🐹</button><button class="btn" onclick="setPet('🦊')">🦊</button><button class="btn" onclick="setPet('🐼')">🐼</button>
+    <button class="btn" onclick="setPet('🐻')">🐻</button><button class="btn" onclick="setPet('🐨')">🐨</button><button class="btn" onclick="setPet('🦁')">🦁</button>
     <button class="btn lock" id="P1" onclick="buyPet('🦄','P1', 150)">🦄</button>
     <button class="btn lock" id="P2" onclick="buyPet('🐲','P2', 300)">🐲</button>
     <button class="btn lock" id="P3" onclick="buyPet('👾','P3', 500)">👾</button>
+    <button class="btn lock" id="P4" onclick="buyPet('🎈','P4', 100)">🎈</button>
+    <button class="btn lock" id="P5" onclick="buyPet('🪦','P5', 200)">🪦</button>
   </div>
 
   <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
@@ -153,7 +180,7 @@
 
     var cd = setInterval(function() {
       timerVal--; document.getElementById('timer').innerText = timerVal;
-      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Temps fini ! 😢"); endMission(false); } }
+      if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Dommage ! C'est fini ! 😢"); endMission(false); } }
     }, 1000);
   }
 
@@ -162,7 +189,7 @@
     document.getElementById('btn-start-challenge').style.display = "block";
     if (success) {
       var r = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 350;
-      coins += r; alert("RÉUSSI ! + " + r + " pièces ! 💰"); updateStats();
+      coins += r; alert("BRAVO ZEYNEP ! + " + r + " pièces ! 💰"); updateStats();
     }
   }
 

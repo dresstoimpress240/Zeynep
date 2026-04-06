@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP FASHION STAR - EDITION 50</title>
+<title>ZEYNEP FASHION STAR - EDITION LIMITÉE</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
   #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
@@ -97,7 +97,7 @@
     "Princesse Rose 🎀", "Star du Rock 🎸", "Sirène Magique 🌊", "Bal Royal 👑", "Sport Chic 👟", "Fée des Bois 🧚", "Mariage de Rêve 💍", "Vacances à Paris 👜", "Look d'Hiver ❄️", "Disco Party 💃",
     "Safari Africain 🦁", "Espace Galaxie 🚀", "Licorne Arc-en-ciel 🦄", "Chef de Cuisine 🍳", "Super Héroïne ⚡", "Ange du Ciel ☁️", "Halloween 🎃", "Noël Magique 🎄", "Patineuse Artistique ⛸️", "Tennis Star 🎾",
     "Plage Hawaïenne 🌺", "Château Hanté 👻", "Journaliste Mode 🎤", "Manga Style 🌸", "Exploratrice 🌵", "Artiste Peintre 🎨", "Soirée Pyjama 🧸", "Bal Masqué 🎭", "Cléopâtre Égypte 🐍", "Cow-boy 🤠",
-    "Glace & Bonbons 🍭", "Cyber Futur 🤖", "Petit Chat Mignon 🐱", "Jungle Sauvage 🌿", "Danseuse Étoile 🩰", "Pirate des Mers 🏴‍☠️", "Papillon Rose 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️"
+    "Glace & Bonbons 🍭", "Cyber Futur 🤖", "Petit Cat 🐱", "Jungle Sauvage 🌿", "Danseuse Étoile 🩰", "Pirate des Mers 🏴‍☠️", "Papillon Rose 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️"
   ];
 
   function set(part, icon) { document.getElementById('v-' + part).innerHTML = icon; }
@@ -113,10 +113,17 @@
   }
 
   function voter() {
-    // Score sur 50 (Minimum 25 pour ne pas être triste)
+    // Score sur 50 (Minimum 25)
     var score = Math.floor(Math.random() * 26) + 25; 
     
-    var gain = score * 5;
+    var gain = 0;
+    if (score === 50) {
+      gain = 50; // Note parfaite = 50 pièces
+    } else {
+      // Note entre 25 et 49 = gain entre 25 et 35 pièces
+      gain = Math.floor(Math.random() * 11) + 25; 
+    }
+    
     coins += gain; exp += 25;
     
     if(exp >= 100) { level++; exp = 0; alert("BRAVO ZEYNEP ! Niveau " + level + " ! 🎉"); }
@@ -127,7 +134,7 @@
     
     document.getElementById('fx').style.display = "block";
     
-    var msg = (score >= 45) ? "SCORE PARFAIT ! 😍" : (score >= 35) ? "MAGNIFIQUE ! ✨" : "TRÈS JOLI ! 👍";
+    var msg = (score === 50) ? "SCORE PARFAIT ! 🌟 DIAMANT !" : (score >= 40) ? "MAGNIFIQUE ! ✨" : "TRÈS JOLI ! 👍";
     alert("NOTE DU JURY : " + score + "/50\n" + msg + "\n+ " + gain + " pièces ! 💰");
 
     setTimeout(function() {

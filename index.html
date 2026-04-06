@@ -2,35 +2,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP RUN 2014</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ZEYNEP RUN 4.4</title>
 <style>
-  body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
-  canvas { display: block; background: #050a1e; width: 100%; height: 100%; }
-  
-  #music-player { 
-    position: absolute; top: 5px; right: 5px; 
-    z-index: 100; background: #ff0055; 
-    padding: 5px; border: 2px solid #fff; border-radius: 10px;
-  }
-  #score-ui { 
-    position: absolute; top: 20px; left: 20px; color: #fff; 
-    font-size: 40px; font-weight: bold; z-index: 10;
-  }
+  body { margin: 0; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #ui { position: absolute; top: 10px; left: 10px; color: gold; font-size: 30px; font-family: sans-serif; font-weight: bold; }
+  #gims { position: absolute; top: 5px; right: 5px; border: 1px solid #fff; }
 </style>
 </head>
 <body>
 
-<div id="score-ui">💰 <span id="val">0</span></div>
+<div id="ui">SAC: <span id="val">0</span></div>
 
-<div id="music-player">
-  <iframe width="140" height="80" src="https://www.youtube.com/embed/ERk4Lx-mOqQ" frameborder="0"></iframe>
+<div id="gims">
+  <iframe width="120" height="70" src="https://www.youtube.com/embed/ERk4Lx-mOqQ" frameborder="0"></iframe>
 </div>
 
 <canvas id="game"></canvas>
 
 <script>
-// CODE COMPATIBLE ANDROID 4.4 (ES5)
+// VERSION ANTI-RAM POUR ANDROID 2014
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
 var valScore = document.getElementById('val');
@@ -41,113 +33,120 @@ canvas.width = w;
 canvas.height = h;
 
 var score = 0;
-var speed = 7;
+var speed = 6; // Plus lent au début pour la tablette
 var isOver = false;
-var frame = 0;
-var py = h - 200;
+var py = h - 150;
 var pdy = 0;
 var jumps = 0;
 var obs = [];
 
-function spawn() {
-  var x = w + 100;
-  var r = Math.random();
-  var type = 'coin';
-  var em = "🟡";
-  
-  if (r < 0.4) { type = 'danger'; em = "🌵"; }
-  else if (r < 0.7) { type = 'gift'; em = "🎁"; }
-  
-  obs.push({ x: x, y: h - 140, type: type, em: em });
+function restart() {
+  score = 0; speed = 6; isOver = false; py = h - 150; pdy = 0; obs = [];
+  valScore.innerHTML = "0";
 }
 
-function update() {
+function spawn() {
+  if (isOver) return;
+  var x = w + 50;
+  var r = Math.random();
+  var type = 'coin';
+  var em = "O"; // Texte simple pour ne pas ramer
+  var col = "yellow";
+  
+  if (r < 0.5) { type = 'danger'; em = "X"; col = "red"; }
+  else if (r < 0.8) { type = 'gift'; em = "?"; col = "pink"; }
+  
+  obs.push({ x: x, y: h - 110, type: type, em: em, col: col });
+}
+
+function loop() {
+  ctx.clearRect(0, 0, w, h);
+  
+  // Fond bleu nuit simple
+  ctx.fillStyle = "#050a1e";
+  ctx.fillRect(0, 0, w, h);
+  
+  // Sol rose
+  ctx.fillStyle = "#ff0055";
+  ctx.fillRect(0, h - 50, w, 50);
+
   if (!isOver) {
-    frame++;
-    speed += 0.002;
-    pdy += 1.2;
+    speed += 0.001;
+    pdy += 1.5;
     py += pdy;
     
-    if (py > h - 140) {
-      py = h - 140;
+    if (py > h - 130) {
+      py = h - 130;
       pdy = 0;
       jumps = 0;
     }
-    
-    if (frame % 50 === 0) spawn();
-    
+
+    if (Math.random() < 0.02) spawn();
+
     for (var i = 0; i < obs.length; i++) {
       var o = obs[i];
       o.x -= speed;
       
-      // Collision simple
-      if (80 < o.x + 50 && 80 + 60 > o.x && py < o.y + 50 && py + 60 > o.y) {
-        if (o.type === 'coin') {
-          score += 50;
-          valScore.innerHTML = score;
-          obs.splice(i, 1);
-        } else if (o.type === 'danger') {
+      // Dessin des obstacles (cercles colorés au lieu d'emojis pour la vitesse)
+      ctx.fillStyle = o.col;
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, 25, 0, Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.font = "20px Arial";
+      ctx.fillText(o.em, o.x - 5, o.y + 7);
+
+      // Collision simplifiée
+      if (o.x < 120 && o.x > 40 && py > o.y - 60 && py < o.y + 20) {
+        if (o.type === 'danger') {
           isOver = true;
         } else {
-          score += 100;
+          score += 10;
+          valScore.innerHTML = score;
           obs.splice(i, 1);
         }
       }
-      if (o.x < -100) obs.splice(i, 1);
+      if (o.x < -50) obs.splice(i, 1);
     }
   }
-  draw();
-  setTimeout(update, 20); // Utilisation de setTimeout pour les vieux Android
-}
 
-function draw() {
-  ctx.fillStyle = "#050a1e";
-  ctx.fillRect(0, 0, w, h);
-  
-  // Sol
-  ctx.fillStyle = "#ff0055";
-  ctx.fillRect(0, h - 60, w, 60);
-  
-  // Obstacles
-  ctx.font = "50px Arial";
-  for (var j = 0; j < obs.length; j++) {
-    ctx.fillText(obs[j].em, obs[j].x, obs[j].y + 40);
-  }
-  
-  // Princesse
-  ctx.font = "70px Arial";
-  ctx.fillText("👸", 80, py + 50);
-  
+  // Princesse (Rectangle rose avec texte pour éviter les bugs d'images)
+  ctx.fillStyle = "#ff69b4";
+  ctx.fillRect(60, py, 50, 50);
+  ctx.fillStyle = "#fff";
+  ctx.font = "35px Arial";
+  ctx.fillText("P", 72, py + 38);
+
   if (isOver) {
-    ctx.fillStyle = "rgba(0,0,0,0.8)";
-    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0,0,w,h);
     ctx.fillStyle = "#fff";
     ctx.font = "40px Arial";
-    ctx.fillText("REVANCHE", w/2 - 100, h/2);
+    ctx.fillText("REVANCHE !", w/2 - 100, h/2);
   }
+
+  setTimeout(function() {
+    requestAnimationFrame(loop);
+  }, 1000 / 30); // Limite à 30 images par seconde pour ne pas chauffer
 }
 
-function action() {
+function action(e) {
+  if (e) e.preventDefault();
   if (isOver) {
-    score = 0; speed = 7; isOver = false; py = h - 200; obs = [];
-    valScore.innerHTML = "0";
+    restart();
   } else {
     if (jumps < 2) {
-      pdy = -20;
+      pdy = -22;
       jumps++;
     }
   }
 }
 
-canvas.addEventListener('touchstart', function(e) {
-  e.preventDefault();
-  action();
-});
-canvas.addEventListener('mousedown', action);
+window.addEventListener('touchstart', action);
+window.addEventListener('mousedown', action);
 
-update();
-
-D'accord, je garde ça en mémoire. Mais pour le moment, je ne peux me souvenir que de ce dont vous avons discuté dans ce chat. Une fois que vous démarrerez un nouveau chat, cette information sera oubliée.
+restart();
+loop();
 </script>
 </body>
 </html>

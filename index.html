@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ZEYNEP PRINCESS RUN</title>
+<title>ZEYNEP RUN SAVED</title>
 <style>
-  /* Bloque tout mouvement parasite */
   * { 
     -webkit-touch-callout: none; 
     -webkit-user-select: none; 
     user-select: none; 
-    touch-action: none; /* BLOQUE LE ZOOM ET LE SCROLL */
+    touch-action: none; 
     outline: none;
+    box-sizing: border-box;
   }
   
   html, body { 
-    position: fixed; /* Force la page à rester immobile */
+    position: fixed; 
     margin: 0; 
     padding: 0;
     width: 100%; 
@@ -24,17 +24,25 @@
     overflow: hidden; 
   }
 
-  canvas { display: block; width: 100vw; height: 100vh; }
+  canvas { 
+    display: block; 
+    width: 100%; /* Force la largeur */
+    height: 100%; /* Force la hauteur */
+    object-fit: cover; /* S'adapte à l'écran */
+  }
   
+  /* LECTEUR MUSIQUE VISIBLE (Pour Gims) */
   #music-player { 
     position: absolute; top: 10px; right: 10px; 
-    z-index: 100; background: rgba(255, 0, 85, 0.9); 
-    padding: 8px; border-radius: 15px; border: 2px solid #fff;
+    z-index: 999; background: rgba(255, 0, 85, 0.9); 
+    padding: 10px; border-radius: 15px; border: 2px solid #fff;
+    display: flex; flex-direction: column; align-items: center;
   }
+  #music-player p { color: white; margin: 0 0 5px 0; font-size: 14px; font-weight: bold; }
 
   #score-ui { 
-    position: absolute; top: 40px; left: 30px; color: #fff; 
-    font-size: 50px; font-weight: 900; pointer-events: none; 
+    position: absolute; top: 30px; left: 20px; color: #fff; 
+    font-size: 60px; font-weight: 900; pointer-events: none; 
     text-shadow: 0 0 15px #ff0055; z-index: 10;
   }
 </style>
@@ -44,7 +52,8 @@
 <div id="score-ui">💰 <span id="val">0</span></div>
 
 <div id="music-player">
-  <iframe width="160" height="90" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+  <p>MONTE LE SON ↓</p>
+  <iframe width="180" height="101" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 <canvas id="game"></canvas>
@@ -54,36 +63,39 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const valScore = document.getElementById('val');
 
-// Ajustement taille iPad
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// --- RÉPARATION DU PLEIN ÉCRAN IPAD ---
+let logicalWidth, logicalHeight;
+function fixPleinEcran() {
+    logicalWidth = window.innerWidth;
+    logicalHeight = window.innerHeight;
+    canvas.width = logicalWidth;
+    canvas.height = logicalHeight;
 }
-window.addEventListener('resize', resize);
-resize();
+window.addEventListener('resize', fixPleinEcran);
+fixPleinEcran(); // Lance tout de suite
 
 let g = {
   score: 0, speed: 9, isOver: false, frame: 0,
-  p: { x: 100, y: 0, w: 80, h: 80, dy: 0, jumps: 0, mode: 'normal', timer: 0, trail: [] },
+  p: { x: 90, y: 0, w: 80, h: 80, dy: 0, jumps: 0, mode: 'normal', timer: 0 },
   obs: []
 };
 
 function revanche() {
   g.score = 0; g.speed = 10; g.isOver = false; g.frame = 0;
-  g.p.y = canvas.height - 250; g.p.dy = 0; g.p.mode = 'normal'; g.p.timer = 0;
-  g.p.trail = []; g.obs = [];
-  valScore.innerText = "0";
+  g.p.y = logicalHeight - 200; g.p.dy = 0; g.p.mode = 'normal'; g.p.timer = 0;
+  g.obs = []; valScore.innerText = "0";
 }
 
 function spawn() {
-  let r = Math.random();
-  let x = canvas.width + 150;
-  if (r < 0.45) { 
-    g.obs.push({ x, y: canvas.height - 350 - Math.random()*200, w: 75, h: 75, t: 'gift', em: "🎁" });
-  } else if (r < 0.8) { 
-    g.obs.push({ x, y: canvas.height - 155, w: 70, h: 95, t: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
+  let x = logicalWidth + 150;
+  let type = Math.random();
+  
+  if (type < 0.40) { 
+    g.obs.push({ x, y: logicalHeight - 160, w: 70, h: 90, type: 'danger', em: Math.random() > 0.5 ? "🌵" : "👾" });
+  } else if (type < 0.85) { 
+    g.obs.push({ x, y: 150 + Math.random() * (logicalHeight - 450), w: 60, h: 60, type: 'gift', em: "🎁" });
   } else { 
-    g.obs.push({ x, y: 200 + Math.random() * (canvas.height - 500), w: 60, h: 60, t: 'coin', em: "🟡" });
+    g.obs.push({ x, y: logicalHeight - 250, w: 50, h: 50, type: 'coin', em: "🟡" });
   }
 }
 
@@ -92,20 +104,20 @@ function update() {
     g.frame++;
     g.speed += 0.005;
     if (g.p.timer > 0) g.p.timer--; else g.p.mode = 'normal';
-    g.p.dy += (g.p.mode === 'dragon') ? 0.4 : 1.2;
+    g.p.dy += (g.p.mode === 'dragon') ? 0.38 : 1.1;
     g.p.y += g.p.dy;
-    let floor = canvas.height - 140;
+    
+    let floor = logicalHeight - 145;
     if (g.p.y > floor) { g.p.y = floor; g.p.dy = 0; g.p.jumps = 0; }
+    
     if (g.frame % 35 === 0) spawn();
-    g.p.trail.push({x: g.p.x + 30, y: g.p.y + 40});
-    if (g.p.trail.length > 20) g.p.trail.shift();
 
     g.obs.forEach((o, i) => {
       o.x -= g.speed;
       if (g.p.x < o.x + o.w - 15 && g.p.x + g.p.w > o.x + 15 && g.p.y < o.y + o.h - 15 && g.p.y + g.p.h > o.y + 15) {
-        if (o.t === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i, 1); }
-        else if (o.t === 'gift') { g.p.mode = ['giant','dragon','ghost'][Math.floor(Math.random()*3)]; g.p.timer = 400; g.obs.splice(i, 1); }
-        else if (g.p.mode === 'giant') { g.score += 200; g.obs.splice(i, 1); }
+        if (o.type === 'coin') { g.score += 50; valScore.innerText = g.score; g.obs.splice(i, 1); }
+        else if (o.type === 'gift') { g.p.mode = ['giant','dragon','ghost'][Math.floor(Math.random()*3)]; g.p.timer = 400; g.obs.splice(i, 1); }
+        else if (g.p.mode === 'giant') { g.score += 150; g.obs.splice(i, 1); }
         else if (g.p.mode !== 'ghost') { g.isOver = true; }
       }
       if (o.x < -200) g.obs.splice(i, 1);
@@ -117,60 +129,55 @@ function update() {
 
 function draw() {
   ctx.fillStyle = g.p.mode === 'ghost' ? '#000' : '#050a1e';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 60%)`;
-  ctx.fillRect(0, canvas.height - 65, canvas.width, 15);
-  ctx.fillStyle = "#000";
-  ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+  ctx.fillRect(0, 0, logicalWidth, logicalHeight);
+  
+  // Sol Neon
+  ctx.fillStyle = `hsl(${g.frame % 360}, 100%, 65%)`; ctx.fillRect(0, logicalHeight - 65, logicalWidth, 10);
+  ctx.fillStyle = "#000"; ctx.fillRect(0, logicalHeight - 55, logicalWidth, 55);
 
-  g.p.trail.forEach((p, i) => {
-    ctx.globalAlpha = i / 20;
-    ctx.fillStyle = `hsl(${(g.frame*5 + i*10)%360}, 100%, 70%)`;
-    ctx.beginPath(); ctx.arc(p.x, p.y, 12, 0, Math.PI*2); ctx.fill();
-  });
-  ctx.globalAlpha = 1;
-
-  g.obs.forEach(o => { ctx.font = "80px Arial"; ctx.fillText(o.em, o.x, o.y + 70); });
+  g.obs.forEach(o => { ctx.font = "80px Arial"; ctx.fillText(o.em, o.x, o.y + 65); });
 
   let emoji = "👸";
   if (g.p.mode === 'dragon') emoji = "🐲";
   if (g.p.mode === 'ghost') { emoji = "👻"; ctx.globalAlpha = 0.5; }
   
-  ctx.font = (g.p.mode === 'giant' ? "180px" : "105px") + " Arial";
-  ctx.fillText(emoji, g.p.x, g.p.y + (g.p.mode === 'giant' ? 130 : 85));
+  ctx.font = (g.p.mode === 'giant' ? "180px" : "110px") + " Arial";
+  ctx.fillText(emoji, g.p.x, g.p.y + (g.p.mode === 'giant' ? 120 : 85));
   ctx.globalAlpha = 1;
 
   if (g.isOver) {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.95)";
+    ctx.fillRect(0, 0, logicalWidth, logicalHeight);
+    
+    // Titre K.O. REPARE (au centre)
     ctx.fillStyle = "#ff0055"; ctx.textAlign = "center";
-    ctx.font = "bold 90px sans-serif"; ctx.fillText("K.O. !", canvas.width/2, canvas.height/2 - 80);
-    ctx.fillStyle = "#fff"; ctx.font = "50px sans-serif"; ctx.fillText("SCORE : " + g.score, canvas.width/2, canvas.height/2);
-    ctx.fillStyle = "#ff0055"; ctx.fillRect(canvas.width/2 - 250, canvas.height/2 + 80, 500, 130);
-    ctx.fillStyle = "#fff"; ctx.font = "bold 55px sans-serif"; ctx.fillText("REVANCHE !", canvas.width/2, canvas.height/2 + 165);
+    ctx.font = "bold 90px sans-serif"; ctx.fillText("K.O. !", logicalWidth/2, logicalHeight/2 - 70);
+    
+    // Score
+    ctx.fillStyle = "#fff"; ctx.font = "50px sans-serif"; ctx.fillText("SCORE : " + g.score, logicalWidth/2, logicalHeight/2 + 10);
+    
+    // --- BOUTON REVANCHE ÉNORME CI-DESSOUS ---
+    ctx.fillStyle = "#ff0055"; ctx.fillRect(logicalWidth/2 - 250, logicalHeight/2 + 80, 500, 130);
+    ctx.fillStyle = "#fff"; ctx.font = "bold 60px sans-serif"; ctx.fillText("REVANCHE", logicalWidth/2, logicalHeight/2 + 165);
     ctx.textAlign = "left";
   }
 }
 
-// GESTION DU TOUCHER SANS ZOOM
-function handle(e) {
+function input(e) {
   if (e.target.closest('#music-player')) return;
-  if (e.cancelable) e.preventDefault(); // EMPÊCHE LE ZOOM ET LE SCROLL
+  if (e.cancelable) e.preventDefault();
   
   if (g.isOver) {
     revanche();
   } else {
     if (g.p.mode === 'dragon') g.p.dy = -13;
-    else if (g.p.jumps < 2) { g.p.dy = -24; g.p.jumps++; }
+    else if (g.p.jumps < 2) { g.p.dy = -25; g.p.jumps++; }
   }
 }
 
-// Écouteurs d'événements "propres"
-canvas.addEventListener('touchstart', handle, {passive: false});
-canvas.addEventListener('mousedown', handle);
-
-revanche();
-update();
+canvas.addEventListener('touchstart', input, {passive: false});
+canvas.addEventListener('mousedown', input);
+revanche(); update();
 </script>
 </body>
 </html>

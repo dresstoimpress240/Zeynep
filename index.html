@@ -6,14 +6,12 @@
 <title>ZEYNEP FASHION EMPIRE</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background-color: #ffd6f0; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
-  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
+  #game-box { background: white; border: 4px solid #ff8fd1; border-radius: 25px; max-width: 450px; margin: auto; padding: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
   #top-info { background: #fff0f9; padding: 10px; border-radius: 20px; border: 2px solid #ffb6e6; margin-bottom: 10px; }
   .stats { display: flex; justify-content: space-around; font-weight: bold; color: #d63384; font-size: 18px; }
   #lvl-bar { background: #eee; height: 12px; border-radius: 10px; overflow: hidden; border: 1px solid #ffb6e6; margin-top:5px;}
   #lvl-progress { background: linear-gradient(to right, #ff0080, #ff8fd1); width: 0%; height: 100%; transition: 0.5s; }
-  #challenge-area { background: #fff5ba; border: 3px dashed #ff0080; border-radius: 15px; padding: 10px; margin: 10px 0; display: none; }
-  #timer { font-size: 30px; font-weight: bold; color: #ff0080; }
-  .btn-main { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 10px; font-weight: bold; cursor: pointer; margin-bottom: 5px; width: 48%; font-size: 13px; box-shadow: 0 4px 0 #b5065e; }
+  .btn-main { background: linear-gradient(#ff0080, #ff8fd1); color: white; border: 2px solid #fff; border-radius: 15px; padding: 10px; font-weight: bold; cursor: pointer; width: 48%; font-size: 13px; box-shadow: 0 4px 0 #b5065e; }
   #podium { position: relative; height: 320px; background: radial-gradient(circle, #ffffff, #fff0f9); border: 3px solid #ffb6e6; border-radius: 20px; margin: 10px 0; overflow: hidden; display: flex; justify-content: center; }
   .body-part { position: absolute; background: #ffe0bd; border: 1px solid #f3cbb1; left: 50%; transform: translateX(-50%); }
   #h-head { width: 45px; height: 45px; border-radius: 50%; top: 25px; z-index: 2; }
@@ -33,81 +31,43 @@
   .row { display: flex; overflow-x: auto; padding: 10px 5px; background: #fff9fc; border-radius: 15px; border: 1px solid #ffd6f0; margin-bottom: 5px; }
   .btn { min-width: 65px; height: 65px; font-size: 38px; margin-right: 12px; background: white; border: 3px solid #ffb6e6; border-radius: 15px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; }
   .lock::after { content: "🔒"; position: absolute; font-size: 18px; background: rgba(255,255,255,0.7); width: 100%; height: 100%; display: flex; align-items:center; justify-content:center; border-radius: 12px; }
-  .vote-btn { width: 100%; padding: 20px; background: linear-gradient(#ff0080, #d63384); color: white; border: none; border-radius: 20px; font-size: 24px; font-weight: bold; margin-top: 10px; box-shadow: 0 6px 0 #b5065e; }
+  #win-screen { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; border:5px solid #ff0080; padding:20px; z-index:100; border-radius:20px; width:80%; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
 </style>
 </head>
 <body>
 <div id="game-box">
-  <div id="top-info">
-    <div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
-    <div id="lvl-bar"><div id="lvl-progress"></div></div>
-    <div style="color:#ff0080; font-size:14px; margin-top:8px; font-weight:bold;">Thème : <span id="t-text">...</span></div>
-  </div>
-  <div style="display:flex; justify-content: space-between;">
-    <button class="btn-main" id="btn-challenge" onclick="lancerChallenge()">✨ CHALLENGE VIP</button>
-    <button class="btn-main" style="background:linear-gradient(#ffcc00, #ff9900);" onclick="roueFortune()">🎡 ROUE (1000💰)</button>
-  </div>
-  <div id="challenge-area">
-    <div id="m-title" style="font-weight:bold; color:#d63384;">MISSION !</div>
-    <div id="timer">00</div>
-    <div id="m-reward" style="font-weight:bold; color:#ff0080;">Gain : 0 💰</div>
-  </div>
-  <div id="podium">
-    <div class="body-part" id="h-head"></div><div class="body-part" id="h-torso"></div>
-    <div class="h-arm" id="h-arm-l"></div><div class="h-arm" id="h-arm-r"></div>
-    <div class="body-part" id="h-leg-l"></div><div class="body-part" id="h-leg-r"></div>
-    <div class="cloth" id="v-hair"></div><div class="cloth" id="v-top"></div><div class="cloth" id="v-bot"></div><div class="cloth" id="v-shoe"></div><div class="cloth" id="v-acc"></div>
-  </div>
-  <div class="title">Coiffures & Visages 👱‍♀️</div>
-  <div class="row">
-    <button class="btn" onclick="set('hair','')">❌</button>
-    <button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button>
-    <button class="btn" onclick="set('hair','👩')">👩</button><button class="btn" onclick="set('hair','🧒')">🧒</button><button class="btn" onclick="set('hair','🤶')">🤶</button>
-    <button class="btn lock" id="L1" onclick="buy('hair','👸','L1', 50)">👸</button>
-    <button class="btn lock" id="L5" onclick="buy('hair','👰','L5', 150)">👰</button>
-    <button class="btn lock" id="L20" onclick="buy('hair','🧝‍♀️','L20', 500)">🧝‍♀️</button>
-  </div>
-  <div class="title">Hauts & Robes 👗</div>
-  <div class="row">
-    <button class="btn" onclick="set('top','')">❌</button>
-    <button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','👘')">👘</button>
-    <button class="btn" onclick="set('top','🧥')">🧥</button><button class="btn" onclick="set('top','🥻')">🥻</button><button class="btn lock" id="L2" onclick="buy('top','👗','L2', 100)">👗</button>
-    <button class="btn lock" id="L7" onclick="buy('top','👙','L7', 60)">👙</button>
-    <button class="btn lock" id="L13" onclick="buy('top','🦸‍♀️','L13', 250)">🦸‍♀️</button>
-    <button class="btn lock" id="L21" onclick="buy('top','💃','L21', 400)">💃</button>
-  </div>
-  <div class="title">Bas & Chaussures 👠</div>
-  <div class="row">
-    <button class="btn" onclick="set('bot','')">❌</button>
-    <button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('bot','🩳')">🩳</button><button class="btn" onclick="set('shoe','👠')">👠</button>
-    <button class="btn" onclick="set('shoe','👟')">👟</button><button class="btn" onclick="set('shoe','👢')">👢</button>
-    <button class="btn lock" id="L3" onclick="buy('bot','👰','L3', 200)">👰</button>
-    <button class="btn lock" id="L14" onclick="buy('shoe','⛸️','L14', 180)">⛸️</button>
-    <button class="btn lock" id="L22" onclick="buy('shoe','🛼','L22', 300)">🛼</button>
-  </div>
-  <div class="title">Accessoires ✨</div>
-  <div class="row">
-    <button class="btn" onclick="set('acc','')">❌</button>
-    <button class="btn" onclick="set('acc','💍')">💍</button><button class="btn" onclick="set('acc','👒')">👒</button><button class="btn" onclick="set('acc','🕶️')">🕶️</button>
-    <button class="btn lock" id="L4" onclick="buy('acc','👑','L4', 80)">👑</button>
-    <button class="btn lock" id="L10" onclick="buy('acc','💎','L10', 300)">💎</button>
-    <button class="btn lock" id="L23" onclick="buy('acc','🦄','L23', 600)">🦄</button>
-    <button class="btn lock" id="L24" onclick="buy('acc','🍭','L24', 100)">🍭</button>
-  </div>
-  <button class="vote-btn" onclick="voter()">DÉFILER ! ✨</button>
+  <div id="top-info"><div class="stats"><span>👑 Niv. <span id="lvl">1</span></span><span>💰 <span id="coins">0</span></span></div>
+  <div id="lvl-bar"><div id="lvl-progress"></div></div><div style="color:#ff0080;font-size:14px;font-weight:bold;margin-top:5px;">Thème: <span id="t-text">...</span></div></div>
+  <div style="display:flex; justify-content: space-between;"><button class="btn-main" onclick="lancerQuete()">✨ QUÊTE VIP</button>
+  <button class="btn-main" style="background:linear-gradient(#ffcc00, #ff9900);" onclick="roue()">🎡 ROUE (1000💰)</button></div>
+  <div id="podium"><div class="body-part" id="h-head"></div><div class="body-part" id="h-torso"></div><div class="h-arm" id="h-arm-l"></div><div class="h-arm" id="h-arm-r"></div><div class="body-part" id="h-leg-l"></div><div class="body-part" id="h-leg-r"></div>
+  <div class="cloth" id="v-hair"></div><div class="cloth" id="v-top"></div><div class="cloth" id="v-bot"></div><div class="cloth" id="v-shoe"></div><div class="cloth" id="v-acc"></div></div>
+  <div class="title">Coiffures 👱‍♀️</div><div class="row"><button class="btn" onclick="set('hair','')">❌</button><button class="btn" onclick="set('hair','💇')">💇</button><button class="btn" onclick="set('hair','👱')">👱</button><button class="btn" onclick="set('hair','👧')">👧</button><button class="btn" onclick="set('hair','👩')">👩</button><button class="btn lock" id="L1" onclick="buy('hair','👸','L1',50)">👸</button><button class="btn lock" id="L5" onclick="buy('hair','👰','L5',150)">👰</button><button class="btn lock" id="L20" onclick="buy('hair','🧚‍♀️','L20',500)">🧚‍♀️</button><button class="btn lock" id="L30" onclick="buy('hair','🧝‍♀️','L30',600)">🧝‍♀️</button></div>
+  <div class="title">Hauts 👗</div><div class="row"><button class="btn" onclick="set('top','')">❌</button><button class="btn" onclick="set('top','👚')">👚</button><button class="btn" onclick="set('top','👕')">👕</button><button class="btn" onclick="set('top','🧥')">🧥</button><button class="btn lock" id="L2" onclick="buy('top','👗','L2',100)">👗</button><button class="btn lock" id="L7" onclick="buy('top','👙','L7',60)">👙</button><button class="btn lock" id="L21" onclick="buy('top','💃','L21',400)">💃</button><button class="btn lock" id="L25" onclick="buy('top','👘','L25',300)">👘</button><button class="btn lock" id="L31" onclick="buy('top','🧥','L31',350)">🧥</button></div>
+  <div class="title">Bas 👠</div><div class="row"><button class="btn" onclick="set('bot','')">❌</button><button class="btn" onclick="set('bot','👖')">👖</button><button class="btn" onclick="set('bot','🩳')">🩳</button><button class="btn" onclick="set('shoe','👠')">👠</button><button class="btn" onclick="set('shoe','👟')">👟</button><button class="btn lock" id="L3" onclick="buy('bot','👰','L3',200)">👰</button><button class="btn lock" id="L22" onclick="buy('shoe','🛼','L22',300)">🛼</button><button class="btn lock" id="L26" onclick="buy('shoe','👢','L26',250)">👢</button><button class="btn lock" id="L32" onclick="buy('shoe','👡','L32',150)">👡</button></div>
+  <div class="title">Accessoires ✨</div><div class="row"><button class="btn" onclick="set('acc','')">❌</button><button class="btn" onclick="set('acc','💍')">💍</button><button class="btn" onclick="set('acc','👒')">👒</button><button class="btn" onclick="set('acc','👓')">👓</button><button class="btn lock" id="L4" onclick="buy('acc','👑','L4',80)">👑</button><button class="btn lock" id="L10" onclick="buy('acc','💎','L10',300)">💎</button><button class="btn lock" id="L23" onclick="buy('acc','👜','L23',150)">👜</button><button class="btn lock" id="L24" onclick="buy('acc','🕶️','L24',100)">🕶️</button><button class="btn lock" id="L33" onclick="buy('acc','👛','L33',200)">👛</button><button class="btn lock" id="L34" onclick="buy('acc','🌂','L34',120)">🌂</button></div>
+  <button class="btn-main" style="width:100%;height:60px;margin-top:10px;font-size:20px" onclick="voter()">DÉFILER ! ✨</button>
 </div>
+<div id="win-screen"><h2>🎡 ROUE DE LA CHANCE !</h2><p id="win-txt"></p><button class="btn-main" style="width:100%; height:50px; font-size:18px;" onclick="document.getElementById('win-screen').style.display='none'">BRAVO ! ✨</button></div>
 <script>
-  var coins = 0, items = [], exp = 0, level = 1, timerVal = 0, isMission = false, currentMissionType = "";
-  var themes = ["Princesse Rose 🎀", "Star du Rock 🎸", "Sirène Magique 🌊", "Bal Royal 👑", "Sport Chic 👟", "Fée des Bois 🧚", "Mariage de Rêve 💍", "Vacances à Paris 👜", "Look d'Hiver ❄️", "Disco Party 💃", "Safari 🦁", "Galaxie 🚀", "Licorne 🦄", "Chef 🍳", "Héroïne ⚡", "Ange ☁️", "Halloween 🎃", "Noël 🎄", "Patineuse ⛸️", "Tennis 🎾", "Plage 🌺", "Château 👻", "Journaliste Mode 🎤", "Manga Style 🌸", "Exploratrice 🌵", "Artiste Peintre 🎨", "Soirée Pyjama 🧸", "Bal Masqué 🎭", "Égypte 🐍", "Cow-boy 🤠", "Bonbons 🍭", "Futur 🤖", "Chat 🐱", "Jungle 🌿", "Danseuse 🩰", "Pirate 🏴‍☠️", "Papillon 🦋", "Chanteuse Pop 🎙️", "Déesse Grecque 🏛️", "Été Indien ☀️", "Glace ❄️", "Gothique 🖤", "Street Style 👟", "Vampire 🧛‍♀️", "Ninja 🥷", "Rose 🍭", "Perdue 🐚", "Poupée 🧸", "Nuit 🌙", "Promo 💃", "Pop Culture 🎙️", "Corée 🌸", "Vintage 🌈", "Punk 🖤", "Coeur ❤️", "Japon 👘", "Pluie ☔", "Safari 🦄", "Diva 💎", "Étoiles 🌌"];
-  function set(p, i) { document.getElementById('v-'+p).innerHTML = i; }
-  function updateStats() { document.getElementById('coins').innerText = coins; document.getElementById('lvl').innerText = level; document.getElementById('lvl-progress').style.width = exp + "%"; }
-  function buy(p, i, id, pr) { if (items.includes(id)) { set(p, i); } else if (coins >= pr) { coins -= pr; items.push(id); updateStats(); document.getElementById(id).classList.remove('lock'); set(p, i); } }
-  function lancerChallenge() { if(isMission) return; var r = Math.random(); if(r < 0.5) startMission("FLASH", 10, 200); else if(r < 0.9) startMission("STYL", 30, 90); else startMission("GRANDE", 60, 1000); }
-  function startMission(t, s, r) { isMission = true; currentMissionType = t; timerVal = s; document.getElementById('challenge-area').style.display = "block"; document.getElementById('btn-challenge').style.display = "none"; document.getElementById('m-title').innerText = (t == "FLASH") ? "DÉFI FLASH ! ⚡" : (t == "STYL") ? "STYLISME ! ✨" : "GRANDE QUÊTE ! 👑"; document.getElementById('m-reward').innerText = "Gain : " + r + " 💰"; document.getElementById('t-text').innerText = themes[Math.floor(Math.random() * themes.length)]; var cd = setInterval(function() { timerVal--; document.getElementById('timer').innerText = timerVal; if (timerVal <= 0 || !isMission) { clearInterval(cd); if(isMission) { alert("Temps écoulé !"); endMission(false); } } }, 1000); }
-  function endMission(s) { isMission = false; document.getElementById('challenge-area').style.display = "none"; document.getElementById('btn-challenge').style.display = "block"; if (s) { var r = (currentMissionType == "FLASH") ? 200 : (currentMissionType == "STYL") ? 90 : 1000; coins += r; alert("Gagné ! +"+r+"💰"); updateStats(); } }
-  function roueFortune() { if(coins >= 1000) { coins -= 1000; var gains = [0, 500, 1000, 2000, 5000]; var g = gains[Math.floor(Math.random()*gains.length)]; coins += g; updateStats(); alert("La roue tourne... Résultat : " + g + " 💰 !"); } else { alert("Il te faut 1000 pièces !"); } }
-  function voter() { var s = Math.floor(Math.random()*26)+25, g = (isMission) ? 0 : Math.floor(Math.random()*11)+25; if(isMission) endMission(true); else coins += g; exp += 25; if(exp >= 100) { level++; exp = 0; alert("Niveau " + level + " !"); } updateStats(); alert("Note : " + s + "/50"); setTimeout(function(){ document.getElementById('t-text').innerText = themes[Math.floor(Math.random()*themes.length)]; set('hair',''); set('top',''); set('bot',''); set('shoe',''); set('acc',''); }, 1000); }
-  document.getElementById('t-text').innerText = themes[0]; updateStats();
+  var coins=0, items=[], exp=0, lvl=1, qAct=false;
+  var th=["Princesse 🎀","Rock 🎸","Sirène 🌊","Bal 👑","Sport 👟","Fée 🧚","Mariage 💍","Paris 👜","Hiver ❄️","Disco 💃","Safari 🦁","Galaxie 🚀","Licorne 🦄","Chef 🍳","Héroïne ⚡","Ange ☁️","Halloween 🎃","Noël 🎄","Patineuse ⛸️","Tennis 🎾","Plage 🌺","Château 👻","Journaliste 🎤","Manga 🌸","Exploratrice 🌵","Artiste 🎨","Pyjama 🧸","Masqué 🎭","Égypte 🐍","Cow-boy 🤠","Bonbons 🍭","Futur 🤖","Chat 🐱","Jungle 🌿","Danseuse 🩰","Pirate 🏴‍☠️","Papillon 🦋","Pop 🎙️","Grecque 🏛️","Été ☀️","Glace ❄️","Gothique 🖤","Street 👟","Vampire 🧛‍♀️","Ninja 🥷","Rose 🍭","Perdue 🐚","Poupée 🧸","Nuit 🌙","Promo 💃","Pop Culture 🎙️","Corée 🌸","Vintage 🌈","Punk 🖤","Coeur ❤️","Japon 👘","Pluie ☔","Safari 🦄","Diva 💎","Étoiles 🌌"];
+  function set(p,i){document.getElementById('v-'+p).innerHTML=i;}
+  function up(){document.getElementById('coins').innerText=coins;document.getElementById('lvl').innerText=lvl;document.getElementById('lvl-progress').style.width=exp+"%";}
+  function buy(p,i,id,pr){if(items.includes(id)){set(p,i);}else if(coins>=pr){coins-=pr;unlock(id);set(p,i);}}
+  function unlock(id){if(!items.includes(id)){items.push(id);let el=document.getElementById(id);if(el)el.classList.remove('lock');up();}}
+  function lancerQuete(){if(qAct)return; qAct=true; var g=(Math.random()<0.1)?1000:200; alert("MISSION: Habille-toi pour le thème ! Gain: "+g+"💰");}
+  function roue(){if(coins<1000){alert("Il te faut 1000💰 !");return;} coins-=1000; up();
+    var locks=Array.from(document.querySelectorAll('.lock'));
+    if(locks.length<2){alert("Tu as déjà tout débloqué !");coins+=1000;up();return;}
+    var r1=locks.splice(Math.floor(Math.random()*locks.length),1)[0];
+    var r2=locks[Math.floor(Math.random()*locks.length)];
+    unlock(r1.id); unlock(r2.id);
+    document.getElementById('win-txt').innerText="Tu as gagné au hasard : "+r1.innerText+" et "+r2.innerText+" !";
+    document.getElementById('win-screen').style.display='block';}
+  function voter(){var g=qAct?(Math.random()<0.1?1000:200):30; coins+=g; qAct=false; exp+=25; if(exp>=100){lvl++;exp=0;alert("Niveau "+lvl+" !");} up(); alert("Note: "+(Math.floor(Math.random()*20)+30)+"/50"); 
+    setTimeout(()=>{document.getElementById('t-text').innerText=th[Math.floor(Math.random()*th.length)];set('hair','');set('top','');set('bot','');set('shoe','');set('acc','');},1000);}
+  document.getElementById('t-text').innerText=th[0]; up();
 </script>
 </body>
 </html>

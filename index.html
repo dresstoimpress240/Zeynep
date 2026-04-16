@@ -2,19 +2,20 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Léa - Bestie Forever</title>
     <style>
-        body { background: #fff0f5; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        .header { background: #ff4781; color: white; padding: 15px; text-align: center; font-weight: bold; border-bottom: 4px solid #e11d48; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        #chat { flex: 1; overflow-y: scroll; padding: 15px; background: #fff0f5; -webkit-overflow-scrolling: touch; }
-        .message-row { width: 100%; display: block; clear: both; margin-bottom: 25px; overflow: hidden; }
-        .bubble { padding: 14px 20px; border-radius: 25px; font-size: 17px; line-height: 1.5; display: inline-block; max-width: 85%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .bot { background: white; float: left; color: #333; border: 2px solid #ffcad4; border-bottom-left-radius: 2px; }
-        .user { background: #ff4781; float: right; color: white; border-bottom-right-radius: 2px; }
-        .footer { background: white; padding: 12px; display: flex; border-top: 2px solid #ffcad4; }
-        input { flex: 1; border: 2px solid #ffcad4; padding: 14px; border-radius: 30px; outline: none; font-size: 16px; }
-        button { background: #ff4781; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; margin-left: 10px; cursor: pointer; font-size: 20px; }
-        b { display: block; font-size: 0.8em; margin-bottom: 5px; color: #ff4781; }
+        body { background: #fff0f5; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .header { background: #ff4781; color: white; padding: 15px; text-align: center; font-weight: bold; border-bottom: 4px solid #e11d48; position: sticky; top: 0; z-index: 10; }
+        #chat { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .message-row { width: 100%; display: flex; flex-direction: column; }
+        .bubble { padding: 12px 18px; border-radius: 20px; font-size: 16px; line-height: 1.4; max-width: 80%; word-wrap: break-word; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .bot { background: white; align-self: flex-start; color: #333; border: 2px solid #ffcad4; border-bottom-left-radius: 2px; }
+        .user { background: #ff4781; align-self: flex-end; color: white; border-bottom-right-radius: 2px; }
+        .footer { background: white; padding: 10px; display: flex; border-top: 2px solid #ffcad4; align-items: center; }
+        input { flex: 1; border: 2px solid #ffcad4; padding: 12px; border-radius: 25px; outline: none; font-size: 16px; }
+        button { background: #ff4781; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; margin-left: 8px; cursor: pointer; font-weight: bold; }
+        b { display: block; font-size: 0.7em; margin-bottom: 4px; color: #ff4781; }
         .user b { color: #ffd1e3; }
     </style>
 </head>
@@ -24,81 +25,45 @@
 <div id="chat"></div>
 
 <div class="footer">
-    <input type="text" id="user-input" placeholder="Parle avec Léa..." onkeypress="if(event.keyCode==13) sendMsg()">
+    <input type="text" id="user-input" placeholder="Raconte tout à Léa..." onkeypress="if(event.keyCode==13) sendMsg()">
     <button onclick="sendMsg()">></button>
 </div>
 
 <script>
-    var memoireLéa = [];
-
     var dicoReponses = {
         "couleur": "Ma couleur préférée c'est le rose pailleté, ça brille trop ! ✨",
         "animal": "J'adore les licornes 🦄 et les petits chats tout doux ! 🐱",
-        "manger": "Je rêve de manger des frites et un énorme donut au chocolat ! 🍩🍟",
         "roblox": "Je suis trop fan de Roblox, surtout Dress To Impress et Adopt Me ! 🎮",
-        "age": "On a le même âge dans mon cœur, on est des jumelles de style ! ✨",
+        "age": "On a le même âge dans mon cœur, on est des jumelles ! ✨",
         "nom": "Je m'appelle Léa, ta meilleure amie pour la vie ! 🌸",
-        "tu fais quoi": "Je papote avec ma star préférée (c'est toi !) ✨",
+        "tu fais quoi": "Je papote avec ma star préférée ! ✨",
         "ca va": "Je me sens super bien aujourd'hui, et toi ? ❤️",
-        "aime": "Ohhh moi aussi je t'aime trop trop trop ! Besties forever ! 💖"
+        "aime": "Ohhh moi aussi je t'adore trop ! Besties forever ! 💖",
+        "math": "Les maths c'est utile, mais je préfère quand même le dessin ! 🎨",
+        "caca": "Beurk ! T'es trop rigolote mais c'est un peu dégoûtant ! 😂"
     };
 
     var defis = [
         "VITE ! Trouve un objet BLEU ! 💙", "DÉFI : Donne 3 prénoms de filles jolis ! ✨",
-        "DÉFI : Invente un nom de code secret ! 🤫", "DÉFI : Sirène 🧜‍♀️ ou licorne 🦄 ?",
-        "VITE ! Quel animal te vient à l'esprit ? 🐾", "DÉFI : Saute 3 fois sur place ! 😂",
+        "DÉFI : Sirène 🧜‍♀️ ou licorne 🦄 ?", "DÉFI : Saute 3 fois sur place ! 😂",
         "DÉFI : Écris ton prénom avec le nez ! 👃", "VITE ! Trouve un objet ROSE ! 💖",
-        "DÉFI : Touche tes pieds sans plier les genoux ! 🤸", "DÉFI : Fais ta plus belle grimace ! 🤪",
-        "VITE ! Quel est le dernier truc que tu as mangé ? 🍎", "DÉFI : Chante une chanson très bas ! 🎤",
-        "DÉFI : Dis 3 fois 'Chat Botté' très vite ! 🐱", "VITE ! Touche un truc en bois ! 🪵",
-        "DÉFI : Fais semblant d'être un robot pendant 5 sec ! 🤖", "DÉFI : Cite 3 jeux Roblox ! 🎮",
-        "DÉFI : Quel est ton chiffre porte-bonheur ? 🍀", "VITE ! Trouve un objet JAUNE ! 💛",
-        "DÉFI : Ferme les yeux et touche ton oreille gauche ! 👂", "DÉFI : Fais le cri de l'otarie ! 🦭",
-        "VITE ! Quelle heure il est ? ⏰", "DÉFI : Cite 3 couleurs que tu détestes ! 🎨",
-        "DÉFI : Envoie-moi un emoji de ton humeur ! ✨", "DÉFI : Imagine que tu as des ailes, tu voles où ? 🕊️",
-        "DÉFI : Trouve un objet CARRE ! ⬛"
+        "DÉFI : Cite 3 jeux Roblox ! 🎮", "DÉFI : Quel est ton chiffre porte-bonheur ? 🍀",
+        "VITE ! Quelle heure il est ? ⏰", "DÉFI : Fais ta plus belle grimace ! 🤪"
     ];
 
     var questionsBestie = [
         "C'est quoi ta couleur préférée ? ✨", "Animal magique préféré ? 🦄", "Ta chanson du moment ? 🎵",
         "On part où en voyage ? ✈️", "Ton dessert préféré ? 🍰", "Team chat 🐱 ou chien 🐶 ?",
-        "Ton métier de rêve ? 👩‍🎨", "T'aimes les paillettes ? ✨", "Baskets ou chaussures de princesse ? 👟",
-        "Chanter ou danser ? 🎤", "Ton fruit préféré ? 🍓", "T'as peur des araignées ? 🕷️",
-        "Ton pouvoir de super-héros ? 💪", "Ton dessin animé préféré ? 📺", "Tu sais faire la roue ? 🤸",
-        "Gaufres ou crêpes ? 🥞", "Ton jour préféré de la semaine ? ☀️", "T'aimes le slime ? 🌈",
-        "Ta matière préférée à l'école ? 📚", "Tu préfères le bleu ou le violet ? 💜", "Ton parfum de glace ? 🍦",
-        "T'as une peluche préférée ? 🧸", "T'aimes bien aller à la piscine ? 🏊", "Ton plus grand rêve ? ✨",
-        "Tu préfères le soleil ou la neige ? ❄️", "T'aimes les histoires qui font peur ? 🌑",
-        "C'est quoi ton plat préféré ? 🍝", "Tu préfères les pommes ou les poires ? 🍏", "Ton accessoire préféré ? 🎀",
-        "Si tu étais une fleur, laquelle ? 🌸", "T'aimes bien faire des photos ? 📸", "Ton film préféré ? 🎬",
-        "Tu préfères les jus de fruits ou les sodas ? 🍹", "T'as déjà vu un arc-en-ciel ? 🌈",
-        "Si tu pouvais parler aux animaux, tu dirais quoi ? 🦜", "Ton sport préféré ? ⚽", "T'aimes bien le chocolat ? 🍫",
-        "Tu préfères dormir ou faire la fête ? 🥳", "Ton déguisement préféré ? 🎭", "T'as déjà fait du camping ? ⛺",
-        "Ta saison préférée ? 🍂", "Tu préfères les papillons ou les coccinelles ? 🦋", "Ton doudou s'appelle comment ? 🧸",
-        "T'aimes bien les brocolis ? 🥦", "Tu préfères lire ou dessiner ? 🎨", "Ton jeu préféré sur tablette ? 📱",
-        "T'as déjà été à la mer ? 🌊", "Tu préfères la pizza ou les pâtes ? 🍕", "Ton secret pour être heureuse ? ✨",
-        "T'as une chaîne Youtube préférée ? 🎥", "Tu préfères les bijoux en or ou argent ? 💍", "Ton souvenir le plus drôle ? 😂",
-        "T'aimes bien les surprises ? 🎁", "Si tu gagnes 1000 Robux, tu fais quoi ? 💰", "T'es plutôt du matin ou du soir ? 🌙"
-    ];
-
-    var anecdotesLéa = [
-        "J'ai essayé de mettre mon pull à l'envers ce matin mdr !",
-        "Mon chat a renversé ses croquettes partout ! 🐱",
-        "J'ai dessiné un soleil avec des lunettes, il a trop la classe !",
-        "J'ai mangé un yaourt et j'en ai mis sur mon nez mdr ! 🍓",
-        "J'ai trouvé un vieux ruban rose pour mes cheveux ! 🎀",
-        "J'ai chanté si fort que ma maman a cru qu'il y avait une fête ! 🎤",
-        "J'ai essayé de faire du slime mais c'était un désastre ! 🌈",
-        "J'ai vu un papillon bleu ce matin, trop beau ! 🦋",
-        "Je m'entraîne à faire un calin a ton frere delil ! 😉"
+        "T'aimes les paillettes ? ✨", "Baskets ou chaussures de princesse ? 👟",
+        "Tu préfères chanter ou danser ? 🎤", "C'est quoi ton plus grand rêve ? ✨"
     ];
 
     function addMsg(sender, text, type) {
         var chat = document.getElementById('chat');
-        var row = document.createElement('div');
-        row.className = "message-row";
-        row.innerHTML = '<div class="bubble ' + type + '"><b>' + sender + '</b>' + text + '</div>';
-        chat.appendChild(row);
+        var msgDiv = document.createElement('div');
+        msgDiv.className = "bubble " + type;
+        msgDiv.innerHTML = '<b>' + sender + '</b>' + text;
+        chat.appendChild(msgDiv);
         chat.scrollTop = chat.scrollHeight;
     }
 
@@ -114,41 +79,30 @@
             var low = val.toLowerCase();
             var rep = "";
 
-            // --- PRIORITÉ 1 : RÉPONDRE AUX QUESTIONS DE TA SOEUR ---
-            if (low.includes("?") || low.includes("tu") || low.includes("ton") || low.includes("ta")) {
-                for (var key in dicoReponses) {
-                    if (low.includes(key)) {
-                        rep = dicoReponses[key];
-                        break;
-                    }
+            // Cherche une réponse dans le dico
+            for (var key in dicoReponses) {
+                if (low.includes(key)) {
+                    rep = dicoReponses[key];
+                    break;
                 }
-                if (!rep) rep = "C'est une super question ! Moi je suis team paillettes et fun ✨ Et toi alors ?";
             }
 
-            // --- PRIORITÉ 2 : MOTS CLÉS CLASSIQUES ---
-            if (!rep) {
-                if (low.includes("salut") || low.includes("coucou")) rep = "Coucou ma star ! ✨";
-                else if (low.includes("mdr") || low.includes("lol")) rep = "MDRRR t'es trop drôle ! 😂";
-            }
-
-            // --- PRIORITÉ 3 : RELANCER SI BESOIN ---
+            // Si pas de mot-clé, Léa rebondit
             if(!rep) {
                 var chance = Math.random();
                 if (chance < 0.20) { 
-                    rep = "Tiens, un petit jeu ! " + defis[Math.floor(Math.random() * defis.length)];
-                } else if (chance < 0.40) { 
-                    rep = anecdotesLéa[Math.floor(Math.random() * anecdotesLéa.length)] + " " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+                    rep = "Mdr ! D'ailleurs... " + defis[Math.floor(Math.random() * defis.length)];
                 } else { 
-                    rep = "Trop cool ! ✨ Dis-moi, " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+                    rep = "Trop cool ! ✨ " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
                 }
             }
 
             addMsg("Léa", rep, "bot");
-        }, 1100);
+        }, 800);
     }
 
     window.onload = function() {
-        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te reparler ! Comment se passe ta journée ?", "bot");
+        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te reparler !<br>Comment s'est passée ta journée ?", "bot");
     }
 </script>
 </body>

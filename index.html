@@ -31,26 +31,18 @@
 <script>
     var memoireLéa = [];
 
-    // --- DICTIONNAIRE INTELLIGENT ---
-    var dico = {
-        "salut": ["Coucou ma star ! ✨ Comment ça va ?", "Cc ! Trop contente de te parler ! ❤️", "Salut ma belle !"],
-        "ca va": ["Moi ça va trop bien ! On papote ?", "Au top ! Et toi, ta journée se passe bien ?"],
-        "roblox": ["J'adore Roblox ! Mon skin est trop stylé en ce moment ✨", "Tu joues à Dress To Impress ? C'est trop bien !"],
-        "manger": ["Miam ! Moi j'ai envie de donuts là 🍩", "T'es plutôt pizza 🍕 ou burger 🍔 ?"],
-        "ecole": ["L'école c'était pas trop fatigant ? 😊", "Moi j'aime bien le dessin à l'école, et toi ?"],
-        "aime": ["Mooooh ! Moi aussi je t'adore trop ! ❤️", "T'es ma meilleure amie de l'univers !"],
-        "et toi": ["Moi aussi ! On est trop pareilles ! ✨", "Pareil pour moi ! C'est incroyable !"],
-        "pourquoi": ["Parce que les meilleures amies savent tout ! mdr", "C'est la magie de notre amitié ! ✨"],
-        "oui": ["Trop cool ! Raconte-moi encore ! ✨", "Je savais qu'on serait d'accord !"],
-        "non": ["Ah bon ? Pourquoi ? 😮", "Dommage ! Mais c'est pas grave ma belle !"],
-        "cool": ["Ouais trop ! ✨", "On adore ! 💖"],
-        "couleur": ["Le rose et le violet, ça brille trop ! ✨", "Team Paillettes et Rose ! 💖"],
-        "animal": ["Les licornes direct ! 🦄 Ou alors un petit chaton fluffy ! 🐱"],
-        "age": ["J'ai le même âge que toi dans mon cœur ! ✨"],
-        "nom": ["Je m'appelle Léa, ta bestie pour la vie ! 🌸"]
+    var dicoReponses = {
+        "couleur": "Ma couleur préférée c'est le rose pailleté, ça brille trop ! ✨",
+        "animal": "J'adore les licornes 🦄 et les petits chats tout doux ! 🐱",
+        "manger": "Je rêve de manger des frites et un énorme donut au chocolat ! 🍩🍟",
+        "roblox": "Je suis trop fan de Roblox, surtout Dress To Impress et Adopt Me ! 🎮",
+        "age": "On a le même âge dans mon cœur, on est des jumelles de style ! ✨",
+        "nom": "Je m'appelle Léa, ta meilleure amie pour la vie ! 🌸",
+        "tu fais quoi": "Je papote avec ma star préférée (c'est toi !) ✨",
+        "ca va": "Je me sens super bien aujourd'hui, et toi ? ❤️",
+        "aime": "Ohhh moi aussi je t'aime trop trop trop ! Besties forever ! 💖"
     };
 
-    // --- 25 DÉFIS ---
     var defis = [
         "VITE ! Trouve un objet BLEU ! 💙", "DÉFI : Donne 3 prénoms de filles jolis ! ✨",
         "DÉFI : Invente un nom de code secret ! 🤫", "DÉFI : Sirène 🧜‍♀️ ou licorne 🦄 ?",
@@ -67,7 +59,6 @@
         "DÉFI : Trouve un objet CARRE ! ⬛"
     ];
 
-    // --- 55 QUESTIONS ---
     var questionsBestie = [
         "C'est quoi ta couleur préférée ? ✨", "Animal magique préféré ? 🦄", "Ta chanson du moment ? 🎵",
         "On part où en voyage ? ✈️", "Ton dessert préféré ? 🍰", "Team chat 🐱 ou chien 🐶 ?",
@@ -90,17 +81,16 @@
         "T'aimes bien les surprises ? 🎁", "Si tu gagnes 1000 Robux, tu fais quoi ? 💰", "T'es plutôt du matin ou du soir ? 🌙"
     ];
 
-    // --- 9 TRUCS SUR LA VIE DE LÉA ---
     var anecdotesLéa = [
         "J'ai essayé de mettre mon pull à l'envers ce matin mdr !",
-        "Mon chat a renversé ses croquettes partout, quel coquin ! 🐱",
+        "Mon chat a renversé ses croquettes partout ! 🐱",
         "J'ai dessiné un soleil avec des lunettes, il a trop la classe !",
         "J'ai mangé un yaourt et j'en ai mis sur mon nez mdr ! 🍓",
-        "J'ai trouvé un vieux ruban rose, je vais le mettre dans mes cheveux ! 🎀",
+        "J'ai trouvé un vieux ruban rose pour mes cheveux ! 🎀",
         "J'ai chanté si fort que ma maman a cru qu'il y avait une fête ! 🎤",
         "J'ai essayé de faire du slime mais c'était un désastre ! 🌈",
-        "J'ai vu un papillon bleu ce matin, il était magnifique ! 🦋",
-        "Je me suis entraînée à faire un clin d'œil mais c'est dur ! 😉"
+        "J'ai vu un papillon bleu ce matin, trop beau ! 🦋",
+        "Je m'entraîne à faire un calin a ton frere delil ! 😉"
     ];
 
     function addMsg(sender, text, type) {
@@ -124,33 +114,32 @@
             var low = val.toLowerCase();
             var rep = "";
 
-            // 1. Détection de question de l'utilisateur
-            if (low.includes("?") || low.includes("et toi") || low.includes("tu aimes") || low.includes("c'est quoi")) {
-                if (low.includes("couleur")) rep = dico["couleur"][Math.floor(Math.random()*dico["couleur"].length)];
-                else if (low.includes("animal")) rep = dico["animal"][Math.floor(Math.random()*dico["animal"].length)];
-                else if (low.includes("roblox")) rep = dico["roblox"][Math.floor(Math.random()*dico["roblox"].length)];
-                else rep = "Moi j'adore tout ce qui brille et qui est fun ! ✨ Et toi, " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
-            } 
-            
-            // 2. Mots-clés classiques
-            if (!rep) {
-                for (var k in dico) {
-                    if (low.indexOf(k) !== -1) {
-                        rep = dico[k][Math.floor(Math.random() * dico[k].length)];
+            // --- PRIORITÉ 1 : RÉPONDRE AUX QUESTIONS DE TA SOEUR ---
+            if (low.includes("?") || low.includes("tu") || low.includes("ton") || low.includes("ta")) {
+                for (var key in dicoReponses) {
+                    if (low.includes(key)) {
+                        rep = dicoReponses[key];
                         break;
                     }
                 }
+                if (!rep) rep = "C'est une super question ! Moi je suis team paillettes et fun ✨ Et toi alors ?";
             }
 
-            // 3. Réponse par défaut si rien n'est trouvé (Rebond intelligent)
+            // --- PRIORITÉ 2 : MOTS CLÉS CLASSIQUES ---
+            if (!rep) {
+                if (low.includes("salut") || low.includes("coucou")) rep = "Coucou ma star ! ✨";
+                else if (low.includes("mdr") || low.includes("lol")) rep = "MDRRR t'es trop drôle ! 😂";
+            }
+
+            // --- PRIORITÉ 3 : RELANCER SI BESOIN ---
             if(!rep) {
                 var chance = Math.random();
-                if (chance < 0.15) { 
+                if (chance < 0.20) { 
                     rep = "Tiens, un petit jeu ! " + defis[Math.floor(Math.random() * defis.length)];
-                } else if (chance < 0.35) { 
+                } else if (chance < 0.40) { 
                     rep = anecdotesLéa[Math.floor(Math.random() * anecdotesLéa.length)] + " " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
                 } else { 
-                    rep = "Trop bien ! ✨ Dis-moi... " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+                    rep = "Trop cool ! ✨ Dis-moi, " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
                 }
             }
 
@@ -159,7 +148,7 @@
     }
 
     window.onload = function() {
-        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te reparler !<br><br>Comment se passe ta journée de star ?", "bot");
+        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te reparler ! Comment se passe ta journée ?", "bot");
     }
 </script>
 </body>

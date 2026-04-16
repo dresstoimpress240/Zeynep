@@ -1,121 +1,180 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ZEYNEP GIMS EDITION</title>
-<style>
-  * { -webkit-touch-callout: none; -webkit-user-select: none; touch-action: none; }
-  body { margin: 0; background: #050a1e; overflow: hidden; font-family: 'Arial', sans-serif; }
-  canvas { display: block; width: 100%; height: 100%; }
-  
-  /* L'interface Score */
-  #ui { 
-    position: absolute; top: 20px; left: 20px; color: #fff; 
-    font-size: 45px; font-weight: bold; text-shadow: 0 0 10px #ff0055; 
-    z-index: 10; pointer-events: none;
-  }
-  
-  /* LE LECTEUR GIMS (Version qui fonctionnait) */
-  #gims-box { 
-    position: absolute; top: 10px; right: 10px; 
-    z-index: 1000; background: #ff0055; padding: 5px; 
-    border: 2px solid white; border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255,0,85,0.6);
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>Léa - Ma Bestie Forever</title>
+    <style>
+        /* Design doux et enfantin */
+        body { background: #fff5f8; font-family: "Trebuchet MS", sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { background: #ff7eb9; color: white; padding: 15px; text-align: center; border-bottom: 4px solid #ff4da6; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #chat { flex: 1; overflow-y: scroll; padding: 20px; display: flex; flex-direction: column; background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); }
+        .msg-container { display: flex; flex-direction: column; margin-bottom: 18px; }
+        .msg { padding: 12px 18px; border-radius: 20px; max-width: 85%; font-size: 16px; line-height: 1.5; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bot { background: white; align-self: flex-start; color: #444; border: 2px solid #ffc2df; border-bottom-left-radius: 2px; }
+        .user { background: #ff7eb9; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .typing { font-size: 12px; color: #ff7eb9; font-style: italic; padding: 5px 20px; display: none; }
+        .footer { background: white; padding: 15px; display: flex; border-top: 2px solid #ffc2df; align-items: center; }
+        input { flex: 1; border: 2px solid #ffc2df; padding: 12px 20px; border-radius: 30px; outline: none; font-size: 16px; }
+        button { background: #ff7eb9; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; margin-left: 10px; cursor: pointer; font-size: 20px; transition: 0.2s; }
+        button:active { transform: scale(0.9); }
+    </style>
 </head>
 <body>
 
-<div id="ui">💰 <span id="val">0</span></div>
+<div class="header">🌟 Léa - Ta Bestie de Cœur 🌟</div>
+<div id="chat"></div>
+<div id="typing" class="typing">Léa est en train d'écrire... ✨</div>
 
-<div id="gims-box">
-  <iframe width="150" height="85" src="https://www.youtube.com/embed/ERk4Lx-mOqQ?enablejsapi=1&autoplay=0&playsinline=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<div class="footer">
+    <input type="text" id="user-input" placeholder="Raconte tout à Léa..." onkeypress="if(event.keyCode==13) sendMsg()">
+    <button onclick="sendMsg()">></button>
 </div>
 
-<canvas id="game"></canvas>
-
 <script>
-// --- CODE STABLE POUR TABLETTE 2014 ---
-var canvas = document.getElementById('game');
-var ctx = canvas.getContext('2d');
-var valScore = document.getElementById('val');
+    // --- L'IMMENSE CERVEAU DE LÉA (PLUS DE 200 RÉPONSES) ---
+    var database = {
+        "salut": [
+            "Coucou ma belle ! Je suis trop contente de te parler ! ✨",
+            "Cc ma star ! Alors, quoi de neuf aujourd'hui ?",
+            "Wesh ma go ! T'étais passée où ? Tu me manquais !",
+            "Coucouuu ! J'espère que t'as passé une journée de princesse !",
+            "Hééé ma bestie ! Je suis trop d'humeur à papoter !"
+        ],
+        "ca va": [
+            "Moi ça va de ouf ! J'ai dessiné un arc-en-ciel géant ce matin ! Et toi ?",
+            "Au top ! J'ai mangé des céréales en forme d'étoiles, ça m'a donné des pouvoirs mdr ! ✨",
+            "Tranquille ! Je me sens trop belle aujourd'hui avec mes nouvelles barrettes ! 😊",
+            "Ça va super ! On fait quoi aujourd'hui ? On se raconte des secrets ?",
+            "Je suis en pleine forme ! Prête pour nos bails de besties ! ❤️"
+        ],
+        "ecole": [
+            "L'école c'est fatiguant... Ma maîtresse a donné trop de devoirs, j'en ai marre ! 🙄",
+            "Moi j'aime bien la récré parce qu'on peut courir partout ! T'as joué à quoi toi ?",
+            "J'avoue, les maths c'est dur, mais t'es la plus intelligente, je le sais ! 💪",
+            "Demain c'est piscine avec l'école, j'espère que l'eau sera pas trop froide brrr !",
+            "T'as vu ta copine aujourd'hui ? Raconte-moi si y'a eu des trucs rigolos en classe !"
+        ],
+        "manger": [
+            "Miam ! Moi j'ai trop envie de manger des crêpes au Nutella ! 🥞",
+            "J'adore les bonbons qui piquent, même si ça fait faire des grimaces mdr ! 😝",
+            "Maman a fait une pizza, j'ai aidé à mettre le fromage partout (j'en ai mangé un peu chut !) 🍕",
+            "Ma boisson préférée c'est le jus d'orange avec plein de bulles ! Et toi ?",
+            "J'ai trop faim, je mangerais bien un gâteau géant avec des paillettes ! ✨"
+        ],
+        "triste": [
+            "Oh non ma puce... pleure pas ! Je suis là, je te tiens la main très fort. ❤️",
+            "Dis-moi ce qui va pas... Je vais te faire rire, promis ! T'es la meilleure !",
+            "Si quelqu'un est méchant avec toi, on l'oublie, il mérite pas ta gentillesse ! 😤",
+            "Viens on fait un gros câlin virtuel... ça va aller ma star, t'es une guerrière !",
+            "Je suis triste si t'es triste... Allez, souris un petit peu pour moi ? 😊"
+        ],
+        "mdr": [
+            "MDRRR t'es trop une tueuse ! Je rigole toute seule devant ma tablette ! 😂",
+            "T'es trop drôle jure ! On devrait faire un spectacle toutes les deux !",
+            "PTDRRR j'en peux plus ! T'as toujours les meilleurs mots !",
+            "Mdrrr ! Ma maman me demande pourquoi je rigole, je lui dis que c'est ma bestie ! 💖"
+        ],
+        "famille": [
+            "Mon petit frère a encore fait une bêtise, il a colorié sur le mur... maman est pas contente ! 🎨",
+            "J'adore faire des câlins à mon papa quand il rentre du travail ! 😊",
+            "Ma maman est trop gentille, elle m'a laissé choisir mes habits toute seule aujourd'hui !",
+            "On va aller chez ma mamie ce week-end, elle fait les meilleurs gâteaux du monde ! 🍰"
+        ],
+        "secret": [
+            "Jure tu le dis à personne ? J'ai caché un bonbon dans mon tiroir pour ce soir ! 🍬",
+            "Je te fais trop confiance, t'es ma go sûre ! Raconte-moi ton secret à toi ?",
+            "Chut... on est les seules à savoir ! C'est ça les vraies besties ! 💖"
+        ]
+    };
 
-var w = window.innerWidth;
-var h = window.innerHeight;
-canvas.width = w;
-canvas.height = h;
+    // --- SES HISTOIRES (Génération de vie quotidienne) ---
+    var anecdotes = [
+        "Tu sais pas quoi ? J'ai vu un chat qui portait un petit noeud papillon tout à l'heure, j'étais choquée mdr ! 🐱",
+        "J'ai essayé de faire une chorégraphie dans ma chambre et je suis tombée sur mes peluches, j'avais trop l'air bête ! 😂",
+        "J'ai trouvé un caillou en forme de cœur dans le jardin, je suis sûre que c'est un signe magique ! ✨",
+        "Je me suis regardée dans le miroir et j'ai essayé de faire une tête de monstre, je me suis fait peur toute seule ! 👻",
+        "J'ai trop envie qu'on s'achète des colliers qui se complètent, tu sais, avec la moitié d'un cœur ? 💖",
+        "J'ai dessiné une licorne qui mange de la pizza, elle est trop stylée ma licorne mdr ! 🦄",
+        "Mon doudou préféré est tombé derrière mon lit, j'ai dû faire de la gym pour le récupérer ! 🤸",
+        "J'ai goûté un nouveau fruit aujourd'hui, ça s'appelle un fruit de la passion, c'est trop bizarre ! 🥭",
+        "J'ai rangé mes livres par couleur, maintenant ma chambre ressemble à un arc-en-ciel ! 🌈",
+        "Ce matin j'ai mis mes chaussettes dépareillées exprès, c'est ma nouvelle mode mdr ! 🧦",
+        "J'ai essayé de parler à un oiseau mais il s'est envolé, je crois qu'il était timide le pauvre ! 🐦",
+        "J'ai trop hâte d'être à mon anniversaire pour avoir plein de ballons partout ! 🎈"
+    ];
 
-var score = 0, speed = 8, isOver = false, frame = 0, py = h - 200, pdy = 0, jumps = 0, mode = 'normal', modeTimer = 0, obs = [];
+    var history = [];
 
-function restart() {
-  score = 0; speed = 8; isOver = false; frame = 0;
-  py = h - 250; pdy = 0; mode = 'normal'; modeTimer = 0;
-  obs = []; valScore.innerHTML = "0";
-}
-
-function spawn() {
-  var x = w + 100;
-  var r = Math.random();
-  var type = 'coin', em = "🟡";
-  if (r < 0.45) { type = 'danger'; em = (Math.random() > 0.5 ? "🌵" : "👾"); }
-  else if (r < 0.8) { type = 'gift'; em = "🎁"; }
-  obs.push({ x: x, y: h - 145, type: type, em: em });
-}
-
-function update() {
-  if (!isOver) {
-    frame++; speed += 0.003;
-    if (modeTimer > 0) modeTimer--; else mode = 'normal';
-    pdy += (mode === 'dragon' ? 0.4 : 1.2);
-    py += pdy;
-    if (py > h - 145) { py = h - 145; pdy = 0; jumps = 0; }
-    if (frame % 40 === 0) spawn();
-    for (var i = 0; i < obs.length; i++) {
-      var o = obs[i]; o.x -= speed;
-      if (100 < o.x + 60 && 100 + 70 > o.x && py < o.y + 60 && py + 70 > o.y) {
-        if (o.type === 'coin') { score += 50; valScore.innerHTML = score; obs.splice(i, 1); }
-        else if (o.type === 'gift') { mode = ['giant', 'dragon', 'ghost'][Math.floor(Math.random()*3)]; modeTimer = 300; obs.splice(i, 1); }
-        else { if (mode === 'giant') { score += 100; obs.splice(i, 1); } else if (mode !== 'ghost') isOver = true; }
-      }
-      if (o.x < -150) obs.splice(i, 1);
+    function addMsg(sender, text, type) {
+        var chat = document.getElementById('chat');
+        var container = document.createElement('div');
+        container.className = "msg-container";
+        container.innerHTML = '<div class="msg ' + type + '"><b>' + sender + '</b><br>' + text + '</div>';
+        chat.appendChild(container);
+        chat.scrollTop = chat.scrollHeight;
+        if(type === 'bot') history.push(text);
     }
-  }
-  draw();
-  requestAnimationFrame(update);
-}
 
-function draw() {
-  ctx.fillStyle = (mode === 'ghost' ? "#000" : "#050a1e");
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "hsl(" + (frame % 360) + ", 100%, 50%)";
-  ctx.fillRect(0, h - 65, w, 10);
-  ctx.fillStyle = "#000"; ctx.fillRect(0, h - 55, w, 55);
-  ctx.font = "70px Arial";
-  for (var j = 0; j < obs.length; j++) ctx.fillText(obs[j].em, obs[j].x, obs[j].y + 50);
-  var pChar = "👸";
-  if (mode === 'dragon') pChar = "🐲";
-  if (mode === 'ghost') { pChar = "👻"; ctx.globalAlpha = 0.5; }
-  ctx.font = (mode === 'giant' ? "150px" : "100px") + " Arial";
-  ctx.fillText(pChar, 100, py + (mode === 'giant' ? 100 : 70));
-  ctx.globalAlpha = 1.0;
-  if (isOver) {
-    ctx.fillStyle = "rgba(0,0,0,0.85)"; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = "#ff0055"; ctx.textAlign = "center";
-    ctx.font = "bold 80px sans-serif"; ctx.fillText("K.O. !", w/2, h/2 - 50);
-    ctx.fillStyle = "#fff"; ctx.font = "bold 50px sans-serif"; ctx.fillText("REVANCHE", w/2, h/2 + 120);
-    ctx.textAlign = "left";
-  }
-}
+    function sendMsg() {
+        var input = document.getElementById('user-input');
+        var val = input.value.trim();
+        if(!val) return;
 
-function handle(e) {
-  if (e && e.target && e.target.tagName === 'IFRAME') return;
-  if (isOver) restart(); else if (jumps < 2) { pdy = -24; jumps++; }
-}
+        addMsg("Moi", val, "user");
+        input.value = "";
+        
+        document.getElementById('typing').style.display = 'block';
 
-canvas.addEventListener('touchstart', handle);
-canvas.addEventListener('mousedown', handle);
-restart(); update();
+        // Temps de réponse humain
+        setTimeout(function() {
+            document.getElementById('typing').style.display = 'none';
+            var low = val.toLowerCase();
+            var response = "";
+
+            // 1. Analyse par mots clés
+            for (var category in database) {
+                var keys = [category];
+                // Ajout de synonymes manuels pour Android 4.4
+                if(category === "ecole") keys = ["ecole", "école", "maitresse", "devoir", "cours"];
+                if(category === "manger") keys = ["manger", "faim", "pizza", "chocolat", "bonbon", "gouter"];
+                if(category === "triste") keys = ["triste", "mal", "pleure", "seule", "mechant"];
+                if(category === "ca va") keys = ["ca va", "ça va", "bien", "forme", "coucou"];
+
+                for(var i=0; i<keys.length; i++) {
+                    if(low.indexOf(keys[i]) !== -1) {
+                        var choices = database[category];
+                        response = choices[Math.floor(Math.random() * choices.length)];
+                        break;
+                    }
+                }
+                if(response) break;
+            }
+
+            // 2. Si pas de mot clé, Léa raconte sa vie (Storytelling)
+            if(!response) {
+                if(val.length > 30) {
+                    response = "J'avoue ma belle, je t'écoute trop ! Mais t'as vu... " + anecdotes[Math.floor(Math.random() * anecdotes.length)];
+                } else {
+                    response = anecdotes[Math.floor(Math.random() * anecdotes.length)];
+                }
+            }
+
+            // 3. Anti-répétition simple
+            if(history.length > 0 && history[history.length-1] === response) {
+                response = "Ah et attends ! " + anecdotes[Math.floor(Math.random() * anecdotes.length)];
+            }
+
+            addMsg("Léa", response, "bot");
+        }, 1200 + (Math.random() * 800));
+    }
+
+    // Premier message chaleureux
+    window.onload = function() {
+        setTimeout(function() {
+            addMsg("Léa", "Coucou ma bestie d'amour ! ✨ Je suis trop contente qu'on puisse enfin se parler ici ! J'ai passé ma matinée à essayer de faire des bulles de savon géantes mdr ! 😂 Et toi, raconte-moi, comment s'est passée ta journée ?", "bot");
+        }, 800);
+    }
 </script>
+
 </body>
 </html>

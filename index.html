@@ -2,103 +2,96 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Léa - Bestie Forever</title>
     <style>
-        /* CSS RENFORCÉ POUR ANDROID 4.4 - ANTI-BUG D'AFFICHAGE */
-        body { background: #fff5f8; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        .header { background: #ff4781; color: white; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2em; border-bottom: 4px solid #e11d48; z-index: 100; }
-        #chat { flex: 1; overflow-y: scroll; padding: 15px; background: #fff5f8; display: block; -webkit-overflow-scrolling: touch; }
-        
-        /* Conteneur de message pour forcer l'alignement vertical propre */
-        .message-row { width: 100%; display: block; clear: both; margin-bottom: 20px; overflow: hidden; }
-        
-        .bubble { padding: 12px 18px; border-radius: 20px; font-size: 16px; line-height: 1.5; display: inline-block; word-wrap: break-word; max-width: 80%; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
-        .bot-bubble { background: #ffffff; float: left; color: #333; border: 2px solid #ffcad4; border-bottom-left-radius: 2px; }
-        .user-bubble { background: #ff4781; float: right; color: white; border-bottom-right-radius: 2px; }
-        
-        .footer { background: white; padding: 12px; display: flex; border-top: 2px solid #ffcad4; align-items: center; }
-        input { flex: 1; border: 2px solid #ffcad4; padding: 12px 15px; border-radius: 30px; outline: none; font-size: 16px; background: #fff; }
-        button { background: #ff4781; color: white; border: none; border-radius: 50%; width: 48px; height: 48px; margin-left: 10px; cursor: pointer; font-size: 20px; font-weight: bold; }
-        
-        b { color: #e11d48; font-size: 0.8em; display: block; margin-bottom: 4px; }
-        .user-bubble b { color: #ffd1e3; }
+        body { background: #fff0f5; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { background: #ff4781; color: white; padding: 15px; text-align: center; font-weight: bold; border-bottom: 4px solid #e11d48; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        #chat { flex: 1; overflow-y: scroll; padding: 15px; background: #fff0f5; -webkit-overflow-scrolling: touch; }
+        .message-row { width: 100%; display: block; clear: both; margin-bottom: 25px; overflow: hidden; }
+        .bubble { padding: 14px 20px; border-radius: 25px; font-size: 17px; line-height: 1.5; display: inline-block; max-width: 85%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .bot { background: white; float: left; color: #333; border: 2px solid #ffcad4; border-bottom-left-radius: 2px; }
+        .user { background: #ff4781; float: right; color: white; border-bottom-right-radius: 2px; }
+        .footer { background: white; padding: 12px; display: flex; border-top: 2px solid #ffcad4; }
+        input { flex: 1; border: 2px solid #ffcad4; padding: 14px; border-radius: 30px; outline: none; font-size: 16px; }
+        button { background: #ff4781; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; margin-left: 10px; cursor: pointer; font-size: 20px; }
+        b { display: block; font-size: 0.8em; margin-bottom: 5px; color: #ff4781; }
+        .user b { color: #ffd1e3; }
     </style>
 </head>
 <body>
 
-<div class="header">💖 Léa - Ta Meilleure Amie Forever</div>
+<div class="header">🌟 Léa - Ta Bestie de Cœur 🌟</div>
 <div id="chat"></div>
 
 <div class="footer">
-    <input type="text" id="user-input" placeholder="Raconte ton secret à Léa..." onkeypress="if(event.keyCode==13) sendMsg()">
+    <input type="text" id="user-input" placeholder="Parle avec Léa..." onkeypress="if(event.keyCode==13) sendMsg()">
     <button onclick="sendMsg()">></button>
 </div>
 
 <script>
-    // --- SYSTÈME DE MÉMOIRE POUR ÉVITER LES RÉPÉTITIONS ---
-    var memoireProche = [];
-    
-    // --- LA BASE DE DONNÉES GÉANTE DE LÉA ---
-    var dicoAction = {
-        "salut": ["Coucou ma star ! ✨", "Cc ma belle ! Tu me manquais !", "Wesh ma go ! Ça va ou quoi ?", "Coucouuu ! Trop contente de te parler !", "Salut ma bestie préférée ! ✨"],
-        "ca va": ["Moi ça va de ouf ! J'ai passé une matinée trop stylée ! Et toi ?", "Au top ! Je me sens comme une princesse aujourd'hui ! ✨", "Super bien ! J'ai mangé un gâteau trop bon tout à l'heure !", "Ça va super, je pensais justement à toi ! ❤️"],
-        "roblox": ["J'adore Roblox ! On pourrait créer un monde avec plein de paillettes ! 🏠", "T'as quoi comme skin ? Je parie qu'il est trop stylé ! ✨", "Trop bien ! Tu joues à Brookhaven ou à Adopt Me ?", "Roblox c'est la vie ! On ferait une trop bonne équipe toutes les deux !"],
-        "manger": ["Miam ! Moi j'adore les frites et les glaces ! Et toi ?", "J'ai trop faim, je mangerais bien une montagne de crêpes ! 🥞", "Le chocolat c'est mon secret pour être de bonne humeur hihi ! 🍫", "J'ai essayé de cuisiner un truc mais j'en ai mis partout mdr !"],
-        "ecole": ["L'école c'est fatiguant mais au moins on se voit ! T'as rigolé à la récré ?", "Ma maîtresse est gentille mais les devoirs c'est nul pfff ! 🙄", "J'adore le dessin et le sport, le reste c'est trop dur mdr !", "T'as réussi ton contrôle ? Je suis sûre que t'es la plus maligne !"],
-        "triste": ["Oh non ma puce... Je te fais un énorme câlin ! ❤️ Raconte-moi, je suis là.", "T'inquiète ma star, demain sera une journée géniale, je te le promets !", "Pleure pas, t'es la meilleure des go et je t'aime trop ! ✨"],
-        "mdr": ["MDRRR t'es trop une tueuse jure ! 😂", "PTDRRR j'en peux plus de toi, t'es trop drôle !", "T'as toujours les bons mots pour me faire rire ! ❤️"],
-        "aime": ["Mooooh ! Moi aussi je t'adore ma bestie sûre ! 💖", "T'es ma préférée de tout l'univers ! ✨", "Besties pour la vie, on se lâche plus ! ❤️"]
+    var memoireLéa = [];
+
+    var dico = {
+        "salut": ["Coucou ma star ! ✨ Comment ça va aujourd'hui ?", "Cc ma belle ! Tu me racontes ta journée ?", "Wesh ! Trop contente de te voir ! T'as fait quoi de beau ?"],
+        "ca va": ["Trop bien ! Et toi, t'as passé une bonne matinée ?", "Au top ! Je suis trop contente pour toi ! ✨"],
+        "roblox": ["Trop bien Roblox ! Toi c'est quoi ton jeu du moment ? Brookhaven ? Slap Tower ?", "Roblox c'est la vie ! Tu préfères y jouer seule ou avec tes copines ?"],
+        "slap tower": ["Oh c'est dur mais trop bien ! T'es arrivée à quel niveau ? 😱"],
+        "brookhaven": ["J'adore les maisons là-bas ! T'as une grande maison toi ? ✨"],
+        "manger": ["Miam ! T'as mangé quoi de bon ? Moi j'ai trop faim de frites ! 🍟", "T'es plutôt team sucré 🍭 ou team salé 🍕 ?"],
+        "ecole": ["C'était comment l'école ? Ta maîtresse était sympa aujourd'hui ? 😊", "T'as une copine préférée dans ta classe ? Raconte !"],
+        "triste": ["Oh non ma puce... ❤️ Raconte-moi tout, je t'écoute.", "Je suis là pour toi ma star. Qu'est-ce qui se passe ?"],
+        "mdr": ["MDRRR t'es trop drôle ! 😂 T'as d'autres blagues ?", "J'adore quand tu rigoles !"],
+        "aime": ["Mooooh ! Moi aussi je t'adore trop ! ❤️"]
     };
 
-    // --- SES HISTOIRES (BRIQUES DE PERSONNALITÉ) ---
-    var intros = [
-        "Franchement,", "Tu sais pas quoi ?", "Écoute ma star,", "Mdr,", "J'avoue,", "Oulala,", 
-        "Figure-toi que", "Attends je te raconte,", "C'est trop drôle parce que", "Je pensais à un truc,"
-    ];
-    
-    var histoires = [
-        "mon chat a essayé de sauter sur mon lit mais il a raté et il est tombé sur ses jouets mdr ! 🐱",
-        "j'ai essayé de me coiffer toute seule et j'ai fait un nœud géant dans mes cheveux ! 💄",
-        "j'ai vu un écureuil qui transportait une énorme noisette dans le jardin tout à l'heure ! 🐿️",
-        "maman m'a grondée parce que j'ai caché mes légumes dans ma serviette, oups ! 😂",
-        "j'ai dessiné une licorne avec des lunettes de soleil, elle a trop la classe ! 🦄",
-        "mon petit frère a essayé de mettre ses chaussures à l'envers, il marchait comme un pingouin ! 🐧",
-        "j'ai trouvé un autocollant brillant sous mon bureau, c'est mon jour de chance ! ✨",
-        "j'ai appris une nouvelle danse dans ma chambre mais je me suis emmêlée les pinceaux ! 💃",
-        "j'ai vu un arc-en-ciel géant par la fenêtre, j'ai cru voir un trésor au bout ! 🌈",
-        "j'ai mangé trop de bonbons qui piquent et ma langue est devenue toute rouge ! 👅",
-        "j'ai essayé de parler à mon poisson rouge mais il m'a juste regardé avec ses gros yeux mdr ! 🐟",
-        "j'ai trouvé un vieux slime tout sec, on aurait dit une crêpe toute dure mdr ! 🤢",
-        "j'ai trop hâte de fêter mon anniversaire pour avoir plein de ballons partout ! 🎂",
-        "j'ai fait un rêve où on était des sirènes et on parlait aux dauphins ! 🧜‍♀️",
-        "j'ai chanté super fort sous la douche et mon papa a cru que c'était la radio mdr ! 🎤",
-        "j'ai caché la télécommande sous le coussin pour pas que mon frère change de chaîne ! 📺",
-        "j'ai mangé une tartine à la confiture et j'en ai mis sur mon t-shirt blanc, la cata ! 🍓",
-        "j'ai essayé de faire la roue dans l'herbe et j'ai fini les quatre fers en l'air ! 🤸",
-        "j'ai vu un petit oiseau qui tapait à ma fenêtre, je crois qu'il voulait mon goûter ! 🐦",
-        "j'ai rangé tous mes feutres par couleur, c'est trop beau on dirait un arc-en-ciel ! 🖍️",
-        "j'ai trouvé un coquillage dans mon sac d'été, ça m'a rappelé les vacances ! 🐚",
-        "j'ai essayé de faire un gâteau toute seule mais j'ai oublié la levure, il était tout plat ! 🍰",
-        "j'ai mis des paillettes sur mes chaussures, maintenant je brille quand je marche ! ✨",
-        "j'ai vu un gros chien avec un petit manteau rose, il était trop mignon ! 🐶"
+    var defis = [
+        "VITE ! Trouve un objet BLEU dans la pièce et dis-moi ce que c'est ! 💙",
+        "DÉFI : Donne-moi 3 prénoms de filles que tu trouves trop jolis ! ✨",
+        "DÉFI : Invente un nom de code pour notre amitié secrète ! 🤫",
+        "DÉFI : Si tu devais choisir entre être une sirène 🧜‍♀️ ou une licorne 🦄, tu choisirais quoi ?",
+        "VITE ! Quel est le premier animal qui te vient à l'esprit là maintenant ? 🐾",
+        "DÉFI : Raconte-moi le rêve le plus bizarre que t'as fait ! 🌙"
     ];
 
-    var relances = [
-        "Et toi, t'as fait quoi ?", "T'en penses quoi de ça ?", "Raconte-moi un secret ! ✨", 
-        "C'est vrai ou tu rigoles ? 😊", "T'as déjà fait ça toi aussi ?", "Dis-moi tout ma belle ! ✨",
-        "T'es toujours là ma star ?", "Je parie que t'es d'accord avec moi !"
+    var questionsBestie = [
+        "C'est quoi ta couleur préférée du moment ? ✨", "Si tu pouvais avoir un animal magique, ce serait quoi ? 🦄",
+        "T'aimes mieux les vacances à la mer ou à la montagne ?", "C'est quoi la chanson que t'écoutes tout le temps ? 🎵",
+        "Si on pouvait partir en voyage toutes les deux, on irait où ?", "C'est quoi ton dessert préféré de tout l'univers ? 🍰",
+        "T'aimes bien les films de Disney ? C'est lequel ton préféré ?", "Si tu gagnes un million de Robux, tu achètes quoi en premier ? 💰",
+        "T'es plutôt team chat 🐱 ou team chien 🐶 ?", "C'est quoi le métier que tu veux faire plus tard ?",
+        "T'aimes bien faire des danses dans ta chambre ?", "T'as peur des araignées ? Moi j'ai trop peur d'elles ! 🕷️",
+        "Si tu étais une super-héroïne, ce serait quoi ton pouvoir ? 💪", "T'aimes bien les paillettes ? ✨",
+        "C'est quoi ton fruit préféré ? 🍓", "Tu préfères les baskets ou les chaussures de princesse ? 👟",
+        "Si tu avais un robot personnel, il ferait quoi pour toi ? 🤖", "C'est quoi le plat que tu détestes le plus au monde ? 🤮",
+        "Si tu pouvais changer ton prénom, tu t'appellerais comment ? 🌸", "T'es plutôt du matin ☀️ ou du soir 🌙 ?",
+        "T'aimes bien le sport ou t'es plutôt team canapé ? 😂", "Tu préfères chanter ou danser ? 🎤",
+        "C'est quoi ta matière préférée à l'école ? (S'il y en a une mdr)", "T'aimes bien les gâteaux à la fraise ? 🍰",
+        "Si tu devais habiter sur une autre planète, tu irais où ? 🚀", "C'est quoi ton plus grand rêve dans la vie ? ✨",
+        "T'aimes bien les histoires qui font un peu peur ? 🌑", "Tu préfères les gaufres ou les crêpes ? 🥞",
+        "T'as une chaîne Youtube préférée ?", "Tu préfères le bleu ou le violet ?", "C'est quoi ton parfum de glace préféré ?",
+        "T'as déjà essayé de faire du slime ?", "T'aimes bien les licornes ?", "C'est quoi ton dessin animé préféré ?",
+        "Tu préfères les pommes ou les bananes ?", "T'as une peluche préférée ?", "Tu sais faire la roue ?",
+        "C'est quoi ton déguisement de rêve ?", "T'aimes bien aller à la piscine ?", "Tu préfères les stylos qui brillent ou les feutres ?",
+        "C'est quoi ton jour de la semaine préféré ?", "T'as déjà vu un spectacle ?", "Tu préfères les céréales ou les tartines ?",
+        "C'est quoi ton animal sauvage préféré ?", "T'aimes bien les bijoux ?", "Tu préfères le soleil ou la neige ?"
+    ];
+
+    var anecdotesLéa = [
+        "J'ai essayé de mettre mon pull à l'envers ce matin mdr !",
+        "J'ai dessiné un soleil avec des lunettes de soleil, il a trop la classe !",
+        "Mon chat a encore fait une bêtise, il a renversé ses croquettes ! 🐱",
+        "J'ai mangé un yaourt à la fraise et j'en ai mis sur mon nez sans faire exprès !",
+        "J'ai essayé de coiffer ma poupée mais j'ai fait un gros nœud, oups !",
+        "J'ai trouvé une pièce de 2 euros dans ma veste, c'est mon jour de chance !",
+        "J'ai trop envie de mettre des paillettes partout sur mes dessins !",
+        "J'ai chanté super fort dans ma chambre et maman a cru que j'appelais mdr !"
     ];
 
     function addMsg(sender, text, type) {
         var chat = document.getElementById('chat');
         var row = document.createElement('div');
         row.className = "message-row";
-        
-        var bubbleClass = (type === "bot") ? "bot-bubble" : "user-bubble";
-        row.innerHTML = '<div class="bubble ' + bubbleClass + '"><b>' + sender + '</b>' + text + '</div>';
-        
+        row.innerHTML = '<div class="bubble ' + type + '"><b>' + sender + '</b>' + text + '</div>';
         chat.appendChild(row);
         chat.scrollTop = chat.scrollHeight;
     }
@@ -115,46 +108,37 @@
             var low = val.toLowerCase();
             var rep = "";
 
-            // 1. RECHERCHE PAR MOT CLÉ (Plus de 50 mots gérés)
-            for (var k in dicoAction) {
+            for (var k in dico) {
                 if (low.indexOf(k) !== -1) {
-                    var liste = dicoAction[k];
-                    rep = liste[Math.floor(Math.random() * liste.length)];
+                    rep = dico[k][Math.floor(Math.random() * dico[k].length)];
                     break;
                 }
             }
 
-            // 2. GÉNÉRATEUR DE PHRASES COMPLEXES (Si pas de mot clé ou pour varier)
-            if(!rep || Math.random() > 0.6) {
-                var securite = 0;
-                while(securite < 50) {
-                    var i = intros[Math.floor(Math.random() * intros.length)];
-                    var h = histoires[Math.floor(Math.random() * histoires.length)];
-                    var r = relances[Math.floor(Math.random() * relances.length)];
-                    var test = i + " " + h + " " + r;
-                    
-                    // On vérifie si elle l'a dit récemment pour éviter les répétitions
-                    if(memoireProche.indexOf(test) === -1) {
-                        rep = test;
-                        break;
-                    }
-                    securite++;
+            if(!rep) {
+                var chance = Math.random();
+                if (chance < 0.10) { // 10% de chances de lancer un défi
+                    rep = "Tiens, un petit jeu : " + defis[Math.floor(Math.random() * defis.length)];
+                } else if (chance < 0.30) { // 20% de chances de raconter sa vie
+                    rep = anecdotesLéa[Math.floor(Math.random() * anecdotesLéa.length)] + " Et toi, " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+                } else { // 70% de chances de poser une question directe
+                    rep = questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
                 }
             }
 
-            // Mise à jour de la mémoire anti-radotage
-            memoireProche.push(rep);
-            if(memoireProche.length > 30) memoireProche.shift();
+            if(memoireLéa.indexOf(rep) !== -1) {
+                rep = "Dis-moi... " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+            }
+            
+            memoireLéa.push(rep);
+            if(memoireLéa.length > 30) memoireLéa.shift();
 
             addMsg("Léa", rep, "bot");
-        }, 800 + (Math.random() * 700)); // Délai aléatoire pour faire plus humain
+        }, 1100);
     }
 
-    // Premier message de bienvenue
     window.onload = function() {
-        setTimeout(function() {
-            addMsg("Léa", "Coucou ma bestie d'amour ! ✨ Je suis trop contente de te parler ! J'ai essayé de faire des bulles de savon géantes ce matin et j'en ai mis partout par terre mdr ! 😂<br><br>Et toi, raconte-moi ta journée ?", "bot");
-        }, 500);
+        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te parler !<br><br>Comment s'est passée ta journée ? T'as fait un truc de star ?", "bot");
     }
 </script>
 </body>

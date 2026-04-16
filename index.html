@@ -50,7 +50,36 @@
         "DÉFI : Invente un nom de code pour notre amitié secrète ! 🤫",
         "DÉFI : Si tu devais choisir entre être une sirène 🧜‍♀️ ou une licorne 🦄, tu choisirais quoi ?",
         "VITE ! Quel est le premier animal qui te vient à l'esprit là maintenant ? 🐾",
-        "DÉFI : Raconte-moi le rêve le plus bizarre que t'as fait ! 🌙"
+        "DÉFI : Raconte-moi le rêve le plus bizarre que t'as fait ! 🌙",
+        "DÉFI : Chante le refrain de ta chanson préférée dans ta tête et dis-moi quand c'est fini ! 🎤",
+        "VITE ! Saute 3 fois sur place et dis-moi si t'as la tête qui tourne ! 😂",
+        "DÉFI : Écris ton prénom avec le nez sur l'écran (sans toucher) ! C'est dur hein ? 👃",
+        "VITE ! Trouve un truc qui commence par la lettre 'M' autour de toi ! 🔍",
+        "DÉFI : Fais ta plus belle grimace et essaye de ne pas rigoler pendant 10 secondes ! 🤪",
+        "DÉFI : Si tu étais une star, ce serait quoi ton nom de scène ? ✨",
+        "DÉFI : Cite-moi 3 jeux Roblox sans réfléchir ! Vite ! 🎮",
+        "VITE ! Quel est le dernier truc que tu as bu ? 🥤",
+        "DÉFI : Ferme les yeux et essaye de toucher ton nez avec ton petit doigt ! 👃",
+        "DÉFI : Raconte-moi une blague, même si elle est nulle ! 😂",
+        "VITE ! Trouve un objet ROSE le plus vite possible ! 💖",
+        "DÉFI : Dis 'Pamplemousse Rigolo' 5 fois très vite sans te tromper ! 🍊",
+        "DÉFI : Si tu avais une baguette magique, tu transformerais ta maîtresse en quel animal ? 🪄",
+        "VITE ! Touche tes pieds sans plier les genoux ! T'y arrives ? 🤸",
+        "DÉFI : Donne-moi un nom de super-héros pour ton chat ou ton chien ! 🦸",
+        "DÉFI : Quel est le fruit le plus moche du monde selon toi ? 🍎",
+        "VITE ! Fais semblant de dormir pendant 5 secondes ! 💤",
+        "DÉFI : Si on faisait un gâteau ensemble, on mettrait quoi dedans ? 🎂",
+        "DÉFI : Essaye de lécher ton coude ! (Spoil : c'est impossible mdr) 👅",
+        "VITE ! Quel est ton chiffre porte-bonheur ? 🍀",
+        "DÉFI : Imagine que tu gagnes 1000 euros, tu achètes quoi à ta meilleure amie ? 🎁",
+        "DÉFI : Fais le cri de l'otarie ! (Même si je t'entends pas, je sais que tu le fais bien) 🦭",
+        "VITE ! Trouve un truc CARRE dans ta chambre ! ⬛",
+        "DÉFI : Dis-moi quelle est ta princesse préférée ! 👑",
+        "DÉFI : Si tu pouvais voler, tu irais voir qui en premier ? 🕊️",
+        "VITE ! Quelle heure il est exactement ? ⏰",
+        "DÉFI : Invente une nouvelle danse et donne-lui un nom bizarre ! 💃",
+        "DÉFI : Cite 3 couleurs que tu détestes ! 🎨",
+        "VITE ! Quel est l'objet le plus proche de ta main gauche ? ✋"
     ];
 
     var questionsBestie = [
@@ -117,17 +146,17 @@
 
             if(!rep) {
                 var chance = Math.random();
-                if (chance < 0.10) { // 10% de chances de lancer un défi
-                    rep = "Tiens, un petit jeu : " + defis[Math.floor(Math.random() * defis.length)];
-                } else if (chance < 0.30) { // 20% de chances de raconter sa vie
+                if (chance < 0.20) { 
+                    rep = "Tiens, on fait un mini-jeu ? " + defis[Math.floor(Math.random() * defis.length)];
+                } else if (chance < 0.40) { 
                     rep = anecdotesLéa[Math.floor(Math.random() * anecdotesLéa.length)] + " Et toi, " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
-                } else { // 70% de chances de poser une question directe
+                } else { 
                     rep = questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
                 }
             }
 
             if(memoireLéa.indexOf(rep) !== -1) {
-                rep = "Dis-moi... " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
+                rep = "Au fait... " + questionsBestie[Math.floor(Math.random() * questionsBestie.length)];
             }
             
             memoireLéa.push(rep);
@@ -138,7 +167,7 @@
     }
 
     window.onload = function() {
-        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te parler !<br><br>Comment s'est passée ta journée ? T'as fait un truc de star ?", "bot");
+        addMsg("Léa", "Coucou ma bestie ! ✨ Je suis trop contente de te reparler !<br><br>Comment s'est passée ta journée ? T'as fait un truc de star ?", "bot");
     }
 </script>
 </body>
